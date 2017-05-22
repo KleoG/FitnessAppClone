@@ -9,18 +9,24 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class GraphPage extends AppCompatActivity {
 
-    GraphView graph = (GraphView) findViewById(R.id.graph);
-    LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-            new DataPoint(0, 1),
-            new DataPoint(1, 5),
-            new DataPoint(2, 3),
-            new DataPoint(3, 2),
-            new DataPoint(4, 6)
-    });
+
+    LineGraphSeries<DataPoint> series;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_page);
+
+        double x,y;
+        x = -5.0;
+
+        GraphView graph = (GraphView) findViewById(R.id.graph);
+        series = new LineGraphSeries<DataPoint>();
+        for(int i = 0; i < 500; i++){
+            x = x + 0.1;
+            y = Math.sin(x);
+            series.appendData(new DataPoint(x, y), true, 500);
+        }
+        graph.addSeries(series);
     }
 }
