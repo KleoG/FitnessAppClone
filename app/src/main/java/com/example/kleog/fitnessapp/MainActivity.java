@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void goToGraphsPage(View view){
         Intent intent = new Intent(this, GraphPage.class);
-        startActivity(intent);
+        startActivity(intent);  // changes page to the intent (graph page)
     }
 
 }
