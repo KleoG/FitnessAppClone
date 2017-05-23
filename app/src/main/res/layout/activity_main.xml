@@ -12,7 +12,7 @@
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1">
 
         <LinearLayout
@@ -26,89 +26,58 @@
                 android:layout_height="match_parent"
                 app:srcCompat="@android:drawable/edit_text" />
 
-            <TableLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:stretchColumns="100">
+                android:orientation="vertical">
 
-                <TableRow
+                <EditText
+                    android:id="@+id/optionsText"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:cursorVisible="false"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:selectAllOnFocus="false"
+                    android:text="options"
+                    android:textColorLink="@android:color/transparent"
+                    android:textIsSelectable="false" />
 
-                    <EditText
-                        android:id="@+id/optionsText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:contextClickable="false"
-                        android:cursorVisible="false"
-                        android:ems="10"
-                        android:selectAllOnFocus="false"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:text="options"
-                        />
-                </TableRow>
-
-                <TableRow
+                <Button
+                    android:id="@+id/breaskFastButton"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:text="Breakfast" />
 
-                    <Button
-                        android:id="@+id/breaskFastButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Breakfast" />
-                </TableRow>
-
-                <TableRow
+                <Button
+                    android:id="@+id/LunchButton"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:text="Lunch" />
 
-                    <Button
-                        android:id="@+id/LunchButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lunch" />
-                </TableRow>
-
-                <TableRow
+                <Button
+                    android:id="@+id/dinnerButton"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:text="Dinner" />
 
-                    <Button
-                        android:id="@+id/dinnerButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Dinner" />
-
-                </TableRow>
-
-                <TableRow
+                <Button
+                    android:id="@+id/snackButton"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:text="snacks" />
 
-                    <Button
-                        android:id="@+id/snackButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="snacks" />
-                </TableRow>
-
-                <TableRow
+                <Button
+                    android:id="@+id/graphButton"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:onClick="goToGraphsPage"
+                    android:text="Graphs" />
+            </LinearLayout>
 
-                    <Button
-                        android:id="@+id/graphButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="goToGraphsPage"
-                        android:text="Graphs" />
-                </TableRow>
-
-            </TableLayout>
         </LinearLayout>
 
     </FrameLayout>
