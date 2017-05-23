@@ -3,13 +3,16 @@ package com.example.kleog.fitnessapp;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 /**
  * Created by Kevin on 22/05/2017.
  */
 
 public class UserNutritionDBHelper extends SQLiteOpenHelper {
-    //singleton class contains instance of the database
+    //singleton class contains instance of the database helper
     private static UserNutritionDBHelper DBInstance;
 
     private static final int DATABASE_VERSION = 1;
@@ -57,9 +60,9 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
     //creation of meal table
     private static final String MEAL_TABLE_CREATE =
             "CREATE TABLE " + MEAL_TABLE_NAME + " (" +
-                    MEAL_COLUMN_DATE + " TEXT PRIMARY KEY , " +
+                    MEAL_COLUMN_DATE + " TEXT , " +
 
-                    MEAL_COLUMN_MEAL_TYPE + " TEXT PRIMARY KEY, " +
+                    MEAL_COLUMN_MEAL_TYPE + " TEXT , " +
 
                     MEAL_COLUMN_TOTAL_CALORIES + " INTEGER, " +
 
@@ -69,7 +72,9 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
 
                     MEAL_COLUMN_TOTAL_FAT + " INTEGER, " +
 
-                    " FOREIGN KEY (" + MEAL_COLUMN_MEAL_TYPE + ") REFERENCES "+ DAILY_USER_INFO_TABLE_NAME +"(" + DAILY_USER_INFO_COLUMN_DATE + ") );";
+                    "PRIMARY KEY (" + MEAL_COLUMN_DATE + ", " + MEAL_COLUMN_MEAL_TYPE + ")); ";// +
+
+                    //" FOREIGN KEY (" + MEAL_COLUMN_DATE + ") REFERENCES "+ DAILY_USER_INFO_TABLE_NAME +"(" + DAILY_USER_INFO_COLUMN_DATE + ") );";
 
 
     //----------------------------------------------------------------------------------------------------------------------------------------
@@ -90,11 +95,11 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
     //creation of food items table
     private static final String FOOD_ITEMS_TABLE_CREATE =
             "CREATE TABLE " + FOOD_ITEMS_TABLE_NAME + " (" +
-                    FOOD_ITEMS_COLUMN_DATE + " TEXT PRIMARY KEY , " +
+                    FOOD_ITEMS_COLUMN_DATE + " TEXT, " +
 
-                    FOOD_ITEMS_COLUMN_TIME_EATEN + " TEXT PRIMARY KEY, " +
+                    FOOD_ITEMS_COLUMN_TIME_EATEN + " TEXT, " +
 
-                    FOOD_ITEMS_COLUMN_FOOD_ID + " INTEGER PRIMARY KEY, " +
+                    FOOD_ITEMS_COLUMN_FOOD_ID + " INTEGER, " +
 
                     FOOD_ITEMS_COLUMN_CALORIES + " INTEGER, " +
 
@@ -106,9 +111,11 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
 
                     FOOD_ITEMS_COLUMN_AMOUNT_EATEN + " INTEGER, " +
 
-                    " FOREIGN KEY (" + FOOD_ITEMS_COLUMN_DATE + ") REFERENCES "+ MEAL_TABLE_NAME +"(" + MEAL_COLUMN_DATE + ")," +
+                    "PRIMARY KEY (" + FOOD_ITEMS_COLUMN_DATE + ", " + FOOD_ITEMS_COLUMN_TIME_EATEN + ", " + FOOD_ITEMS_COLUMN_FOOD_ID + ")); "; //+
 
-                    " FOREIGN KEY (" + FOOD_ITEMS_COLUMN_TIME_EATEN + ") REFERENCES "+ MEAL_TABLE_NAME +"(" + MEAL_COLUMN_MEAL_TYPE + ") );";
+                    //" FOREIGN KEY (" + FOOD_ITEMS_COLUMN_DATE + ") REFERENCES "+ MEAL_TABLE_NAME +"(" + MEAL_COLUMN_DATE + ")," +
+
+                    //" FOREIGN KEY (" + FOOD_ITEMS_COLUMN_TIME_EATEN + ") REFERENCES "+ MEAL_TABLE_NAME +"(" + MEAL_COLUMN_MEAL_TYPE + ") );";
 
 
 
@@ -116,7 +123,9 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
 
     //use this to get access to the database
     public static synchronized UserNutritionDBHelper getInstance(Context context) {
-
+        Log.d("NUTRITION_DATABASE", DAILY_USER_INFO_TABLE_CREATE);
+        Log.d("NUTRITION_DATABASE", MEAL_TABLE_CREATE);
+        Log.d("NUTRITION_DATABASE", FOOD_ITEMS_TABLE_CREATE);
         if (DBInstance == null) {
             DBInstance = new UserNutritionDBHelper(context.getApplicationContext());
         }
@@ -129,9 +138,13 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onCreate(SQLiteDatabase db) {
         //.execSQL() can only create one table at a time. to have multiple tables use method multiple times
+
+        //db.setForeignKeyConstraintsEnabled(true);
+
         db.execSQL(DAILY_USER_INFO_TABLE_CREATE);
         db.execSQL(MEAL_TABLE_CREATE);
         db.execSQL(FOOD_ITEMS_TABLE_CREATE);
@@ -139,6 +152,7 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //used to modify previous table when upgrading database
