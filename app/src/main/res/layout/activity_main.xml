@@ -35,6 +35,7 @@
                     android:id="@+id/optionsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:clickable="false"
                     android:contextClickable="false"
                     android:cursorVisible="false"
@@ -42,40 +43,39 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:selectAllOnFocus="false"
-                    android:text="options"
-                    android:textColorLink="@android:color/transparent"
+                    android:text="@string/options"
                     android:textIsSelectable="false" />
 
                 <Button
                     android:id="@+id/breaskFastButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Breakfast" />
+                    android:text="@string/breakfast_button" />
 
                 <Button
                     android:id="@+id/LunchButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lunch" />
+                    android:text="@string/lunch_button" />
 
                 <Button
                     android:id="@+id/dinnerButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Dinner" />
+                    android:text="@string/dinner_button" />
 
                 <Button
                     android:id="@+id/snackButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="snacks" />
+                    android:text="@string/snacks_button" />
 
                 <Button
                     android:id="@+id/graphButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="goToGraphsPage"
-                    android:text="Graphs" />
+                    android:text="@string/graphs_button" />
             </LinearLayout>
 
         </LinearLayout>
