@@ -50,24 +50,28 @@
                     android:id="@+id/breaskFastButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="goToMealActivity"
                     android:text="@string/breakfast_button" />
 
                 <Button
                     android:id="@+id/LunchButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="goToMealActivity"
                     android:text="@string/lunch_button" />
 
                 <Button
                     android:id="@+id/dinnerButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="goToMealActivity"
                     android:text="@string/dinner_button" />
 
                 <Button
                     android:id="@+id/snackButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="goToMealActivity"
                     android:text="@string/snacks_button" />
 
                 <Button
