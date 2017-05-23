@@ -19,7 +19,7 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
     //--------------------------------------------------------------------------------------------------------
 
     //TABLE: daily user info
-    private static final String DAILY_USER_INFO_TABLE_NAME = "daily user info";
+    private static final String DAILY_USER_INFO_TABLE_NAME = "daily_user_info";
     //columns
     private static final String DAILY_USER_INFO_COLUMN_DATE = "date";
     private static final String DAILY_USER_INFO_COLUMN_TOTAL_CALORIES = "totalCalories";
@@ -30,17 +30,17 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
     //creation of daily user info table
     private static final String DAILY_USER_INFO_TABLE_CREATE =
             "CREATE TABLE " + DAILY_USER_INFO_TABLE_NAME + " (" +
-                    DAILY_USER_INFO_COLUMN_DATE + " date primary key, " +
+                    DAILY_USER_INFO_COLUMN_DATE + " TEXT PRIMARY KEY, " +
 
-                    DAILY_USER_INFO_COLUMN_TOTAL_CALORIES + " integer, " +
+                    DAILY_USER_INFO_COLUMN_TOTAL_CALORIES + " INTEGER, " +
 
-                    DAILY_USER_INFO_COLUMN_TOTAL_PROTEIN + " integer, " +
+                    DAILY_USER_INFO_COLUMN_TOTAL_PROTEIN + " INTEGER, " +
 
-                    DAILY_USER_INFO_COLUMN_TOTAL_CARBS + " integer, " +
+                    DAILY_USER_INFO_COLUMN_TOTAL_CARBS + " INTEGER, " +
 
-                    DAILY_USER_INFO_COLUMN_TOTAL_FAT + " integer, " +
+                    DAILY_USER_INFO_COLUMN_TOTAL_FAT + " INTEGER, " +
 
-                    DAILY_USER_INFO_COLUMN_WEIGHT + " real);";
+                    DAILY_USER_INFO_COLUMN_WEIGHT + " INTEGER);";
 
     //-------------------------------------------------------------------------------------------------------
 
@@ -57,17 +57,17 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
     //creation of meal table
     private static final String MEAL_TABLE_CREATE =
             "CREATE TABLE " + MEAL_TABLE_NAME + " (" +
-                    MEAL_COLUMN_DATE + " date primary key , " +
+                    MEAL_COLUMN_DATE + " TEXT PRIMARY KEY , " +
 
-                    MEAL_COLUMN_MEAL_TYPE + " text primary key, " +
+                    MEAL_COLUMN_MEAL_TYPE + " TEXT PRIMARY KEY, " +
 
-                    MEAL_COLUMN_TOTAL_CALORIES + " integer, " +
+                    MEAL_COLUMN_TOTAL_CALORIES + " INTEGER, " +
 
-                    MEAL_COLUMN_TOTAL_PROTEIN + " integer, " +
+                    MEAL_COLUMN_TOTAL_PROTEIN + " INTEGER, " +
 
-                    MEAL_COLUMN_TOTAL_CARBS + " integer, " +
+                    MEAL_COLUMN_TOTAL_CARBS + " INTEGER, " +
 
-                    MEAL_COLUMN_TOTAL_FAT + " integer, " +
+                    MEAL_COLUMN_TOTAL_FAT + " INTEGER, " +
 
                     " FOREIGN KEY (" + MEAL_COLUMN_MEAL_TYPE + ") REFERENCES "+ DAILY_USER_INFO_TABLE_NAME +"(" + DAILY_USER_INFO_COLUMN_DATE + ") );";
 
@@ -75,7 +75,7 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
     //----------------------------------------------------------------------------------------------------------------------------------------
 
     //TABLE: food items
-    private static final String FOOD_ITEMS_TABLE_NAME = "food items";
+    private static final String FOOD_ITEMS_TABLE_NAME = "food_items";
     //columns
     private static final String FOOD_ITEMS_COLUMN_DATE = "date";
     private static final String FOOD_ITEMS_COLUMN_TIME_EATEN = "timeEaten";
@@ -90,23 +90,23 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
     //creation of food items table
     private static final String FOOD_ITEMS_TABLE_CREATE =
             "CREATE TABLE " + FOOD_ITEMS_TABLE_NAME + " (" +
-                    FOOD_ITEMS_COLUMN_DATE + " date primary key , " +
+                    FOOD_ITEMS_COLUMN_DATE + " TEXT PRIMARY KEY , " +
 
-                    FOOD_ITEMS_COLUMN_TIME_EATEN + " text primary key, " +
+                    FOOD_ITEMS_COLUMN_TIME_EATEN + " TEXT PRIMARY KEY, " +
 
-                    FOOD_ITEMS_COLUMN_FOOD_ID + " integer primary key, " +
+                    FOOD_ITEMS_COLUMN_FOOD_ID + " INTEGER PRIMARY KEY, " +
 
-                    FOOD_ITEMS_COLUMN_CALORIES + " integer, " +
+                    FOOD_ITEMS_COLUMN_CALORIES + " INTEGER, " +
 
-                    FOOD_ITEMS_COLUMN_PROTEIN + " integer, " +
+                    FOOD_ITEMS_COLUMN_PROTEIN + " INTEGER, " +
 
-                    FOOD_ITEMS_COLUMN_CARBS + " integer, " +
+                    FOOD_ITEMS_COLUMN_CARBS + " INTEGER, " +
 
-                    FOOD_ITEMS_COLUMN_FAT + " integer, " +
+                    FOOD_ITEMS_COLUMN_FAT + " INTEGER, " +
 
-                    FOOD_ITEMS_COLUMN_AMOUNT_EATEN + " integer, " +
+                    FOOD_ITEMS_COLUMN_AMOUNT_EATEN + " INTEGER, " +
 
-                    " FOREIGN KEY (" + FOOD_ITEMS_COLUMN_DATE + ") REFERENCES "+ MEAL_TABLE_NAME +"(" + MEAL_COLUMN_DATE + ")" +
+                    " FOREIGN KEY (" + FOOD_ITEMS_COLUMN_DATE + ") REFERENCES "+ MEAL_TABLE_NAME +"(" + MEAL_COLUMN_DATE + ")," +
 
                     " FOREIGN KEY (" + FOOD_ITEMS_COLUMN_TIME_EATEN + ") REFERENCES "+ MEAL_TABLE_NAME +"(" + MEAL_COLUMN_MEAL_TYPE + ") );";
 
@@ -126,7 +126,7 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
     //kept private to not have multiple instances of the database
     private UserNutritionDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        //SQLiteDatabase db = this.getWritableDatabase();
+
     }
 
     @Override
@@ -136,11 +136,12 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
         db.execSQL(MEAL_TABLE_CREATE);
         db.execSQL(FOOD_ITEMS_TABLE_CREATE);
 
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //used to modify previous table when upgrading databse
+        //used to modify previous table when upgrading database
         //db.execSQL(" drop table if exists "+ EXAMPLE_TABLE_NAME);
 
 
@@ -148,6 +149,8 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
         onCreate(db);
 
     }
+
+
 
 
 }
