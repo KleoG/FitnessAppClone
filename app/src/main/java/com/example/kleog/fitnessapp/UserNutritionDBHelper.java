@@ -9,10 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class UserNutritionDBHelper extends SQLiteOpenHelper {
+    //singleton class contains instance of the database
+    private static UserNutritionDBHelper DBInstance;
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "UserNutrition.db";
 
+    //tables separated using lines for readability
+    //--------------------------------------------------------------------------------------------------------
 
     //TABLE: daily user info
     private static final String DAILY_USER_INFO_TABLE_NAME = "daily user info";
@@ -108,7 +112,19 @@ public class UserNutritionDBHelper extends SQLiteOpenHelper {
 
 
 
-    UserNutritionDBHelper(Context context) {
+
+
+    //use this to get access to the database
+    public static synchronized UserNutritionDBHelper getInstance(Context context) {
+
+        if (DBInstance == null) {
+            DBInstance = new UserNutritionDBHelper(context.getApplicationContext());
+        }
+        return DBInstance;
+    }
+
+    //kept private to not have multiple instances of the database
+    private UserNutritionDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //SQLiteDatabase db = this.getWritableDatabase();
     }
