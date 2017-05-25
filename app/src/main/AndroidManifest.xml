@@ -19,6 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".GraphPage"></activity>
+        <activity android:name=".MealActivity"></activity>
+
     </application>
 
 </manifest>
