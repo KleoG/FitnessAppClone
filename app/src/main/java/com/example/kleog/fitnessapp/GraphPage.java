@@ -2,6 +2,7 @@ package com.example.kleog.fitnessapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -9,13 +10,17 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class GraphPage extends AppCompatActivity {
 
-
     LineGraphSeries<DataPoint> series;
+
+    private UserNutritionDBHelper db = UserNutritionDBHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_page);
+
+
+
 
         double x,y;
         x = -5.0;
@@ -28,5 +33,12 @@ public class GraphPage extends AppCompatActivity {
             series.appendData(new DataPoint(x, y), true, 500);
         }
         graph.addSeries(series);
+    }
+
+    // when the back button is pressed the graph is disposed of
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 }
