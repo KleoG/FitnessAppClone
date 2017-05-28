@@ -15,6 +15,10 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        //required for room
+        maven {
+            url "https://maven.google.com"
+        }
     }
 }
 
