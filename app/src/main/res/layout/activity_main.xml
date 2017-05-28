@@ -20,11 +20,11 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <ImageView
+            <com.jjoe64.graphview.GraphView
                 android:id="@+id/calorieBarPlaceholder"
                 android:layout_width="145dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@android:drawable/edit_text" />
+                android:layout_height="match_parent" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -2,6 +2,7 @@ package com.example.kleog.fitnessapp;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,31 +13,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
+
 public class MainActivity extends AppCompatActivity {
     UserNutritionDBHelper db;
 
-    private TextView mTextMessage;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-
-    };
+    GraphView calorieGraph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +31,26 @@ public class MainActivity extends AppCompatActivity {
         db = UserNutritionDBHelper.getInstance(this);
         SQLiteDatabase test = db.getWritableDatabase();
 
-        //mTextMessage = (TextView) findViewById(R.id.message);
-        //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        calorieGraph = (GraphView) findViewById(R.id.calorieBarPlaceholder);
+        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, 200),
+                new DataPoint(1, 0)
+        });
+        calorieGraph.addSeries(series);
+
+
+//        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+//            @Override
+//            public int get(DataPoint data) {
+//                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+//            }
+//        });
+        calorieGraph.setTitle("calories eaten");
+        //draws value of bar directly ontop of the bar
+        series.setDrawValuesOnTop(true);
+        series.setValuesOnTopColor(Color.RED);
+
+
     }
 
     /**
