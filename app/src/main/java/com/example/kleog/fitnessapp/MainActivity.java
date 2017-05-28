@@ -49,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
         //draws value of bar directly ontop of the bar
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.RED);
-
+        //TODO graph: remove values from X and Y axis
+        //TODO graph: remove background
+        //TODO graph: make bar not always take up the whole Y axis, rather it should start from bottom and increase as user adds calories
 
     }
 
