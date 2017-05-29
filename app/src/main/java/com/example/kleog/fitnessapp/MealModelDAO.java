@@ -23,7 +23,7 @@ public interface MealModelDAO {
     List<MealModel> getAll();
 
     @Query("SELECT * FROM meal WHERE date = :date and meal_type = :mealType")
-    List<MealModel> loadMeal(MealType mealType, Date date);
+    List<MealModel> getMeal(MealType mealType, Date date);
 
     @Query("SELECT * FROM meal WHERE date = :date")
     List<MealModel> getMealsOnDate(Date date);
