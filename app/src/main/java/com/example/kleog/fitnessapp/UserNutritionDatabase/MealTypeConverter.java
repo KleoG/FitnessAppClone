@@ -1,11 +1,6 @@
-package com.example.kleog.fitnessapp;
+package com.example.kleog.fitnessapp.UserNutritionDatabase;
 
 import android.arch.persistence.room.TypeConverter;
-import android.util.Log;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by Kevin on 29/05/2017.

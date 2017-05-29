@@ -1,4 +1,4 @@
-package com.example.kleog.fitnessapp;
+package com.example.kleog.fitnessapp.UserNutritionDatabase;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;

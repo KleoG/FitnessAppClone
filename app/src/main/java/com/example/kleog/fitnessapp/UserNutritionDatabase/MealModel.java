@@ -1,9 +1,8 @@
-package com.example.kleog.fitnessapp;
+package com.example.kleog.fitnessapp.UserNutritionDatabase;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
 import java.util.Date;

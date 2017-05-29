@@ -1,4 +1,4 @@
-package com.example.kleog.fitnessapp;
+package com.example.kleog.fitnessapp.UserNutritionDatabase;
 
 /**
  * Created by Kevin on 29/05/2017.
