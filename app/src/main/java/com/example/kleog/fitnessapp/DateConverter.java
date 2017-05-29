@@ -25,7 +25,7 @@ class DateConverter {
 
     @TypeConverter
     public static String toDateString (Date date) {
-        Log.d("DATE_CONVERTER", "toDateString: " + date + " becomes: " + new SimpleDateFormat("dd/MM/YYYY").format(new Date()).toString());
-        return date == null ? null :  new SimpleDateFormat("dd/MM/YYYY").format(new Date()).toString();
+        Log.d("DATE_CONVERTER", "toDateString: " + date + " becomes: " + new SimpleDateFormat("YYYY-MM-dd").format(new Date()).toString());
+        return date == null ? null :  new SimpleDateFormat("YYYY-MM-dd").format(new Date()).toString();
     }
 }

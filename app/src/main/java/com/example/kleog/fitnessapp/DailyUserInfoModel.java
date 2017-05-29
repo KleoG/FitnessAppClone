@@ -1,4 +1,5 @@
 package com.example.kleog.fitnessapp;
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
@@ -15,10 +16,20 @@ public class DailyUserInfoModel {
     @PrimaryKey()
     @TypeConverters(DateConverter.class) //used to covert Java date into SQLite compatible data type
     public Date date;
+
+    @ColumnInfo(name = "total_Calories")
     private String totalCalories;
+
+    @ColumnInfo(name = "total_Protein")
     private String totalProtein;
+
+    @ColumnInfo(name = "total_Carbs")
     private String totalCarbs;
+
+    @ColumnInfo(name = "total_Fat")
     private String totalFat;
+
+    @ColumnInfo(name = "weight")
     private String weight;
 
     public DailyUserInfoModel(Date date, String totalCalories, String totalProtein, String totalCarbs, String totalFat, String weight) {
@@ -52,5 +63,29 @@ public class DailyUserInfoModel {
 
     public String getWeight() {
         return weight;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setTotalCalories(String totalCalories) {
+        this.totalCalories = totalCalories;
+    }
+
+    public void setTotalProtein(String totalProtein) {
+        this.totalProtein = totalProtein;
+    }
+
+    public void setTotalCarbs(String totalCarbs) {
+        this.totalCarbs = totalCarbs;
+    }
+
+    public void setTotalFat(String totalFat) {
+        this.totalFat = totalFat;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 }
