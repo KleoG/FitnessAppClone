@@ -5,6 +5,8 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.TypeConverters;
+import android.arch.persistence.room.Update;
+
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 import java.util.Date;
@@ -31,6 +33,9 @@ public interface DailyUserInfoModelDAO {
 
     @Insert(onConflict = REPLACE)
     void insert(DailyUserInfoModel userInfo);
+
+    @Update
+    void update(DailyUserInfoModel userInfo);
 
     @Delete
     void delete(DailyUserInfoModel userInfo);
