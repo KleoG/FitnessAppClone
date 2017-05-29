@@ -23,6 +23,7 @@ public class FoodItemsModel {
     public Date date;
 
     @ColumnInfo(name = "eaten_during_meal")
+    @TypeConverters(MealTypeConverter.class)
     private MealType eatenDuringMeal;
 
     @ColumnInfo(name = "food_ID")
@@ -44,6 +45,7 @@ public class FoodItemsModel {
     private Integer amountEaten;
 
     @ColumnInfo(name = "amount_Eaten_Type") //check enum for types
+    @TypeConverters(AmountEatenTypeConverter.class)
     private AmountEatenType amountEatenType;
 
     public FoodItemsModel(Date date, MealType eatenDuringMeal, String foodID, String calories, String protein, String carbs, String fat, Integer amountEaten, AmountEatenType amountEatenType) {

@@ -24,6 +24,7 @@ public class MealModel {
     public Date date;
 
     @ColumnInfo(name = "meal_type")
+    @TypeConverters(MealTypeConverter.class)
     private MealType mealType;
 
     @ColumnInfo(name = "total_calories")
