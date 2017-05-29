@@ -8,11 +8,52 @@
     tools:context="com.example.kleog.fitnessapp.GraphPage">
 
     <com.jjoe64.graphview.GraphView
-        android:layout_width="190dp"
-        android:layout_height="176dp"
         android:id="@+id/graph"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="202dp"
+        tools:layout_editor_absoluteY="218dp" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graphView4"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="29dp"
+        tools:layout_editor_absoluteY="218dp" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graphView"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="202dp"
+        tools:layout_editor_absoluteY="39dp" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graphView3"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="29dp"
+        tools:layout_editor_absoluteY="39dp" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graphView2"
+        android:layout_width="137dp"
+        android:layout_height="135dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="29dp"
+        tools:layout_editor_absoluteY="39dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Graph 1"
+        tools:layout_editor_absoluteX="29dp"
+        tools:layout_editor_absoluteY="16dp"
         tools:ignore="MissingConstraints" />
 
 </android.support.constraint.ConstraintLayout>
