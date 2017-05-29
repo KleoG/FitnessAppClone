@@ -12,15 +12,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
+import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
-    UserNutritionDBHelper db;
+    UserNutritionDB db;
 
     GraphView calorieGraph;
 
@@ -29,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = UserNutritionDBHelper.getInstance(this);
-        SQLiteDatabase test = db.getWritableDatabase();
 
         calorieGraph = (GraphView) findViewById(R.id.calorieBarPlaceholder);
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
@@ -50,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         //draws value of bar directly ontop of the bar
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.RED);
-        //TODO graph: remove values from X and Y axis
-        //TODO graph: remove background
         //TODO graph: make bar not always take up the whole Y axis, rather it should start from bottom and increase as user adds calories
         calorieGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE); // background grids get removed
 

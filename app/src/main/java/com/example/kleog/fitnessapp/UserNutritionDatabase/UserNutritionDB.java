@@ -33,4 +33,6 @@ public abstract class UserNutritionDB extends RoomDatabase {
 
     public abstract FoodItemsModelDAO FoodItemsModel();
 
+    //TODO database migration class
+
 }
