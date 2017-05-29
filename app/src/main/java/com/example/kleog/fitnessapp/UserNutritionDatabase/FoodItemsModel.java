@@ -12,7 +12,7 @@ import java.util.Date;
  */
 
 @Entity(tableName = "food_items",
-        primaryKeys = {"date", "eaten_during_meal", "foodID"},
+        primaryKeys = {"date", "eaten_during_meal", "food_ID"},
         foreignKeys = @ForeignKey(entity = MealModel.class,
                 parentColumns = {"date","meal_type"},
                 childColumns = {"date","eaten_during_meal"})
@@ -48,14 +48,14 @@ public class FoodItemsModel {
     @TypeConverters(AmountEatenTypeConverter.class)
     private AmountEatenType amountEatenType;
 
-    public FoodItemsModel(Date date, MealType eatenDuringMeal, String foodID, String calories, String protein, String carbs, String fat, Integer amountEaten, AmountEatenType amountEatenType) {
+    public FoodItemsModel(Date date, MealType eatenDuringMeal, String foodID, String Calories, String Protein, String Carbs, String Fat, Integer amountEaten, AmountEatenType amountEatenType) {
         this.date = date;
         this.eatenDuringMeal = eatenDuringMeal;
         this.foodID = foodID;
-        Calories = calories;
-        Protein = protein;
-        Carbs = carbs;
-        Fat = fat;
+        this.Calories = Calories;
+        this.Protein = Protein;
+        this.Carbs = Carbs;
+        this.Fat = Fat;
         this.amountEaten = amountEaten;
         this.amountEatenType = amountEatenType;
     }
