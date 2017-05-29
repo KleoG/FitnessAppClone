@@ -12,8 +12,6 @@ public class GraphPage extends AppCompatActivity {
 
     LineGraphSeries<DataPoint> series;
 
-    private UserNutritionDBHelper db = UserNutritionDBHelper.getInstance(this);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
