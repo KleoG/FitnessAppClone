@@ -29,6 +29,8 @@ public abstract class UserNutritionDB extends RoomDatabase {
     //create abstract method for each DAO
     public abstract DailyUserInfoModelDAO DailyUserInfoModel();
 
-    public abstract MealModel MealModel();
+    public abstract MealModelDAO MealModel();
+
+    public abstract FoodItemsModelDAO FoodItemsModel();
 
 }

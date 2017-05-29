@@ -22,22 +22,25 @@ public interface FoodItemsModelDAO {
     @Query("SELECT * FROM food_items")
     List<FoodItemsModel> getAll();
 
-    @Query("SELECT * FROM meal WHERE date = :date and meal_type = :mealType")
-    List<FoodItemsModel> loadMeal(MealType mealType, Date date);
+    @Query("SELECT * FROM food_items WHERE date = :date")
+    List<FoodItemsModel> getFoodsEatenOnDate(Date date);
 
-    @Query("SELECT * FROM meal WHERE date = :date")
-    List<FoodItemsModel> getMealsOnDate(Date date);
+    @Query("SELECT * FROM food_items WHERE date = :date AND meal_type = :mealType")
+    List<FoodItemsModel> getFoodEatenOnDateAndMealType(Date date,MealType mealType);
+
+    @Query("SELECT * FROM WHERE date = :date AND meal_type = :mealType AND food_ID = foodID")
+    FoodItemsModel getsingleFoodItem(Date date,MealType mealType, String foodID);
 
     @Insert
-    void insertAll(FoodItemsModel... meals);
+    void insertAll(FoodItemsModel... foodItems);
 
     @Insert(onConflict = REPLACE)
-    void insert(FoodItemsModel... foodItems);
+    void insert(FoodItemsModel foodItem);
 
     @Update
-    void update(FoodItemsModel foodItems);
+    void update(FoodItemsModel foodItem);
 
     @Delete
-    void delete(FoodItemsModel foodItems);
+    void delete(FoodItemsModel foodItem);
 
 }
