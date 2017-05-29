@@ -33,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase test = db.getWritableDatabase();
 
         calorieGraph = (GraphView) findViewById(R.id.calorieBarPlaceholder);
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 200),
-                new DataPoint(1, 0)
-        });
-        calorieGraph.addSeries(series);
+//        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
+//                new DataPoint(0, 200),
+//                //new DataPoint(1, 100)
+//        });
 
+        BarGraphSeries<DataPoint> series = new BarGraphSeries<>();
 
 //        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
 //            @Override
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         //draws value of bar directly ontop of the bar
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.BLUE);
+        series.setSpacing(0);
 
         calorieGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE); // background grids get removed
 
@@ -57,11 +58,19 @@ public class MainActivity extends AppCompatActivity {
         calorieGraph.getViewport().setMaxYAxisSize(2000);
         calorieGraph.getViewport().setMaxY(2000);
 
-        calorieGraph.getGridLabelRenderer().setLabelsSpace(200);
-
         calorieGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);  // removes x axis and line
         calorieGraph.getGridLabelRenderer().setVerticalLabelsVisible(false);    // removes y axis and line
         // remove vertical labels and lines
+
+
+
+        series.appendData(new DataPoint(0, 200), true, 2000);
+        //series.appendData(new DataPoint(1, 300), true, 2000);
+
+
+        calorieGraph.addSeries(series);
+
+
     }
 
     /**

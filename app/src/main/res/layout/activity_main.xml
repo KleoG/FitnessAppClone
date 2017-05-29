@@ -23,7 +23,7 @@
             <com.jjoe64.graphview.GraphView
                 android:id="@+id/calorieBarPlaceholder"
                 android:layout_width="145dp"
-                android:layout_height="match_parent" />
+                android:layout_height="503dp" />
 
 
             <LinearLayout
