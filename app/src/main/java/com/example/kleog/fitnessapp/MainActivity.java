@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
@@ -52,7 +53,11 @@ public class MainActivity extends AppCompatActivity {
         //TODO graph: remove values from X and Y axis
         //TODO graph: remove background
         //TODO graph: make bar not always take up the whole Y axis, rather it should start from bottom and increase as user adds calories
+        calorieGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE); // background grids get removed
 
+        calorieGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);  // removes x axis and line
+        calorieGraph.getGridLabelRenderer().setVerticalLabelsVisible(false);    // removes y axis and line
+        // remove vertical labels and lines
     }
 
     /**
