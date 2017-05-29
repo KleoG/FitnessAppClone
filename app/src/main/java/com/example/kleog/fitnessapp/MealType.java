@@ -8,25 +8,25 @@ public enum MealType {
     BREAKFAST {
         @Override
         public String toString() {
-            return "Breakfast";
+            return "BREAKFAST";
         }
     },
     LUNCH {
         @Override
         public String toString() {
-            return "Lunch";
+            return "LUNCH";
         }
     },
     DINNER {
         @Override
         public String toString() {
-            return "Dinner";
+            return "DINNER";
         }
     },
     SNACKS{
         @Override
         public String toString() {
-            return "Snacks";
+            return "SNACKS";
         }
     }
 }

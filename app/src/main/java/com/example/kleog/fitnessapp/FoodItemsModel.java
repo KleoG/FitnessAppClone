@@ -12,10 +12,10 @@ import java.util.Date;
  */
 
 @Entity(tableName = "food_items",
-        primaryKeys = {"date", "meal_type"},
-        foreignKeys = @ForeignKey(entity = DailyUserInfoModel.class,
-                parentColumns = "date",
-                childColumns = "date")
+        primaryKeys = {"date", "eaten_during_meal", "foodID"},
+        foreignKeys = @ForeignKey(entity = MealModel.class,
+                parentColumns = {"date","meal_type"},
+                childColumns = {"date","eaten_during_meal"})
 )
 public class FoodItemsModel {
 
@@ -25,7 +25,7 @@ public class FoodItemsModel {
     @ColumnInfo(name = "eaten_during_meal")
     private MealType eatenDuringMeal;
 
-    @ColumnInfo(name = "foodID")
+    @ColumnInfo(name = "food_ID")
     private String foodID;
 
     @ColumnInfo(name = "calories")

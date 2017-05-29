@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by Kevin on 28/05/2017.
  */
 
-class DateConverter {
+public class DateConverter {
 
     @TypeConverter
     public static Date toDate(String strDate) {

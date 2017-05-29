@@ -8,19 +8,19 @@ public enum AmountEatenType {
     GRAMS {
         @Override
         public String toString() {
-            return "grams";
+            return "GRAMS";
         }
     },
-    Pounds {
+    LBS {
         @Override
         public String toString() {
-            return "lbs";
+            return "LBS";
         }
     },
     UNITS {
         @Override
         public String toString() {
-            return "units";
+            return "UNITS";
         }
     }
 

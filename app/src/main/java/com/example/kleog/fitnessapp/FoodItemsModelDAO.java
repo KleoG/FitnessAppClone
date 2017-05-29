@@ -17,27 +17,27 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
  */
 
 @Dao
-@TypeConverters({DateConverter.class, MealTypeConverter.class})
-public interface MealModelDAO {
-    @Query("SELECT * FROM meal")
-    List<MealModel> getAll();
+@TypeConverters({DateConverter.class, MealTypeConverter.class, AmountEatenTypeConverter.class})
+public interface FoodItemsModelDAO {
+    @Query("SELECT * FROM food_items")
+    List<FoodItemsModel> getAll();
 
     @Query("SELECT * FROM meal WHERE date = :date and meal_type = :mealType")
-    List<MealModel> loadMeal(MealType mealType, Date date);
+    List<FoodItemsModel> loadMeal(MealType mealType, Date date);
 
     @Query("SELECT * FROM meal WHERE date = :date")
-    List<MealModel> getMealsOnDate(Date date);
+    List<FoodItemsModel> getMealsOnDate(Date date);
 
     @Insert
-    void insertAll(MealModel... meals);
+    void insertAll(FoodItemsModel... meals);
 
     @Insert(onConflict = REPLACE)
-    void insert(MealModel meal);
+    void insert(FoodItemsModel... foodItems);
 
     @Update
-    void update(MealModel meal);
+    void update(FoodItemsModel foodItems);
 
     @Delete
-    void delete(MealModel meal);
+    void delete(FoodItemsModel foodItems);
 
 }
