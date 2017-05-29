@@ -9,8 +9,8 @@ import java.util.Date;
 /**
  * Created by Kevin on 28/05/2017.
  */
-
-@Entity //defines class as database table
+//defines class as database table
+@Entity (tableName = "Daily_User_Info")
 public class DailyUserInfoModel {
 
     @PrimaryKey()

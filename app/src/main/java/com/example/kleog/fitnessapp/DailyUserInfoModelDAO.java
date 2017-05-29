@@ -19,13 +19,13 @@ import java.util.List;
 @Dao
 @TypeConverters(DateConverter.class)
 public interface DailyUserInfoModelDAO {
-    @Query("SELECT * FROM DailyUserInfoModel")
+    @Query("SELECT * FROM Daily_User_Info")
     List<DailyUserInfoModel> getAll();
 
-    @Query("SELECT * FROM DailyUserInfoModel WHERE date BETWEEN :from AND :to")
+    @Query("SELECT * FROM Daily_User_Info WHERE date BETWEEN :from AND :to")
     List<DailyUserInfoModel> loadBetweenDates(Date from, Date to);
 
-    @Query("SELECT * FROM DailyUserInfoModel WHERE date = :date")
+    @Query("SELECT * FROM Daily_User_Info WHERE date = :date")
     DailyUserInfoModel getDate(Date date);
 
     @Insert
