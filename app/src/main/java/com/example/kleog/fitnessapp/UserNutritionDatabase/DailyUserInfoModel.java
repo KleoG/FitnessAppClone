@@ -18,21 +18,21 @@ public class DailyUserInfoModel {
     public Date date;
 
     @ColumnInfo(name = "total_Calories")
-    private String totalCalories;
+    private Integer totalCalories;
 
     @ColumnInfo(name = "total_Protein")
-    private String totalProtein;
+    private Integer totalProtein;
 
     @ColumnInfo(name = "total_Carbs")
-    private String totalCarbs;
+    private Integer totalCarbs;
 
     @ColumnInfo(name = "total_Fat")
-    private String totalFat;
+    private Integer totalFat;
 
     @ColumnInfo(name = "weight")
-    private String weight;
+    private Integer weight;
 
-    public DailyUserInfoModel(Date date, String totalCalories, String totalProtein, String totalCarbs, String totalFat, String weight) {
+    public DailyUserInfoModel(Date date, Integer totalCalories, Integer totalProtein, Integer totalCarbs, Integer totalFat, Integer weight) {
         this.date = date;
         this.totalCalories = totalCalories;
         this.totalProtein = totalProtein;
@@ -45,23 +45,23 @@ public class DailyUserInfoModel {
         return date;
     }
 
-    public String getTotalCalories() {
+    public Integer getTotalCalories() {
         return totalCalories;
     }
 
-    public String getTotalProtein() {
+    public Integer getTotalProtein() {
         return totalProtein;
     }
 
-    public String getTotalCarbs() {
+    public Integer getTotalCarbs() {
         return totalCarbs;
     }
 
-    public String getTotalFat() {
+    public Integer getTotalFat() {
         return totalFat;
     }
 
-    public String getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
@@ -69,23 +69,23 @@ public class DailyUserInfoModel {
         this.date = date;
     }
 
-    public void setTotalCalories(String totalCalories) {
+    public void setTotalCalories(Integer totalCalories) {
         this.totalCalories = totalCalories;
     }
 
-    public void setTotalProtein(String totalProtein) {
+    public void setTotalProtein(Integer totalProtein) {
         this.totalProtein = totalProtein;
     }
 
-    public void setTotalCarbs(String totalCarbs) {
+    public void setTotalCarbs(Integer totalCarbs) {
         this.totalCarbs = totalCarbs;
     }
 
-    public void setTotalFat(String totalFat) {
+    public void setTotalFat(Integer totalFat) {
         this.totalFat = totalFat;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 }
