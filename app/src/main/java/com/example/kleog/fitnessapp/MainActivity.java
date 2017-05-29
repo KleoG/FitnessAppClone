@@ -49,11 +49,15 @@ public class MainActivity extends AppCompatActivity {
         calorieGraph.setTitle("calories eaten");
         //draws value of bar directly ontop of the bar
         series.setDrawValuesOnTop(true);
-        series.setValuesOnTopColor(Color.RED);
-        //TODO graph: remove values from X and Y axis
-        //TODO graph: remove background
-        //TODO graph: make bar not always take up the whole Y axis, rather it should start from bottom and increase as user adds calories
+        series.setValuesOnTopColor(Color.BLUE);
+
         calorieGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE); // background grids get removed
+
+        calorieGraph.getViewport().setYAxisBoundsManual(true);
+        calorieGraph.getViewport().setMaxYAxisSize(2000);
+        calorieGraph.getViewport().setMaxY(2000);
+
+        calorieGraph.getGridLabelRenderer().setLabelsSpace(200);
 
         calorieGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);  // removes x axis and line
         calorieGraph.getGridLabelRenderer().setVerticalLabelsVisible(false);    // removes y axis and line
