@@ -5,6 +5,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.TypeConverters;
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 import java.util.Date;
 import java.util.List;
@@ -19,15 +20,17 @@ public interface DailyUserInfoModelDAO {
     @Query("SELECT * FROM DailyUserInfoModel")
     List<DailyUserInfoModel> getAll();
 
-    @Query("SELECT * FROM DailyUserInfoModel WHERE uid IN (:userIds)")
-    List<DailyUserInfoModel> loadAllByIds(Date from, Date to);
+    @Query("SELECT * FROM DailyUserInfoModel WHERE date BETWEEN :from AND :to")
+    List<DailyUserInfoModel> loadBetweenDates(Date from, Date to);
 
-    @Query("SELECT * FROM user WHERE first_name LIKE :first AND "
-            + "last_name LIKE :last LIMIT 1")
-    DailyUserInfoModel findByName(String first, String last);
+    @Query("SELECT * FROM DailyUserInfoModel WHERE date = :date")
+    DailyUserInfoModel getDate(Date date);
 
     @Insert
     void insertAll(DailyUserInfoModel... userInfos);
+
+    @Insert(onConflict = REPLACE)
+    void insert(DailyUserInfoModel userInfo);
 
     @Delete
     void delete(DailyUserInfoModel userInfo);
