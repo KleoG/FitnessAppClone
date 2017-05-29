@@ -19,13 +19,13 @@ import java.util.Date;
                 parentColumns = "date",
                 childColumns = "date")
         )
-public class mealModel {
+public class MealModel {
 
     @TypeConverters(DateConverter.class) //used to covert Java date into SQLite compatible data type
     public Date date;
 
     @ColumnInfo(name = "meal_type")
-    private String mealType;
+    private MealType mealType;
 
     @ColumnInfo(name = "total_calories")
     private String totalCalories;
@@ -39,7 +39,7 @@ public class mealModel {
     @ColumnInfo(name = "total_fat")
     private String totalFat;
 
-    public mealModel(Date date, String mealType, String totalCalories, String totalProtein, String totalCarbs, String totalFat) {
+    public MealModel(Date date, MealType mealType, String totalCalories, String totalProtein, String totalCarbs, String totalFat) {
         this.date = date;
         this.mealType = mealType;
         this.totalCalories = totalCalories;
@@ -56,11 +56,11 @@ public class mealModel {
         this.date = date;
     }
 
-    public String getMealType() {
+    public MealType getMealType() {
         return mealType;
     }
 
-    public void setMealType(String mealType) {
+    public void setMealType(MealType mealType) {
         this.mealType = mealType;
     }
 

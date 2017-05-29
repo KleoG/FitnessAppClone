@@ -10,7 +10,7 @@ import android.content.Context;
  */
 
 
-@Database(entities = {DailyUserInfoModel.class}, version = 1)
+@Database(entities = {DailyUserInfoModel.class, MealModel.class}, version = 1)
 public abstract class UserNutritionDB extends RoomDatabase {
 
     private static final String DATABASE_NAME = "user_nutrition_db";
@@ -26,7 +26,9 @@ public abstract class UserNutritionDB extends RoomDatabase {
         return INSTANCE;
     }
 
-    //create abstract class for each DAO
+    //create abstract method for each DAO
     public abstract DailyUserInfoModelDAO DailyUserInfoModel();
+
+    public abstract MealModel MealModel();
 
 }
