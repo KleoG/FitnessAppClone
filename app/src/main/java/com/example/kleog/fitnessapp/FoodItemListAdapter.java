@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -19,13 +20,13 @@ import java.util.concurrent.ExecutionException;
  * Created by Kevin on 30/05/2017.
  */
 
-public class FoodItemListAdapter extends BaseAdapter {
+public class FoodItemListAdapter extends ArrayAdapter<FoodItemsModel> {
     Context context;
     ArrayList<FoodItemsModel> foods;
     private static LayoutInflater inflater = null;
 
     public FoodItemListAdapter(Context context, ArrayList<FoodItemsModel> foods) {
-        // TODO Auto-generated constructor stub
+        super(context, R.layout.food_item_list_row, foods);
         this.context = context;
         this.foods = foods;
         inflater = (LayoutInflater) context
@@ -36,12 +37,6 @@ public class FoodItemListAdapter extends BaseAdapter {
     public int getCount() {
         // TODO Auto-generated method stub
         return foods.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        // TODO Auto-generated method stub
-        return foods.get(position);
     }
 
     @Override
@@ -71,5 +66,20 @@ public class FoodItemListAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         return vi;
+    }
+
+    @Override
+    public void add(FoodItemsModel food) {
+        foods.add(food);
+        //super.add(food);
+        notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void remove(FoodItemsModel employee) {
+        foods.remove(employee);
+        notifyDataSetChanged();
+        //super.remove(employee);
     }
 }

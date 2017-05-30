@@ -53,15 +53,15 @@ public class MealActivity extends AppCompatActivity {
         adapter = new FoodItemListAdapter(this, foodItemsList);
         foodListView.setAdapter(adapter);
 
+        //temporary testing data
         FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200, 50, 10, 5, 200, AmountEatenType.GRAMS);
         FoodItemsModel item2 = new FoodItemsModel(new Date(), MealType.LUNCH, "Eggs", 100, 30, 20, 10, 3, AmountEatenType.UNITS);
         FoodItemsModel item3 = new FoodItemsModel(new Date(), MealType.LUNCH, "rice", 250, 10, 30, 15, 150, AmountEatenType.GRAMS);
-        foodItemsList.add(item1);
-        foodItemsList.add(item2);
-        foodItemsList.add(item3);
+        adapter.add(item1);
+        adapter.add(item2);
+        adapter.add(item3);
 
-        adapter = new FoodItemListAdapter(this, foodItemsList);
-        foodListView.setAdapter(adapter);
+
     }
 
     public void onClickNotFinished(View view){
