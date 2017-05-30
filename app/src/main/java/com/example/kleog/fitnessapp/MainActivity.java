@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
@@ -20,7 +21,7 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
 public class MainActivity extends AppCompatActivity {
-    UserNutritionDBHelper db;
+    UserNutritionDB db;
 
     GraphView calorieGraph;
 
@@ -29,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = UserNutritionDBHelper.getInstance(this);
-        SQLiteDatabase test = db.getWritableDatabase();
+        db = UserNutritionDB.getDatabase(this);
 
         calorieGraph = (GraphView) findViewById(R.id.calorieBarPlaceholder);
 //        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
