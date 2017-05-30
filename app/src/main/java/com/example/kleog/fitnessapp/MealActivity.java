@@ -10,8 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.kleog.fitnessapp.UserNutritionDatabase.AmountEatenType;
 import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.UserNutritionDatabase.FoodItemsModel;
+import com.example.kleog.fitnessapp.UserNutritionDatabase.MealType;
 import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class MealActivity extends AppCompatActivity {
 
     ArrayList<FoodItemsModel> foodItemsList;
 
-    ArrayAdapter<FoodItemsModel> adapter;
+    FoodItemListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +47,21 @@ public class MealActivity extends AppCompatActivity {
 
         db = UserNutritionDB.getDatabase(this.getApplicationContext());
 
+        //sets up the list underneath the add view button
         foodListView = (ListView) findViewById(R.id.foodList);
         foodItemsList = new ArrayList<>();
-        adapter = new ArrayAdapter<FoodItemsModel>(this,
-                android.R.layout.simple_list_item_1,
-                foodItemsList);
+        adapter = new FoodItemListAdapter(this, foodItemsList);
         foodListView.setAdapter(adapter);
 
+        FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200, 50, 10, 5, 200, AmountEatenType.GRAMS);
+        FoodItemsModel item2 = new FoodItemsModel(new Date(), MealType.LUNCH, "Eggs", 100, 30, 20, 10, 3, AmountEatenType.UNITS);
+        FoodItemsModel item3 = new FoodItemsModel(new Date(), MealType.LUNCH, "rice", 250, 10, 30, 15, 150, AmountEatenType.GRAMS);
+        foodItemsList.add(item1);
+        foodItemsList.add(item2);
+        foodItemsList.add(item3);
+
+        adapter = new FoodItemListAdapter(this, foodItemsList);
+        foodListView.setAdapter(adapter);
     }
 
     public void onClickNotFinished(View view){

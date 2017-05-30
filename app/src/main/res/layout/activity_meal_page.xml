@@ -142,16 +142,16 @@
         android:text="@string/add_food"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
-    <ListView
-        android:id="@+id/foodList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <TextView
         android:id="@+id/foodEatenText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/food_eaten"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <ListView
+        android:id="@+id/foodList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

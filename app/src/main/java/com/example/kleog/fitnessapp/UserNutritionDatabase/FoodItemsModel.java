@@ -30,16 +30,16 @@ public class FoodItemsModel {
     private String foodID;
 
     @ColumnInfo(name = "calories")
-    private String Calories;
+    private Integer Calories;
 
     @ColumnInfo(name = "protein")
-    private String Protein;
+    private Integer Protein;
 
     @ColumnInfo(name = "carbs")
-    private String Carbs;
+    private Integer Carbs;
 
     @ColumnInfo(name = "fat")
-    private String Fat;
+    private Integer Fat;
 
     @ColumnInfo(name = "amount_Eaten")
     private Integer amountEaten;
@@ -48,7 +48,7 @@ public class FoodItemsModel {
     @TypeConverters(AmountEatenTypeConverter.class)
     private AmountEatenType amountEatenType;
 
-    public FoodItemsModel(Date date, MealType eatenDuringMeal, String foodID, String Calories, String Protein, String Carbs, String Fat, Integer amountEaten, AmountEatenType amountEatenType) {
+    public FoodItemsModel(Date date, MealType eatenDuringMeal, String foodID, Integer Calories, Integer Protein, Integer Carbs, Integer Fat, Integer amountEaten, AmountEatenType amountEatenType) {
         this.date = date;
         this.eatenDuringMeal = eatenDuringMeal;
         this.foodID = foodID;
@@ -84,35 +84,35 @@ public class FoodItemsModel {
         this.foodID = foodID;
     }
 
-    public String getCalories() {
+    public Integer getCalories() {
         return Calories;
     }
 
-    public void setCalories(String calories) {
+    public void setCalories(Integer calories) {
         Calories = calories;
     }
 
-    public String getProtein() {
+    public Integer getProtein() {
         return Protein;
     }
 
-    public void setProtein(String protein) {
+    public void setProtein(Integer protein) {
         Protein = protein;
     }
 
-    public String getCarbs() {
+    public Integer getCarbs() {
         return Carbs;
     }
 
-    public void setCarbs(String carbs) {
+    public void setCarbs(Integer carbs) {
         Carbs = carbs;
     }
 
-    public String getFat() {
+    public Integer getFat() {
         return Fat;
     }
 
-    public void setFat(String fat) {
+    public void setFat(Integer fat) {
         Fat = fat;
     }
 

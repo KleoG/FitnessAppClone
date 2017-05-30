@@ -12,7 +12,7 @@ import android.os.AsyncTask;
  */
 
 
-@Database(entities = {DailyUserInfoModel.class, MealModel.class, FoodItemsModel.class}, version = 1)
+@Database(entities = {DailyUserInfoModel.class, MealModel.class, FoodItemsModel.class}, version = 2)
 public abstract class UserNutritionDB extends RoomDatabase {
 
     private static final String DATABASE_NAME = "user_nutrition_db";
@@ -27,7 +27,7 @@ public abstract class UserNutritionDB extends RoomDatabase {
         }
         return INSTANCE;
     }
-    
+
 
     //create abstract method for each DAO
     public abstract DailyUserInfoModelDAO DailyUserInfoModel();
