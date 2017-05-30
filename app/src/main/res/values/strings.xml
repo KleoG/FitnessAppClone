@@ -21,8 +21,9 @@
 
     <string-array name="graphs_array">
         <item>Calories Graph</item>
-        <item>Lol kden</item>
+        <item>Gainz graph</item>
         <item>Baguette graph</item>
     </string-array>
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>
