@@ -3,6 +3,7 @@ package com.example.kleog.fitnessapp.UserNutritionDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -26,6 +27,7 @@ public abstract class UserNutritionDB extends RoomDatabase {
         }
         return INSTANCE;
     }
+    
 
     //create abstract method for each DAO
     public abstract DailyUserInfoModelDAO DailyUserInfoModel();

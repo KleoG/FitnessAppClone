@@ -1,15 +1,20 @@
 package com.example.kleog.fitnessapp;
 
+import android.app.ListActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
+import com.example.kleog.fitnessapp.UserNutritionDatabase.FoodItemsModel;
 import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
@@ -19,7 +24,15 @@ import java.util.concurrent.ExecutionException;
 
 public class MealActivity extends AppCompatActivity {
     public UserNutritionDB db;
+
     public String mealType;
+
+    ListView foodListView;
+
+    ArrayList<FoodItemsModel> foodItemsList;
+
+    ArrayAdapter<FoodItemsModel> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +44,13 @@ public class MealActivity extends AppCompatActivity {
         setTitle(mealType);
 
         db = UserNutritionDB.getDatabase(this.getApplicationContext());
+
+        foodListView = (ListView) findViewById(R.id.foodList);
+        foodItemsList = new ArrayList<>();
+        adapter = new ArrayAdapter<FoodItemsModel>(this,
+                android.R.layout.simple_list_item_1,
+                foodItemsList);
+        foodListView.setAdapter(adapter);
 
     }
 
@@ -74,6 +94,10 @@ public class MealActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+    }
+
+    public void updateFoodEatenList(){
+
     }
 
 
