@@ -1,12 +1,15 @@
 package com.example.kleog.fitnessapp;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.kleog.fitnessapp.R;
@@ -35,36 +38,40 @@ public class FoodItemListAdapter extends ArrayAdapter<FoodItemsModel> {
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return foods.size();
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.food_item_list_row, null);
         TextView foodName = (TextView) vi.findViewById(R.id.foodItemName);
 
-        try {
-            foodName.setText(new AsyncTask<Void, Void, String>(){
-                @Override
-                protected String doInBackground(Void... params){
-                    return foods.get(position).getFoodID();
-                }
-            }.execute().get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        //this is what happens when the remove button is pressed
+        ImageButton deleteButton = (ImageButton) vi.findViewById(R.id.deleteImageButton);
+        deleteButton.setTag(position);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                int pos = (int)view.getTag();
+                //TODO also remove from database on this line
+
+                foods.remove(pos);
+                notifyDataSetChanged();
+
+            }
+        });
+
+        //this is where the values of the row are set
+        foodName.setText(foods.get(position).getFoodID());
+
         return vi;
     }
 
@@ -77,8 +84,8 @@ public class FoodItemListAdapter extends ArrayAdapter<FoodItemsModel> {
     }
 
     @Override
-    public void remove(FoodItemsModel employee) {
-        foods.remove(employee);
+    public void remove(FoodItemsModel food) {
+        foods.remove(food);
         notifyDataSetChanged();
         //super.remove(employee);
     }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/foodItemImagePlaceholder"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.kleog.fitnessapp.MealActivity">
 
     <ImageView
         android:id="@+id/foodItemImagePlaceholder"
@@ -32,5 +33,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:onClick="FoodItemListAdapter.remove("
         app:srcCompat="@android:drawable/ic_menu_delete" />
 </LinearLayout>
