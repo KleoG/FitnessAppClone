@@ -11,6 +11,7 @@ import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
 
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Kevin on 23/05/2017.
@@ -34,7 +35,7 @@ public class MealActivity extends AppCompatActivity {
     }
 
     public void onClickNotFinished(View view){
-
+        //first thread for inserting data
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
@@ -46,13 +47,22 @@ public class MealActivity extends AppCompatActivity {
             protected void onPostExecute(Void param) {
                 Toast.makeText(getApplicationContext(), "user information was inserted", Toast.LENGTH_LONG).show();
                 String info = "user info not found";
-                new AsyncTask<String, Void, Void>(){
-                    @Override
-                    protected Void doInBackground(String... params){
-                        params[0] = db.DailyUserInfoModel().getDate(new Date()).toString();
-                        return null;
-                    }
-                }.execute(info);
+                try {
+                    //value returned by the async task is passed into info
+                    info = new AsyncTask<Void, Void, String>(){
+                        @Override
+                        protected String doInBackground(Void... params){
+
+                            //Log.d("MEAL_ACTIVITY", "doInBackground: retriving information: params[0]: " + params[0]);
+                            return db.DailyUserInfoModel().getDate(new Date()).getWeight().toString();
+                        }
+
+                    }.execute().get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
                 Toast.makeText(getApplicationContext(), info, Toast.LENGTH_LONG).show();
 
 

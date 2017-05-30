@@ -15,7 +15,7 @@ public class DateConverter {
     @TypeConverter
     public static Date toDate(String strDate) {
         try {
-            return strDate == null ? null :  new SimpleDateFormat("yyyyMMddHHmmss").parse(strDate); //takes a string date from SQLite and converts it to Date in format
+            return strDate == null ? null :  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate); //takes a string date from SQLite and converts it to Date in format
         } catch (ParseException e) {
             e.printStackTrace();
         }
