@@ -7,3 +7,4 @@ GraphView - Gradel
 Changelog
 
 Known bugs
+30/05/17 - app crashes when swapping graphs on graph page
