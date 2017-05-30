@@ -1,6 +1,7 @@
 package com.example.kleog.fitnessapp;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -108,6 +109,17 @@ public class MealActivity extends AppCompatActivity {
         // temp useless adding of food
         FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200, 50, 10, 5, 200, AmountEatenType.GRAMS);
         adapter.add(item1);
+    }
+
+    /**
+     * is called when the graphs button is clicked
+     * @param view object being clicked on - in this case the "graphs" button
+     */
+    public void goToSearchPage(View view){
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra("MEAL_TYPE", mealType);
+
+        startActivity(intent);  // changes page to the intent (graph page)
     }
 
     @Override
