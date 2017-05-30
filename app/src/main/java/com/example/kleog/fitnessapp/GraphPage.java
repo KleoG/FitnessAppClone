@@ -14,22 +14,17 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+
     // the single graph view
-    private GraphView graph;
+    GraphView graph;
 
     // the actual data and type of graph for the first graph
-    private LineGraphSeries<DataPoint> seriesOne = new LineGraphSeries<DataPoint>();
-    // the actual data and type of graph for the second graph
-    private LineGraphSeries<DataPoint> seriesTwo = new LineGraphSeries<DataPoint>();
-    // the actual data and type of graph for the third graph
-    private LineGraphSeries<DataPoint> seriesThree = new LineGraphSeries<DataPoint>();
+    private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_page);
-
-        graph = (GraphView) findViewById(R.id.graph);
 
         Spinner spinner = (Spinner) findViewById(R.id.graphs_spinner);
         spinner.setOnItemSelectedListener(this);
@@ -41,6 +36,10 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
+
+        graph = (GraphView) findViewById(R.id.graph);
+        graph.addSeries(series);
+
     }
 
     // is to display on the page the first graph (calories graph)
@@ -49,43 +48,93 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
         double x,y;
         x = -7.0;
 
+        DataPoint[] data = new DataPoint[500];
+
         for(int i = 0; i < 500; i++){
             x = x + 0.1;
             y = Math.sin(x);
-            seriesOne.appendData(new DataPoint(x, y), true, 500);
+            data[i] = new DataPoint(x, y);
+            //series.appendData(new DataPoint(x, y), true, 500);
         }
-        graph.removeAllSeries();
-        graph.addSeries(seriesOne);
+        //graph.addSeries(series);
+        series.resetData(data);
+
     }
 
     // is to display on the page the second graph
     public void displayGraphTwo(){
 
+//        // the single graph view
+//        GraphView graph = (GraphView) findViewById(R.id.graph);
+//
+//        if(!series.isEmpty() ){
+//            graph.removeAllSeries();
+//        }
+//
+//        double x,y;
+//        x = -5.0;
+//
+//        for(int i = 0; i < 500; i++){
+//            x = x + 0.3;
+//            y = Math.sin(x);
+//            series.appendData(new DataPoint(x, y), true, 500);
+//        }
+//        graph.addSeries(series);
+
         double x,y;
         x = -5.0;
+
+        DataPoint[] data = new DataPoint[500];
 
         for(int i = 0; i < 500; i++){
             x = x + 0.3;
             y = Math.sin(x);
-            seriesTwo.appendData(new DataPoint(x, y), true, 500);
+            data[i] = new DataPoint(x, y);
+            //series.appendData(new DataPoint(x, y), true, 500);
         }
-        graph.removeAllSeries();
-        graph.addSeries(seriesTwo);
+        //graph.addSeries(series);
+        series.resetData(data);
+        //graph.addSeries(series);
+
+
     }
 
     // is to display on the page the third graph
     public void displayGraphThree(){
 
+//        // the single graph view
+//        GraphView graph = (GraphView) findViewById(R.id.graph);
+//
+//        if(!series.isEmpty() ){
+//            graph.removeAllSeries();
+//        }
+//
+//        double x,y;
+//        x = -2.0;
+//
+//        for(int i = 0; i < 500; i++){
+//            x = x + 0.7;
+//            y = Math.sin(x);
+//            series.appendData(new DataPoint(x, y), true, 500);
+//        }
+//        graph.addSeries(series);
+
+
         double x,y;
-        x = -2.0;
+        x = -3.0;
+
+        DataPoint[] data = new DataPoint[500];
 
         for(int i = 0; i < 500; i++){
             x = x + 0.7;
             y = Math.sin(x);
-            seriesThree.appendData(new DataPoint(x, y), true, 500);
+            data[i] = new DataPoint(x, y);
+            //series.appendData(new DataPoint(x, y), true, 500);
         }
-        graph.removeAllSeries();
-        graph.addSeries(seriesThree);
+        series.resetData(data);
+       // graph.addSeries(series);
+
+
     }
 
     // when the back button is pressed the graph is disposed of
@@ -98,7 +147,7 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
+        // parent.getItemAtPosition(position)
 
         switch(position){
             case 0:
@@ -116,8 +165,6 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
 
 //        // On selecting a spinner item
 //        String item = parent.getItemAtPosition(position).toString();
-
-
 
     }
 
