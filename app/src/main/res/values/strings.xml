@@ -19,4 +19,10 @@
     <string name="food_eaten">Food Eaten:</string>
 
 
+    <string-array name="graphs_array">
+        <item>Calories Graph</item>
+        <item>Lol kden</item>
+        <item>Baguette graph</item>
+    </string-array>
+
 </resources>
