@@ -66,38 +66,48 @@ public class MealActivity extends AppCompatActivity {
 
     public void onClickNotFinished(View view){
         //first thread for inserting data
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
-                return null;
-            }
+        /*
+        the commented out code below is used to insert random data into the db then retrieve the data and display a part of it
+        leave it commented for now
+         */
+//        new AsyncTask<Void, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Void... params) {
+//                db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
+//                return null;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Void param) {
+//                Toast.makeText(getApplicationContext(), "user information was inserted", Toast.LENGTH_LONG).show();
+//                String info = "user info not found";
+//                try {
+//                    //value returned by the async task is passed into info
+//                    info = new AsyncTask<Void, Void, String>(){
+//                        @Override
+//                        protected String doInBackground(Void... params){
+//
+//                            //Log.d("MEAL_ACTIVITY", "doInBackground: retriving information: params[0]: " + params[0]);
+//                            return db.DailyUserInfoModel().getDate(new Date()).getWeight().toString();
+//                        }
+//
+//                    }.execute().get();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                }
+//                Toast.makeText(getApplicationContext(), info, Toast.LENGTH_LONG).show();
+//
+//
+//            }
+//        }.execute();
 
-            @Override
-            protected void onPostExecute(Void param) {
-                Toast.makeText(getApplicationContext(), "user information was inserted", Toast.LENGTH_LONG).show();
-                String info = "user info not found";
-                try {
-                    //value returned by the async task is passed into info
-                    info = new AsyncTask<Void, Void, String>(){
-                        @Override
-                        protected String doInBackground(Void... params){
-
-                            //Log.d("MEAL_ACTIVITY", "doInBackground: retriving information: params[0]: " + params[0]);
-                            return db.DailyUserInfoModel().getDate(new Date()).getWeight().toString();
-                        }
-
-                    }.execute().get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-                Toast.makeText(getApplicationContext(), info, Toast.LENGTH_LONG).show();
 
 
-            }
-        }.execute();
+        // temp useless adding of food
+        FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200, 50, 10, 5, 200, AmountEatenType.GRAMS);
+        adapter.add(item1);
     }
 
     @Override
