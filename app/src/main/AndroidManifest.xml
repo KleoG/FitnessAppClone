@@ -20,7 +20,8 @@
         </activity>
         <activity android:name=".GraphPage" />
         <activity android:name=".MealActivity" />
-        <activity android:name=".SearchActivity">
+        <activity android:name=".SearchActivity"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
