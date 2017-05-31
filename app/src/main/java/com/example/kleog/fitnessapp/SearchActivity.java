@@ -51,7 +51,7 @@ public class SearchActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
+
 
 
 
@@ -81,7 +81,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        return true;
     }
 
 }
