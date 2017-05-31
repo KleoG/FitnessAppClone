@@ -20,7 +20,8 @@
         </activity>
         <activity android:name=".GraphPage" />
         <activity android:name=".MealActivity" />
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".QuantityActivity"></activity>
     </application>
 
 </manifest>
