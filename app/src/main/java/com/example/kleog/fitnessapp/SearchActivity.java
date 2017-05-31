@@ -1,15 +1,16 @@
 package com.example.kleog.fitnessapp;
 
-import android.app.Activity;
-import android.app.ListActivity;
-import android.app.SearchManager;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
-import android.widget.ListAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-public class SearchActivity extends Activity {
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class SearchActivity extends AppCompatActivity {
+
+    private ArrayAdapter<String> adapter;
 
     private String mealType;
 
@@ -23,54 +24,15 @@ public class SearchActivity extends Activity {
 
         setTitle(mealType);
 
-        handleIntent(getIntent());
+        //handleIntent(getIntent());
 
-    }
+        ListView lv = (ListView) findViewById(R.id.listViewFoodSearch);
 
-    @Override
-    protected  void onNewIntent(Intent intent){
-        setIntent(intent);
-        handleIntent(intent);
-    }
+        ArrayList<String> arrayFood = new ArrayList<>();
+        arrayFood.addAll(Arrays.asList(getResources().getStringArray(R.array.food_array)));
 
-    private void handleIntent(Intent intent){
-        // Get the intent, verify the action and get the query
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            doSearch(query);
-        }
-    }
+        adapter = new ArrayAdapter<>(SearchActivity.this, android.R.layout.simple_list_item_1, arrayFood);
 
-
-
-    /**
-     * this completes an action based on the query the user inputs in the search bar
-     * @param query this is the query the user types in, in the search bar
-     */
-    public void doSearch(String query){
-        // because we are using SQLite, performing a full-text search (using FTS3, rather than a
-        // LIKE query) can provide a more robust search across text data and can produce results
-        // significantly faster.
-
-    }
-
-    // extend ListAdapater
-//    @Override
-//    public void setListAdapter(ListAdapter adapter){
-//
-//    }
-
-    // this will notify when the search dialog is activited, shows when the activity
-    // has lost input focus to search dialog
-    @Override
-    public boolean onSearchRequested() {
-        //pauseSomeStuff();
-        return super.onSearchRequested();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
+        lv.setAdapter(adapter);
     }
 }

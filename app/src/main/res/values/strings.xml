@@ -29,4 +29,33 @@
     <string name="app_label">Search</string>
     <string name="search_hint">Search food items</string>
 
+    <string name="action_search">Search new</string>
+
+
+    <string-array name="food_array">
+        <item>Apple</item>
+        <item>Orange</item>
+        <item>Chicken (gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+        <item>Eggs (more gainz food)</item>
+    </string-array>
+
 </resources>
