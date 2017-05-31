@@ -29,7 +29,7 @@
     <string name="app_label">Search</string>
     <string name="search_hint">Search food items</string>
 
-    <string name="action_search">Search new</string>
+    <string name="menuSearch">Search</string>
 
 
     <string-array name="food_array">
