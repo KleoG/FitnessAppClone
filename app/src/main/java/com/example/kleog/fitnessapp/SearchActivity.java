@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -38,17 +39,21 @@ public class SearchActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(SearchActivity.this, android.R.layout.simple_list_item_1, arrayFood);
 
         lv.setAdapter(adapter);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the options menu from XML
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_search, menu);
 
-        MenuItem item = menu.findItem(R.id.menuSearch);
 
-        SearchView searchView = (SearchView) item.getActionView();
+        //search button functionality
+        final SearchView searchView = (SearchView) findViewById(R.id.foodSearchView);
+
+        searchView.setQueryHint("search for food");
+
+        //allows user to click anywhere on the search view
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setIconified(false);
+            }
+        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -62,8 +67,6 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        return true;
     }
 
 }
