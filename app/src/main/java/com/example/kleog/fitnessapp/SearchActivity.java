@@ -34,8 +34,8 @@ public class SearchActivity extends AppCompatActivity {
     private String mealType;
 
     //api
-    String key;
-    String secret;
+    String key = "9363b5d78a9342818602505dad0b01cb";
+    String secret = "02d257d83e6249fd98d20782992c0de3";
     String query;
 
     @Override
@@ -106,6 +106,8 @@ public class SearchActivity extends AppCompatActivity {
         Listener listener = new Listener();
 
         Request req = new Request(key, secret, listener);
+
+        query = "pasta";
 
 
         //This response contains the list of food items at zeroth page for your query
