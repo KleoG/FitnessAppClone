@@ -1,7 +1,9 @@
 package com.example.kleog.fitnessapp;
 
 import android.app.ListActivity;
+import android.arch.lifecycle.LiveData;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -53,6 +56,9 @@ public class MealActivity extends AppCompatActivity {
         foodItemsList = new ArrayList<>();
         adapter = new FoodItemListAdapter(this, foodItemsList);
         foodListView.setAdapter(adapter);
+
+        //db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
+        LiveData<List<DailyUserInfoModel>> info = db.DailyUserInfoModel().getAll();
 
         //temporary testing data
         FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200, 50, 10, 5, 200, AmountEatenType.GRAMS);

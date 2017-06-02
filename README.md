@@ -1,5 +1,7 @@
 # FitnessAppClone
-Basic fitness app, allowing user to have a profile select their meals as well as view graphs showing their statistics. 
+Basic fitness app, allowing user to have a profile select their meals as well as view graphs showing their statistics.
+
+fat secret API key - 9363b5d78a9342818602505dad0b01cb
 
 Libraries
 GraphView - Gradel

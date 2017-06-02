@@ -1,5 +1,6 @@
 package com.example.kleog.fitnessapp.UserNutritionDatabase;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -21,7 +22,7 @@ import java.util.List;
 @TypeConverters(DateConverter.class)
 public interface DailyUserInfoModelDAO {
     @Query("SELECT * FROM Daily_User_Info")
-    List<DailyUserInfoModel> getAll();
+    LiveData<List<DailyUserInfoModel>> getAll();
 
     @Query("SELECT * FROM Daily_User_Info WHERE date BETWEEN :from AND :to")
     List<DailyUserInfoModel> loadBetweenDates(Date from, Date to);
