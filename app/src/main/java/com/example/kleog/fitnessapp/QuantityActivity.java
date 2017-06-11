@@ -29,19 +29,35 @@ public class QuantityActivity extends AppCompatActivity {
         updateQuantityOnScreen();
     }
 
+    // must change the quantity which is in an integer to String before setText
     public void updateQuantityOnScreen(){
-        // must change the quanity which is in an integer to String before setText
         ((TextView)findViewById(R.id.textView)).setText(String.valueOf(quantity));
     }
 
     public void increaseQuantity(View view){
-        quantity++;
+        //quantity++;
+        setQuantity(1);
         updateQuantityOnScreen();
     }
 
     public void decreaseQuantity(View view){
-        quantity--;
+        //quantity--;
+        setQuantity(-1);
         updateQuantityOnScreen();
+    }
+
+    // called when submit button is pressed - has not been linked to button yet
+    public void submitQuantity(View view){
+
+    }
+
+    public int getQuantity(){
+        return quantity;
+    }
+
+    // sends through the change in quantity (-1 for decrease, 1 for increase)
+    public void setQuantity(int quantityChange){
+        quantity+=quantityChange;
     }
 
 }

@@ -25,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
 
     GraphView calorieGraph;
 
+    // amount of calories shown on graph on main page
+    // should retrieve this figure from database to get total calories of person
+    private int calories = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        series.appendData(new DataPoint(0, 400), true, 2000);
+        series.appendData(new DataPoint(0, calories), true, 2000);
         //series.appendData(new DataPoint(1, 300), true, 2000);
 
 
