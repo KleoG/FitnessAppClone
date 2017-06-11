@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        series.appendData(new DataPoint(0, 200), true, 2000);
+        series.appendData(new DataPoint(0, 400), true, 2000);
         //series.appendData(new DataPoint(1, 300), true, 2000);
 
 
