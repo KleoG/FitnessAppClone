@@ -44,10 +44,38 @@ public class QuantityTest {
         assertEquals(quantityActivity.getQuantity(), quantityStartAmount + quantityChange);
     }
 
+    /**
+     * there's two tests which are same just with different values, could this be done better?
+     */
     // this test checks whether their is a limit on the quantity amount the user can input
     // no less than 0 and no more than 100
     @Test
-    public void limitQuantityTest(){
+    public void limitUpperValueQuantityTest(){
+        QuantityActivity quantityActivity = new QuantityActivity();
+
+        int quantityStartAmount = 100;
+        quantityActivity.setQuantity(quantityStartAmount);
+
+        int quantityChange = 1;
+        quantityActivity.setQuantity(quantityChange);
+
+        assertEquals(quantityActivity.getQuantity(), quantityStartAmount);
+
+    }
+
+    // this test checks whether their is a limit on the quantity amount the user can input
+    // no less than 0 and no more than 100
+    @Test
+    public void limitLowerValueQuantityTest(){
+        QuantityActivity quantityActivity = new QuantityActivity();
+
+        int quantityStartAmount = 0;
+        quantityActivity.setQuantity(quantityStartAmount);
+
+        int quantityChange = -1;
+        quantityActivity.setQuantity(quantityChange);
+
+        assertEquals(quantityActivity.getQuantity(), quantityStartAmount);
 
     }
 

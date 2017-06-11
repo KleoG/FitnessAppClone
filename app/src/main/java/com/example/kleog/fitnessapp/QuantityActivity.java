@@ -56,8 +56,18 @@ public class QuantityActivity extends AppCompatActivity {
     }
 
     // sends through the change in quantity (-1 for decrease, 1 for increase)
+    // creates a local variable based on what the current quantity is.
+    // applies the change, and checks whether change is within limit
+    // if yes, then change will be applied to instance field.
+    // otherwise, quantity stays the same
     public void setQuantity(int quantityChange){
+        int quantity = this.quantity;
         quantity+=quantityChange;
+
+        if(quantity > 0 && quantity <= 100){
+            this.quantity = quantity;
+        }
+
     }
 
 }
