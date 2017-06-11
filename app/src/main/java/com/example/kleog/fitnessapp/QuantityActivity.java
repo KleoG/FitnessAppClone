@@ -64,7 +64,7 @@ public class QuantityActivity extends AppCompatActivity {
         int quantity = this.quantity;
         quantity+=quantityChange;
 
-        if(quantity > 0 && quantity <= 100){
+        if(quantity >= 0 && quantity <= 100){
             this.quantity = quantity;
         }
 
