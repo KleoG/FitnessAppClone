@@ -58,4 +58,5 @@
         <item>Eggs (more gainz food)</item>
     </string-array>
 
+    <string name="Exercise_Button">Exercise</string>
 </resources>

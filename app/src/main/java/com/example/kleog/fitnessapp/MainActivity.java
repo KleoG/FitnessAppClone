@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     // amount of calories shown on graph on main page
     // should retrieve this figure from database to get total calories of person
-    private int calories = 0;
+    private int calories = 400;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +83,15 @@ public class MainActivity extends AppCompatActivity {
      */
     public void goToGraphsPage(View view){
         Intent intent = new Intent(this, GraphPage.class);
+        startActivity(intent);  // changes page to the intent (graph page)
+    }
+
+    /**
+     * is called when the exercise button is clicked
+     * @param view object being clicked on - in this case the "exercise" button
+     */
+    public void goToExerciseActivityPage(View view){
+        Intent intent = new Intent(this, ExerciseActivity.class);
         startActivity(intent);  // changes page to the intent (graph page)
     }
 
