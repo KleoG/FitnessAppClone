@@ -1,20 +1,18 @@
 package com.example.kleog.fitnessapp;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.kleog.fitnessapp.R;
-
 public class QuantityActivity extends AppCompatActivity {
 
-    private static final int MAX_QUANTITY = 100;
+    public static final int MAX_QUANTITY = 100;
+    public static final int MIN_QUANTITY = 0;
 
     private String foodItem;
-
     private int quantity;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +32,13 @@ public class QuantityActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.textView)).setText(String.valueOf(quantity));
     }
 
-    public void increaseQuantity(View view){
-        //quantity++;
-        setQuantity(1);
+    public void increaseQuantity(View v) {
+        quantity = Math.min(MAX_QUANTITY, quantity+1);
         updateQuantityOnScreen();
     }
 
-    public void decreaseQuantity(View view){
-        //quantity--;
-        setQuantity(-1);
+    public void decreaseQuantity(View v) {
+        quantity = Math.max(MIN_QUANTITY, quantity-1);
         updateQuantityOnScreen();
     }
 
@@ -51,23 +47,12 @@ public class QuantityActivity extends AppCompatActivity {
 
     }
 
-    public int getQuantity(){
+    public int getQuantity() {
         return quantity;
     }
 
-    // sends through the change in quantity (-1 for decrease, 1 for increase)
-    // creates a local variable based on what the current quantity is.
-    // applies the change, and checks whether change is within limit
-    // if yes, then change will be applied to instance field.
-    // otherwise, quantity stays the same
-    public void setQuantity(int quantityChange){
-        int quantity = this.quantity;
-        quantity+=quantityChange;
-
-        if(quantity >= 0 && quantity <= 100){
-            this.quantity = quantity;
-        }
-
+    @VisibleForTesting
+    public void setQuantity(int qty) {
+        quantity = qty;
     }
-
 }
