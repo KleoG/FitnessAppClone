@@ -58,8 +58,8 @@ public class MealActivity extends AppCompatActivity {
         foodListView.setAdapter(adapter);
 
 
-        //this is how to create and insert data into the db
-        db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
+        //this is how to create and insert data into the db with Async task
+        //db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
 
         //this is the type of value that will be returned (a liveData that contains the list)
         LiveData< List<DailyUserInfoModel> > info = db.DailyUserInfoModel().getAll();
