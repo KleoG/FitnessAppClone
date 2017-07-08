@@ -1,5 +1,6 @@
 package com.example.kleog.fitnessapp.UserNutritionDatabase;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -20,16 +21,16 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @TypeConverters({DateConverter.class, MealTypeConverter.class, AmountEatenTypeConverter.class})
 public interface FoodItemsModelDAO {
     @Query("SELECT * FROM food_items")
-    List<FoodItemsModel> getAll();
+    LiveData<List<FoodItemsModel>> getAll();
 
     @Query("SELECT * FROM food_items WHERE date = :date")
-    List<FoodItemsModel> getFoodsEatenOnDate(Date date);
+    LiveData<List<FoodItemsModel>> getFoodsEatenOnDate(Date date);
 
     @Query("SELECT * FROM food_items WHERE date = :date AND eaten_during_meal = :mealType")
-    List<FoodItemsModel> getFoodEatenOnDateAndMealType(Date date,MealType mealType);
+    LiveData<List<FoodItemsModel>> getFoodEatenOnDateAndMealType(Date date,MealType mealType);
 
     @Query("SELECT * FROM food_items WHERE date = :date AND eaten_during_meal = :mealType AND food_ID = :foodID")
-    FoodItemsModel getsingleFoodItem(Date date,MealType mealType, String foodID);
+    LiveData<FoodItemsModel> getsingleFoodItem(Date date,MealType mealType, String foodID);
 
     @Insert
     void insertAll(FoodItemsModel... foodItems);

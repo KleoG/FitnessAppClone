@@ -60,6 +60,7 @@ public class MealActivity extends AppCompatActivity {
         //db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
         LiveData<List<DailyUserInfoModel>> info = db.DailyUserInfoModel().getAll();
 
+
         //temporary testing data
         FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200, 50, 10, 5, 200, AmountEatenType.GRAMS);
         FoodItemsModel item2 = new FoodItemsModel(new Date(), MealType.LUNCH, "Eggs", 100, 30, 20, 10, 3, AmountEatenType.UNITS);
