@@ -58,8 +58,8 @@ public class MealActivity extends AppCompatActivity {
         foodListView.setAdapter(adapter);
 
         //db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
-        LiveData<List<DailyUserInfoModel>> info = db.DailyUserInfoModel().getAll();
-
+        LiveData< List<DailyUserInfoModel> > info = db.DailyUserInfoModel().getAll(); //this is the type of value that will be returned ( a liveData that contains the list
+        info.getValue(); //use this to get the list from live data
 
         //temporary testing data
         FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200, 50, 10, 5, 200, AmountEatenType.GRAMS);
