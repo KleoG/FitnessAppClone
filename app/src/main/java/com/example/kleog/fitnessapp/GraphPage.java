@@ -1,19 +1,30 @@
 package com.example.kleog.fitnessapp;
 
+import android.arch.lifecycle.LiveData;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
+import com.example.kleog.fitnessapp.UserNutritionDatabase.FoodItemsModel;
+import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    // database instance
+    private UserNutritionDB db;
 
     // the single graph view
     GraphView graph;
@@ -21,9 +32,16 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
     // the actual data and type of graph for the first graph
     private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
 
+    // lists to hold db information
+    ListView foodListView;
+    ArrayList<FoodItemsModel> foodItemsList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = UserNutritionDB.getDatabase(this.getApplicationContext());
+
         setContentView(R.layout.activity_graph_page);
 
         Spinner spinner = (Spinner) findViewById(R.id.graphs_spinner);
@@ -35,15 +53,29 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-
-
+        // add graph to the series
         graph = (GraphView) findViewById(R.id.graph);
         graph.addSeries(series);
+
+
+        //sets up the list underneath the add view button
+//        foodListView = (ListView) findViewById(R.id.foodList);
+//        foodItemsList = new ArrayList<>();
+//        adapter = new FoodItemListAdapter(this, foodItemsList);
+//        foodListView.setAdapter(adapter);
+
+        //this is how to create and insert data into the db with Async task
+        //db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
 
     }
 
     // is to display on the page the first graph (calories graph)
     public void displayGraphOne(){
+
+        //this is the type of value that will be returned (a liveData that contains the list)
+        // modify db. to access calorie info
+        LiveData< List<DailyUserInfoModel> > info = db.DailyUserInfoModel().getAll();
+
 
         double x,y;
         x = -7.0;
