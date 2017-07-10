@@ -84,8 +84,9 @@ public class SearchActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Intent intent = new Intent(SearchActivity.this, QuantityActivity.class);
-                String entry = parent.getItemAtPosition(position).toString();
-                intent.putExtra("FOOD_ITEM", entry);
+                CompactFood obj = (CompactFood) lv.getAdapter().getItem(position);  //Gets whole object in the position
+                //req.getFood(requestQueue, obj.getId());
+                intent.putExtra("FOOD_ITEM", obj.getName());
                 startActivity(intent);
             }
         });
