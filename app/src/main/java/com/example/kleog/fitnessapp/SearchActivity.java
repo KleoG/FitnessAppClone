@@ -29,9 +29,13 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
+    ArrayList<String> arrayFood;
+
     private ArrayAdapter<String> adapter;
 
     private String mealType;
+
+
 
     //api
     String key = "9363b5d78a9342818602505dad0b01cb";
@@ -43,6 +47,17 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+
+        //fat secret API stuff
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        Listener listener = new Listener();
+
+        Request req = new Request(key, secret, listener);
+
+        final SearchView searchView = (SearchView) findViewById(R.id.foodSearchView);
+
+
         // gets what type of meal e.g. breakfast, lunch, dinner or snack
         mealType = getIntent().getStringExtra("MEAL_TYPE");
 
@@ -52,7 +67,7 @@ public class SearchActivity extends AppCompatActivity {
 
         ListView lv = (ListView) findViewById(R.id.listViewFoodSearch);
 
-        ArrayList<String> arrayFood = new ArrayList<>();
+        arrayFood = new ArrayList<>();
         arrayFood.addAll(Arrays.asList(getResources().getStringArray(R.array.food_array)));
 
         adapter = new ArrayAdapter<>(SearchActivity.this, android.R.layout.simple_list_item_1, arrayFood);
@@ -73,7 +88,6 @@ public class SearchActivity extends AppCompatActivity {
 
 
         //search button functionality
-        final SearchView searchView = (SearchView) findViewById(R.id.foodSearchView);
 
         searchView.setQueryHint("search for food");
 
@@ -93,21 +107,21 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                Log.d("SEARCH_VIEW","Search text has changed" );
+                arrayFood.clear();  //clears the the current food stored in list when text inputted
+
+                query = newText;
+                req.getFoods(requestQueue, query, 0); // searches the current text in searchView
+
                 return false;
             }
         });
 
 
 
-        //fat secret API stuff
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        Listener listener = new Listener();
 
-        Request req = new Request(key, secret, listener);
 
-        query = "pasta";
 
 
         //This response contains the list of food items at zeroth page for your query
@@ -132,41 +146,46 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
+    class Listener implements ResponseListener {
+        @Override
+        public void onFoodListRespone(Response<CompactFood> response) {
+            Log.d("FAT_SECRET", "onFoodListRespone: TOTAL FOOD ITEMS: " + response.getTotalResults());
 
-}
-class Listener implements ResponseListener {
-    @Override
-    public void onFoodListRespone(Response<CompactFood> response) {
-        Log.d("FAT_SECRET", "onFoodListRespone: TOTAL FOOD ITEMS: " + response.getTotalResults());
+            List<CompactFood> foods = response.getResults();
+            //This list contains summary information about the food items
 
-        List<CompactFood> foods = response.getResults();
-        //This list contains summary information about the food items
+            //Log.d("FAT_SECRET", "onFoodListRespone: =========FOODS============");
+            for (CompactFood food: foods) {
+                arrayFood.add(food.getName());
+            }
 
-        Log.d("FAT_SECRET", "onFoodListRespone: =========FOODS============");
-        for (CompactFood food: foods) {
-            System.out.println(food.getName());
+            adapter.notifyDataSetChanged(); // Update screen when search text inputted
+
+
+        }
+
+        @Override
+        public void onRecipeListRespone(Response<CompactRecipe> response) {
+            System.out.println("TOTAL RECIPES: " + response.getTotalResults());
+
+            List<CompactRecipe> recipes = response.getResults();
+            System.out.println("=========RECIPES==========");
+            for (CompactRecipe recipe: recipes) {
+                System.out.println(recipe.getName());
+            }
+        }
+
+        @Override
+        public void onFoodResponse(Food food) {
+            Log.d("FAT_SECRET", "onFoodResponse: FOOD NAME: " + food.getName());
+        }
+
+        @Override
+        public void onRecipeResponse(Recipe recipe) {
+            System.out.println("RECIPE NAME: " + recipe.getName());
         }
     }
-
-    @Override
-    public void onRecipeListRespone(Response<CompactRecipe> response) {
-        System.out.println("TOTAL RECIPES: " + response.getTotalResults());
-
-        List<CompactRecipe> recipes = response.getResults();
-        System.out.println("=========RECIPES==========");
-        for (CompactRecipe recipe: recipes) {
-            System.out.println(recipe.getName());
-        }
-    }
-
-    @Override
-    public void onFoodResponse(Food food) {
-        Log.d("FAT_SECRET", "onFoodResponse: FOOD NAME: " + food.getName());
-    }
-
-    @Override
-    public void onRecipeResponse(Recipe recipe) {
-        System.out.println("RECIPE NAME: " + recipe.getName());
-    }
 }
+
+
 
