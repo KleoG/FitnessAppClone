@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -107,7 +108,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d("SEARCH_VIEW","Search text has changed" );
+                Log.d("SEARCH_VIEW","onQueryTextChange: Search text has changed" );
                 arrayFood.clear();  //clears the the current food stored in list when text inputted
 
                 query = newText;
@@ -149,17 +150,26 @@ public class SearchActivity extends AppCompatActivity {
     class Listener implements ResponseListener {
         @Override
         public void onFoodListRespone(Response<CompactFood> response) {
-            Log.d("FAT_SECRET", "onFoodListRespone: TOTAL FOOD ITEMS: " + response.getTotalResults());
+            try{
+                Log.d("FAT_SECRET", "onFoodListRespone: TOTAL FOOD ITEMS: " + response.getTotalResults());
 
-            List<CompactFood> foods = response.getResults();
-            //This list contains summary information about the food items
+                List<CompactFood> foods = response.getResults();
+                //This list contains summary information about the food items
 
-            //Log.d("FAT_SECRET", "onFoodListRespone: =========FOODS============");
-            for (CompactFood food: foods) {
-                arrayFood.add(food.getName());
+                //Log.d("FAT_SECRET", "onFoodListRespone: =========FOODS============");
+                for (CompactFood food: foods) {
+                    arrayFood.add(food.getName());
+                    System.out.println(food.getBrandName());
+                }
+
+                adapter.notifyDataSetChanged(); // Update screen when search text inputted
+            }
+            catch(Exception E){
+             Log.d("FAT_SECRET", "onFoodListRespone: InvocationTargetException" );
+             Toast.makeText(getApplicationContext(), "Error Searching API", Toast.LENGTH_SHORT).show();
             }
 
-            adapter.notifyDataSetChanged(); // Update screen when search text inputted
+
 
 
         }
