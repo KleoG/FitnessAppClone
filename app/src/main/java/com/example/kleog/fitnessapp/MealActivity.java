@@ -57,8 +57,15 @@ public class MealActivity extends AppCompatActivity {
         adapter = new FoodItemListAdapter(this, foodItemsList);
         foodListView.setAdapter(adapter);
 
+
+        //this is how to create and insert data into the db with Async task
         //db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
-        LiveData<List<DailyUserInfoModel>> info = db.DailyUserInfoModel().getAll();
+
+        //this is the type of value that will be returned (a liveData that contains the list)
+        LiveData< List<DailyUserInfoModel> > info = db.DailyUserInfoModel().getAll();
+
+        //use this to get the list from live data
+        info.getValue();
 
         //temporary testing data
         FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200, 50, 10, 5, 200, AmountEatenType.GRAMS);
