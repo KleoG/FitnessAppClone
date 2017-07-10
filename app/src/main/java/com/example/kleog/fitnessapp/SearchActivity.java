@@ -112,6 +112,8 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                //TODO add load searching for item
+                // TODO when zero results are returned from search display message on screen
                 Log.d("SEARCH_VIEW", "onQueryTextChange: Search text has changed");
                 arrayFood.clear();  //clears the the current food stored in list when text inputted
 
