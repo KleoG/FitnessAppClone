@@ -1,21 +1,27 @@
 package com.example.kleog.fitnessapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.kleog.fitnessapp.UserNutritionDatabase.FoodItemsModel;
 import com.fatsecret.platform.model.CompactFood;
 import com.fatsecret.platform.model.CompactRecipe;
 import com.fatsecret.platform.model.Food;
@@ -30,12 +36,11 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
-    ArrayList<String> arrayFood;
+    ArrayList<CompactFood> arrayFood;
 
-    private ArrayAdapter<String> adapter;
+    private APIFoodItemListAdapter adapter;
 
     private String mealType;
-
 
 
     //api
@@ -69,9 +74,9 @@ public class SearchActivity extends AppCompatActivity {
         ListView lv = (ListView) findViewById(R.id.listViewFoodSearch);
 
         arrayFood = new ArrayList<>();
-        arrayFood.addAll(Arrays.asList(getResources().getStringArray(R.array.food_array)));
 
-        adapter = new ArrayAdapter<>(SearchActivity.this, android.R.layout.simple_list_item_1, arrayFood);
+
+        adapter = new APIFoodItemListAdapter(SearchActivity.this, arrayFood);
 
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -84,8 +89,6 @@ public class SearchActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
 
 
         //search button functionality
@@ -108,7 +111,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d("SEARCH_VIEW","onQueryTextChange: Search text has changed" );
+                Log.d("SEARCH_VIEW", "onQueryTextChange: Search text has changed");
                 arrayFood.clear();  //clears the the current food stored in list when text inputted
 
                 query = newText;
@@ -119,57 +122,29 @@ public class SearchActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-
-        //This response contains the list of food items at zeroth page for your query
-        req.getFoods(requestQueue, query, 0);
-
-        //This response contains the list of food items at page number 3 for your query
-        //If total results are less, then this response will have empty list of the food items
-        req.getFoods(requestQueue, query, 3);
-
-        //This food object contains detailed information about the food item
-        req.getFood(requestQueue, 29304L);
-
-        //This response contains the list of recipe items at zeroth page for your query
-        //req.getRecipes(requestQueue, query, 0);
-
-        //This response contains the list of recipe items at page number 2 for your query
-        //If total results are less, then this response will have empty list of the recipe items
-        //req.getRecipes(requestQueue, query, 2);
-
-        //This recipe object contains detailed information about the recipe item
-        req.getRecipe(requestQueue, 315L);
     }
 
 
     class Listener implements ResponseListener {
         @Override
         public void onFoodListRespone(Response<CompactFood> response) {
-            try{
+            try {
                 Log.d("FAT_SECRET", "onFoodListRespone: TOTAL FOOD ITEMS: " + response.getTotalResults());
 
                 List<CompactFood> foods = response.getResults();
                 //This list contains summary information about the food items
 
                 //Log.d("FAT_SECRET", "onFoodListRespone: =========FOODS============");
-                for (CompactFood food: foods) {
-                    arrayFood.add(food.getName());
-                    System.out.println(food.getBrandName());
+                for (CompactFood food : foods) {
+                    arrayFood.add(food);
+
                 }
 
                 adapter.notifyDataSetChanged(); // Update screen when search text inputted
+            } catch (Exception E) {
+                Log.d("FAT_SECRET", "onFoodListRespone: InvocationTargetException");
+                Toast.makeText(getApplicationContext(), "Error Searching API", Toast.LENGTH_SHORT).show();
             }
-            catch(Exception E){
-             Log.d("FAT_SECRET", "onFoodListRespone: InvocationTargetException" );
-             Toast.makeText(getApplicationContext(), "Error Searching API", Toast.LENGTH_SHORT).show();
-            }
-
-
 
 
         }
@@ -180,7 +155,7 @@ public class SearchActivity extends AppCompatActivity {
 
             List<CompactRecipe> recipes = response.getResults();
             System.out.println("=========RECIPES==========");
-            for (CompactRecipe recipe: recipes) {
+            for (CompactRecipe recipe : recipes) {
                 System.out.println(recipe.getName());
             }
         }
@@ -195,7 +170,47 @@ public class SearchActivity extends AppCompatActivity {
             System.out.println("RECIPE NAME: " + recipe.getName());
         }
     }
+
+
 }
 
+class APIFoodItemListAdapter extends ArrayAdapter<CompactFood> {
+    Context context;
+    ArrayList<CompactFood> foods;
+    private static LayoutInflater inflater = null;
 
+    public APIFoodItemListAdapter(Context context, ArrayList<CompactFood> foods) {
+        super(context, R.layout.api_food_item_list, foods);
+        this.context = context;
+        this.foods = foods;
+        inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    @Override
+    public int getCount() {
+        return foods.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        View vi = convertView;
+        if (vi == null)
+            vi = inflater.inflate(R.layout.api_food_item_list, null);
+        TextView foodName = (TextView) vi.findViewById(R.id.apiFood);
+
+
+        //this is where the values of the row are set
+        foodName.setText(foods.get(position).getName());
+
+        return vi;
+    }
+
+
+}
 
