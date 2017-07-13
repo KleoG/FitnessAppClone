@@ -112,13 +112,21 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
+                if(arrayFood.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "0 Results Returned", Toast.LENGTH_SHORT).show(); // if search finds no items, states "0 Results Returned"
+                    Log.d("SEARCH_VIEW", "onQueryTextChange: items = "+arrayFood.size());
+                }
+
+
                 //TODO add load searching for item
-                // TODO when zero results are returned from search display message on screen
+
                 Log.d("SEARCH_VIEW", "onQueryTextChange: Search text has changed");
                 arrayFood.clear();  //clears the the current food stored in list when text inputted
 
                 query = newText;
                 req.getFoods(requestQueue, query, 0); // searches the current text in searchView
+
 
                 return false;
             }
