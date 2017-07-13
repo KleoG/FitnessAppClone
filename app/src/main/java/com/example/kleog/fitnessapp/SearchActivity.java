@@ -113,12 +113,6 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                if(arrayFood.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "0 Results Returned", Toast.LENGTH_SHORT).show(); // if search finds no items, states "0 Results Returned"
-                    Log.d("SEARCH_VIEW", "onQueryTextChange: items = "+arrayFood.size());
-                }
-
-
                 //TODO add load searching for item
 
                 Log.d("SEARCH_VIEW", "onQueryTextChange: Search text has changed");
@@ -152,6 +146,12 @@ public class SearchActivity extends AppCompatActivity {
                 }
 
                 adapter.notifyDataSetChanged(); // Update screen when search text inputted
+
+                if(arrayFood.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "0 Results Returned", Toast.LENGTH_SHORT).show(); // if search finds no items, states "0 Results Returned"
+                    Log.d("SEARCH_VIEW", "onQueryTextChange: items = "+arrayFood.size());
+                }
+
             } catch (Exception E) {
                 Log.d("FAT_SECRET", "onFoodListRespone: InvocationTargetException");
                 Toast.makeText(getApplicationContext(), "Error Searching API", Toast.LENGTH_SHORT).show();
