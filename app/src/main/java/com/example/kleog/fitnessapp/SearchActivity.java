@@ -53,6 +53,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE); //hide the loading icon
 
         //fat secret API stuff
 
@@ -113,15 +114,12 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                //TODO add load searching for item
-
                 Log.d("SEARCH_VIEW", "onQueryTextChange: Search text has changed");
                 arrayFood.clear();  //clears the the current food stored in list when text inputted
 
                 query = newText;
                 req.getFoods(requestQueue, query, 0); // searches the current text in searchView
-
-
+                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);    //show the loading icon upon entering text
                 return false;
             }
         });
@@ -145,6 +143,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 }
 
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);   //hide the loading icon for arrayFood list to appear
                 adapter.notifyDataSetChanged(); // Update screen when search text inputted
 
                 if(arrayFood.isEmpty()) {
