@@ -118,43 +118,47 @@ public class SearchActivity extends AppCompatActivity {
                 arrayFood.clear();  //clears the the current food stored in list when text inputted
 
                 query = newText;
-                req.getFoods(requestQueue, query, 0); // searches the current text in searchView
+
+                try {
+                    req.getFoods(requestQueue, query, 0); // searches the current text in searchView
+                } catch (Exception E) {
+                    Log.d("FAT_SECRET", "onFoodListRespone: InvocationTargetException");
+                    Toast.makeText(getApplicationContext(), "Error Searching API", Toast.LENGTH_SHORT).show();
+                }
+
                 findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);    //show the loading icon upon entering text
                 return false;
+
             }
+
+
         });
-
-
     }
 
 
     class Listener implements ResponseListener {
         @Override
         public void onFoodListRespone(Response<CompactFood> response) {
-            try {
-                Log.d("FAT_SECRET", "onFoodListRespone: TOTAL FOOD ITEMS: " + response.getTotalResults());
 
-                List<CompactFood> foods = response.getResults();
-                //This list contains summary information about the food items
+            Log.d("FAT_SECRET", "onFoodListRespone: TOTAL FOOD ITEMS: " + response.getTotalResults());
 
-                //Log.d("FAT_SECRET", "onFoodListRespone: =========FOODS============");
-                for (CompactFood food : foods) {
-                    arrayFood.add(food);
+            List<CompactFood> foods = response.getResults();
+            //This list contains summary information about the food items
 
-                }
+            //Log.d("FAT_SECRET", "onFoodListRespone: =========FOODS============");
+            for (CompactFood food : foods) {
+                arrayFood.add(food);
 
-                findViewById(R.id.loadingPanel).setVisibility(View.GONE);   //hide the loading icon for arrayFood list to appear
-                adapter.notifyDataSetChanged(); // Update screen when search text inputted
-
-                if(arrayFood.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "0 Results Returned", Toast.LENGTH_SHORT).show(); // if search finds no items, states "0 Results Returned"
-                    Log.d("SEARCH_VIEW", "onQueryTextChange: items = "+arrayFood.size());
-                }
-
-            } catch (Exception E) {
-                Log.d("FAT_SECRET", "onFoodListRespone: InvocationTargetException");
-                Toast.makeText(getApplicationContext(), "Error Searching API", Toast.LENGTH_SHORT).show();
             }
+
+            findViewById(R.id.loadingPanel).setVisibility(View.GONE);   //hide the loading icon for arrayFood list to appear
+            adapter.notifyDataSetChanged(); // Update screen when search text inputted
+
+            if(arrayFood.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "0 Results Returned", Toast.LENGTH_SHORT).show(); // if search finds no items, states "0 Results Returned"
+                Log.d("SEARCH_VIEW", "onQueryTextChange: items = "+arrayFood.size());
+            }
+
 
 
         }
