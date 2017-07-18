@@ -1,10 +1,15 @@
 package com.example.kleog.fitnessapp;
 
+import android.arch.lifecycle.LifecycleActivity;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -20,10 +26,16 @@ import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
-public class MainActivity extends AppCompatActivity {
-    UserNutritionDB db;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
-    GraphView calorieGraph;
+public class MainActivity extends LifecycleActivity {
+    private UserNutritionDB db;
+
+    private GraphView calorieGraph;
+
+    private DailyUserInfoViewModel userInfoVM;
 
     // amount of calories shown on graph on main page
     // should retrieve this figure from database to get total calories of person
@@ -37,10 +49,6 @@ public class MainActivity extends AppCompatActivity {
         db = UserNutritionDB.getDatabase(this);
 
         calorieGraph = (GraphView) findViewById(R.id.calorieBarPlaceholder);
-//        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
-//                new DataPoint(0, 200),
-//                //new DataPoint(1, 100)
-//        });
 
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>();
 
@@ -74,6 +82,24 @@ public class MainActivity extends AppCompatActivity {
 
         calorieGraph.addSeries(series);
 
+        //attached to the view model
+        userInfoVM = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
+
+        //when changes to the data are made the UI will be updated here
+        userInfoVM.getCurrentDayUserInfo().observe( this, info -> {
+            Log.d("LIVE_DATA_OBSERVER", "onCreate: observed change in live data");
+
+            calorieGraph.getSeries().clear();
+
+            calories = info.getTotalCalories();
+
+            series.resetData(new DataPoint[] {new DataPoint(0, calories)});
+
+            calorieGraph.addSeries(series);
+
+            //Log.d("DATABASE", "onCreate: total items in database: " + db.DailyUserInfoModel().getAll());
+
+        });
 
     }
 
@@ -92,7 +118,14 @@ public class MainActivity extends AppCompatActivity {
      */
     public void goToExerciseActivityPage(View view){
         Intent intent = new Intent(this, ExerciseActivity.class);
-        startActivity(intent);  // changes page to the intent (graph page)
+        //startActivity(intent);  // changes page to the intent (graph page)
+
+        //temporary for testing
+        Random r = new Random();
+        int randomCalories = r.nextInt(2000 - 100) + 100;
+        DailyUserInfoModel test = new DailyUserInfoModel(new Date(), randomCalories, 0, 0, 0, 0);
+        userInfoVM.updateCurrentDayUserInfo(test);
+
     }
 
     /**

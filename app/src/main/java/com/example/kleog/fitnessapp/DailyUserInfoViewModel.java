@@ -62,6 +62,7 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
         @Override
         protected Void doInBackground(DailyUserInfoModel ... params ) {
             db.DailyUserInfoModel().insert(params[0]);
+
             return null;
         }
 
@@ -74,6 +75,7 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
     public void updateCurrentDayUserInfo(DailyUserInfoModel data){
 
         new UpdateAsyncTask(appDatabase).execute(data);
+        //currentDayUserInfo = appDatabase.DailyUserInfoModel().getDate(new Date());
     }
 
     //private static class created for updating database with async task to prevent memory leaks
@@ -88,6 +90,7 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
         @Override
         protected Void doInBackground(DailyUserInfoModel ... params ) {
             db.DailyUserInfoModel().update(params[0]);
+
             return null;
         }
 
