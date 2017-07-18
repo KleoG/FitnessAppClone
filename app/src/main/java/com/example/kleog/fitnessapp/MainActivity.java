@@ -1,33 +1,22 @@
 package com.example.kleog.fitnessapp;
 
 import android.arch.lifecycle.LifecycleActivity;
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
-import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends LifecycleActivity {
@@ -75,7 +64,6 @@ public class MainActivity extends LifecycleActivity {
         // remove vertical labels and lines
 
 
-
         series.appendData(new DataPoint(0, calories), true, 2000);
         //series.appendData(new DataPoint(1, 300), true, 2000);
 
@@ -86,14 +74,14 @@ public class MainActivity extends LifecycleActivity {
         userInfoVM = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
 
         //when changes to the data are made the UI will be updated here
-        userInfoVM.getCurrentDayUserInfo().observe( this, info -> {
+        userInfoVM.getCurrentDayUserInfo().observe(this, info -> {
             Log.d("LIVE_DATA_OBSERVER", "onCreate: observed change in live data");
 
             calorieGraph.getSeries().clear();
 
             calories = info.getTotalCalories();
 
-            series.resetData(new DataPoint[] {new DataPoint(0, calories)});
+            series.resetData(new DataPoint[]{new DataPoint(0, calories)});
 
             calorieGraph.addSeries(series);
 
@@ -105,18 +93,20 @@ public class MainActivity extends LifecycleActivity {
 
     /**
      * is called when the graphs button is clicked
+     *
      * @param view object being clicked on - in this case the "graphs" button
      */
-    public void goToGraphsPage(View view){
+    public void goToGraphsPage(View view) {
         Intent intent = new Intent(this, GraphPage.class);
         startActivity(intent);  // changes page to the intent (graph page)
     }
 
     /**
      * is called when the exercise button is clicked
+     *
      * @param view object being clicked on - in this case the "exercise" button
      */
-    public void goToExerciseActivityPage(View view){
+    public void goToExerciseActivityPage(View view) {
         Intent intent = new Intent(this, ExerciseActivity.class);
         //startActivity(intent);  // changes page to the intent (graph page)
 
@@ -131,9 +121,10 @@ public class MainActivity extends LifecycleActivity {
     /**
      * when one of the meal time  buttons is pressed the meal type will be passed to the
      * meal activity and open a session for that particular meal type
+     *
      * @param view one of the meal buttons
      */
-    public void goToMealActivity(View view){
+    public void goToMealActivity(View view) {
         Intent i = new Intent(this, MealActivity.class);
 
         //passes extra information to the MealActivity class

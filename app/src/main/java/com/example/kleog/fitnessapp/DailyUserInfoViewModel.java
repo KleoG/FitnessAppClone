@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
@@ -75,7 +76,6 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
     public void updateCurrentDayUserInfo(DailyUserInfoModel data){
 
         new UpdateAsyncTask(appDatabase).execute(data);
-        //currentDayUserInfo = appDatabase.DailyUserInfoModel().getDate(new Date());
     }
 
     //private static class created for updating database with async task to prevent memory leaks
