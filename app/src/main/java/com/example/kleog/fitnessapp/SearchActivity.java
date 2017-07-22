@@ -2,18 +2,14 @@ package com.example.kleog.fitnessapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -21,7 +17,6 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.kleog.fitnessapp.UserNutritionDatabase.FoodItemsModel;
 import com.fatsecret.platform.model.CompactFood;
 import com.fatsecret.platform.model.CompactRecipe;
 import com.fatsecret.platform.model.Food;
@@ -31,22 +26,17 @@ import com.fatsecret.platform.services.android.Request;
 import com.fatsecret.platform.services.android.ResponseListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
     ArrayList<CompactFood> arrayFood;
-
-    private APIFoodItemListAdapter adapter;
-
-    private String mealType;
-
-
     //api
     String key = "9363b5d78a9342818602505dad0b01cb";
     String secret = "02d257d83e6249fd98d20782992c0de3";
     String query;
+    private APIFoodItemListAdapter adapter;
+    private String mealType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,11 +144,10 @@ public class SearchActivity extends AppCompatActivity {
             findViewById(R.id.loadingPanel).setVisibility(View.GONE);   //hide the loading icon for arrayFood list to appear
             adapter.notifyDataSetChanged(); // Update screen when search text inputted
 
-            if(arrayFood.isEmpty()) {
+            if (arrayFood.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "0 Results Returned", Toast.LENGTH_SHORT).show(); // if search finds no items, states "0 Results Returned"
-                Log.d("SEARCH_VIEW", "onQueryTextChange: items = "+arrayFood.size());
+                Log.d("SEARCH_VIEW", "onQueryTextChange: items = " + arrayFood.size());
             }
-
 
 
         }
@@ -189,9 +178,9 @@ public class SearchActivity extends AppCompatActivity {
 }
 
 class APIFoodItemListAdapter extends ArrayAdapter<CompactFood> {
+    private static LayoutInflater inflater = null;
     Context context;
     ArrayList<CompactFood> foods;
-    private static LayoutInflater inflater = null;
 
     public APIFoodItemListAdapter(Context context, ArrayList<CompactFood> foods) {
         super(context, R.layout.api_food_item_list, foods);

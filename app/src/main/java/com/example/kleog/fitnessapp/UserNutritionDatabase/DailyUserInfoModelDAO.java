@@ -7,12 +7,11 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.Update;
-import android.os.AsyncTask;
-
-import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 import java.util.Date;
 import java.util.List;
+
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 /**
  * Created by Kevin on 29/05/2017.

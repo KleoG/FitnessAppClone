@@ -13,7 +13,7 @@ public class AmountEatenTypeConverter {
     }
 
     @TypeConverter
-    public static String toAmountEatenTypeString (AmountEatenType amountEatenType) {
+    public static String toAmountEatenTypeString(AmountEatenType amountEatenType) {
         return amountEatenType == null ? null : amountEatenType.toString();
     }
 }

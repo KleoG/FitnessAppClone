@@ -17,7 +17,7 @@ import java.util.Date;
         foreignKeys = @ForeignKey(entity = DailyUserInfoModel.class,
                 parentColumns = "date",
                 childColumns = "date")
-        )
+)
 public class MealModel {
 
     @TypeConverters(DateConverter.class) //used to covert Java date into SQLite compatible data type
@@ -28,18 +28,18 @@ public class MealModel {
     private MealType mealType;
 
     @ColumnInfo(name = "total_calories")
-    private String totalCalories;
+    private Double totalCalories;
 
     @ColumnInfo(name = "total_protein")
-    private String totalProtein;
+    private Double totalProtein;
 
     @ColumnInfo(name = "total_carbs")
-    private String totalCarbs;
+    private Double totalCarbs;
 
     @ColumnInfo(name = "total_fat")
-    private String totalFat;
+    private Double totalFat;
 
-    public MealModel(Date date, MealType mealType, String totalCalories, String totalProtein, String totalCarbs, String totalFat) {
+    public MealModel(Date date, MealType mealType, Double totalCalories, Double totalProtein, Double totalCarbs, Double totalFat) {
         this.date = date;
         this.mealType = mealType;
         this.totalCalories = totalCalories;
@@ -60,39 +60,20 @@ public class MealModel {
         return mealType;
     }
 
-    public void setMealType(MealType mealType) {
-        this.mealType = mealType;
-    }
-
-    public String getTotalCalories() {
+    public Double getTotalCalories() {
         return totalCalories;
     }
 
-    public void setTotalCalories(String totalCalories) {
-        this.totalCalories = totalCalories;
-    }
-
-    public String getTotalProtein() {
+    public Double getTotalProtein() {
         return totalProtein;
     }
 
-    public void setTotalProtein(String totalProtein) {
-        this.totalProtein = totalProtein;
-    }
-
-    public String getTotalCarbs() {
+    public Double getTotalCarbs() {
         return totalCarbs;
     }
 
-    public void setTotalCarbs(String totalCarbs) {
-        this.totalCarbs = totalCarbs;
-    }
-
-    public String getTotalFat() {
+    public Double getTotalFat() {
         return totalFat;
     }
 
-    public void setTotalFat(String totalFat) {
-        this.totalFat = totalFat;
-    }
 }

@@ -1,17 +1,11 @@
 package com.example.kleog.fitnessapp;
 
-import android.app.ListActivity;
 import android.arch.lifecycle.LiveData;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.kleog.fitnessapp.UserNutritionDatabase.AmountEatenType;
 import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
@@ -22,7 +16,6 @@ import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Kevin on 23/05/2017.
@@ -62,15 +55,15 @@ public class MealActivity extends AppCompatActivity {
         //db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
 
         //this is the type of value that will be returned (a liveData that contains the list)
-        LiveData< List<DailyUserInfoModel> > info = db.DailyUserInfoModel().getAll();
+        LiveData<List<DailyUserInfoModel>> info = db.DailyUserInfoModel().getAll();
 
         //use this to get the list from live data
         info.getValue();
 
         //temporary testing data
-        FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200, 50, 10, 5, 200, AmountEatenType.GRAMS);
-        FoodItemsModel item2 = new FoodItemsModel(new Date(), MealType.LUNCH, "Eggs", 100, 30, 20, 10, 3, AmountEatenType.UNITS);
-        FoodItemsModel item3 = new FoodItemsModel(new Date(), MealType.LUNCH, "rice", 250, 10, 30, 15, 150, AmountEatenType.GRAMS);
+        FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200.0, 50.0, 10.0, 5.0, 200.0, AmountEatenType.GRAMS);
+        FoodItemsModel item2 = new FoodItemsModel(new Date(), MealType.LUNCH, "Eggs", 100.0, 30.0, 20.0, 10.0, 3.0, AmountEatenType.UNITS);
+        FoodItemsModel item3 = new FoodItemsModel(new Date(), MealType.LUNCH, "rice", 250.0, 10.0, 30.0, 15.0, 150.0, AmountEatenType.GRAMS);
         adapter.add(item1);
         adapter.add(item2);
         adapter.add(item3);
@@ -78,7 +71,7 @@ public class MealActivity extends AppCompatActivity {
 
     }
 
-    public void onClickNotFinished(View view){
+    public void onClickNotFinished(View view) {
         //first thread for inserting data
         /*
         the commented out code below is used to insert random data into the db then retrieve the data and display a part of it
@@ -118,17 +111,17 @@ public class MealActivity extends AppCompatActivity {
 //        }.execute();
 
 
-
         // temp useless adding of food
-        FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200, 50, 10, 5, 200, AmountEatenType.GRAMS);
+        FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200.0, 50.0, 10.0, 5.0, 200.0, AmountEatenType.GRAMS);
         adapter.add(item1);
     }
 
     /**
      * is called when the graphs button is clicked
+     *
      * @param view object being clicked on - in this case the "graphs" button
      */
-    public void goToSearchPage(View view){
+    public void goToSearchPage(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
         intent.putExtra("MEAL_TYPE", mealType);
 
@@ -141,7 +134,7 @@ public class MealActivity extends AppCompatActivity {
         this.finish();
     }
 
-    public void updateFoodEatenList(){
+    public void updateFoodEatenList() {
 
     }
 

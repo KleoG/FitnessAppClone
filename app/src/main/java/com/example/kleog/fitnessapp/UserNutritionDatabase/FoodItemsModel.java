@@ -14,8 +14,8 @@ import java.util.Date;
 @Entity(tableName = "food_items",
         primaryKeys = {"date", "eaten_during_meal", "food_ID"},
         foreignKeys = @ForeignKey(entity = MealModel.class,
-                parentColumns = {"date","meal_type"},
-                childColumns = {"date","eaten_during_meal"})
+                parentColumns = {"date", "meal_type"},
+                childColumns = {"date", "eaten_during_meal"})
 )
 public class FoodItemsModel {
 
@@ -30,25 +30,25 @@ public class FoodItemsModel {
     private String foodID;
 
     @ColumnInfo(name = "calories")
-    private Integer Calories;
+    private Double Calories;
 
     @ColumnInfo(name = "protein")
-    private Integer Protein;
+    private Double Protein;
 
     @ColumnInfo(name = "carbs")
-    private Integer Carbs;
+    private Double Carbs;
 
     @ColumnInfo(name = "fat")
-    private Integer Fat;
+    private Double Fat;
 
     @ColumnInfo(name = "amount_Eaten")
-    private Integer amountEaten;
+    private Double amountEaten;
 
     @ColumnInfo(name = "amount_Eaten_Type") //check enum for types
     @TypeConverters(AmountEatenTypeConverter.class)
     private AmountEatenType amountEatenType;
 
-    public FoodItemsModel(Date date, MealType eatenDuringMeal, String foodID, Integer Calories, Integer Protein, Integer Carbs, Integer Fat, Integer amountEaten, AmountEatenType amountEatenType) {
+    public FoodItemsModel(Date date, MealType eatenDuringMeal, String foodID, Double Calories, Double Protein, Double Carbs, Double Fat, Double amountEaten, AmountEatenType amountEatenType) {
         this.date = date;
         this.eatenDuringMeal = eatenDuringMeal;
         this.foodID = foodID;
@@ -80,55 +80,28 @@ public class FoodItemsModel {
         return foodID;
     }
 
-    public void setFoodID(String foodID) {
-        this.foodID = foodID;
-    }
-
-    public Integer getCalories() {
+    public Double getCalories() {
         return Calories;
     }
 
-    public void setCalories(Integer calories) {
-        Calories = calories;
-    }
-
-    public Integer getProtein() {
+    public Double getProtein() {
         return Protein;
     }
 
-    public void setProtein(Integer protein) {
-        Protein = protein;
-    }
-
-    public Integer getCarbs() {
+    public Double getCarbs() {
         return Carbs;
     }
 
-    public void setCarbs(Integer carbs) {
-        Carbs = carbs;
-    }
-
-    public Integer getFat() {
+    public Double getFat() {
         return Fat;
     }
 
-    public void setFat(Integer fat) {
-        Fat = fat;
-    }
-
-    public Integer getAmountEaten() {
+    public Double getAmountEaten() {
         return amountEaten;
-    }
-
-    public void setAmountEaten(Integer amountEaten) {
-        this.amountEaten = amountEaten;
     }
 
     public AmountEatenType getAmountEatenType() {
         return amountEatenType;
     }
 
-    public void setAmountEatenType(AmountEatenType amountEatenType) {
-        this.amountEatenType = amountEatenType;
-    }
 }

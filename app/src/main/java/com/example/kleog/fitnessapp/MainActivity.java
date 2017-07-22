@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
+import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.BarGraphSeries;
@@ -26,9 +27,11 @@ public class MainActivity extends LifecycleActivity {
 
     private DailyUserInfoViewModel userInfoVM;
 
+    //TODO make it so the day is saved as a variable here (and used everywhere else in the app my extension) so if the app is used past midnight it will not reset the day
+
     // amount of calories shown on graph on main page
     // should retrieve this figure from database to get total calories of person
-    private int calories = 400;
+    private Double calories = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,8 +115,8 @@ public class MainActivity extends LifecycleActivity {
 
         //temporary for testing
         Random r = new Random();
-        int randomCalories = r.nextInt(2000 - 100) + 100;
-        DailyUserInfoModel test = new DailyUserInfoModel(new Date(), randomCalories, 0, 0, 0, 0);
+        Double randomCalories = r.nextInt(2000 - 100) + 100.0;
+        DailyUserInfoModel test = new DailyUserInfoModel(new Date(), randomCalories, 0.0, 0.0, 0.0, 0.0);
         userInfoVM.updateCurrentDayUserInfo(test);
 
     }

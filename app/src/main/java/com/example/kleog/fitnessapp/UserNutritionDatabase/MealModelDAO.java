@@ -24,7 +24,7 @@ public interface MealModelDAO {
     LiveData<List<MealModel>> getAll();
 
     @Query("SELECT * FROM meal WHERE date = :date and meal_type = :mealType")
-    LiveData<List<MealModel>> getMeal(MealType mealType, Date date);
+    LiveData<MealModel> getMeal(MealType mealType, Date date);
 
     @Query("SELECT * FROM meal WHERE date = :date")
     LiveData<List<MealModel>> getMealsOnDate(Date date);

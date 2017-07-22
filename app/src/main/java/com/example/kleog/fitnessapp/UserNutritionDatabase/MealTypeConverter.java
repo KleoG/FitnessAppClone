@@ -13,7 +13,7 @@ public class MealTypeConverter {
     }
 
     @TypeConverter
-    public static String toMealTypeString (MealType mealType) {
+    public static String toMealTypeString(MealType mealType) {
         return mealType == null ? null : mealType.toString();
     }
 }

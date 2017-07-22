@@ -28,22 +28,22 @@ public class QuantityActivity extends AppCompatActivity {
     }
 
     // must change the quantity which is in an integer to String before setText
-    public void updateQuantityOnScreen(){
-        ((TextView)findViewById(R.id.textView)).setText(String.valueOf(quantity));
+    public void updateQuantityOnScreen() {
+        ((TextView) findViewById(R.id.textView)).setText(String.valueOf(quantity));
     }
 
     public void increaseQuantity(View v) {
-        quantity = Math.min(MAX_QUANTITY, quantity+1);
+        quantity = Math.min(MAX_QUANTITY, quantity + 1);
         updateQuantityOnScreen();
     }
 
     public void decreaseQuantity(View v) {
-        quantity = Math.max(MIN_QUANTITY, quantity-1);
+        quantity = Math.max(MIN_QUANTITY, quantity - 1);
         updateQuantityOnScreen();
     }
 
     // called when submit button is pressed - has not been linked to button yet
-    public void submitQuantity(View view){
+    public void submitQuantity(View view) {
 
     }
 

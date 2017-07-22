@@ -23,7 +23,7 @@ public enum MealType {
             return "DINNER";
         }
     },
-    SNACKS{
+    SNACKS {
         @Override
         public String toString() {
             return "SNACKS";

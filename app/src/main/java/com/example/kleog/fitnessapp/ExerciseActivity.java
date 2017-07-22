@@ -1,7 +1,7 @@
 package com.example.kleog.fitnessapp;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 public class ExerciseActivity extends AppCompatActivity {
 
@@ -12,7 +12,6 @@ public class ExerciseActivity extends AppCompatActivity {
 
         setTitle("Exercise");
     }
-
 
 
     @Override

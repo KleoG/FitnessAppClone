@@ -1,10 +1,8 @@
 package com.example.kleog.fitnessapp;
 
 import android.arch.lifecycle.LiveData;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,18 +21,15 @@ import java.util.List;
 
 public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    // database instance
-    private UserNutritionDB db;
-
     // the single graph view
     GraphView graph;
-
-    // the actual data and type of graph for the first graph
-    private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
-
     // lists to hold db information
     ListView foodListView;
     ArrayList<FoodItemsModel> foodItemsList;
+    // database instance
+    private UserNutritionDB db;
+    // the actual data and type of graph for the first graph
+    private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +65,19 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
     }
 
     // is to display on the page the first graph (calories graph)
-    public void displayGraphOne(){
+    public void displayGraphOne() {
 
         //this is the type of value that will be returned (a liveData that contains the list)
         // modify db. to access calorie info
-        LiveData< List<DailyUserInfoModel> > info = db.DailyUserInfoModel().getAll();
+        LiveData<List<DailyUserInfoModel>> info = db.DailyUserInfoModel().getAll();
 
 
-        double x,y;
+        double x, y;
         x = -7.0;
 
         DataPoint[] data = new DataPoint[500];
 
-        for(int i = 0; i < 500; i++){
+        for (int i = 0; i < 500; i++) {
             x = x + 0.1;
             y = Math.sin(x);
             data[i] = new DataPoint(x, y);
@@ -94,7 +89,7 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
     }
 
     // is to display on the page the second graph
-    public void displayGraphTwo(){
+    public void displayGraphTwo() {
 
 //        // the single graph view
 //        GraphView graph = (GraphView) findViewById(R.id.graph);
@@ -113,12 +108,12 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
 //        }
 //        graph.addSeries(series);
 
-        double x,y;
+        double x, y;
         x = -5.0;
 
         DataPoint[] data = new DataPoint[500];
 
-        for(int i = 0; i < 500; i++){
+        for (int i = 0; i < 500; i++) {
             x = x + 0.3;
             y = Math.sin(x);
             data[i] = new DataPoint(x, y);
@@ -132,7 +127,7 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
     }
 
     // is to display on the page the third graph
-    public void displayGraphThree(){
+    public void displayGraphThree() {
 
 //        // the single graph view
 //        GraphView graph = (GraphView) findViewById(R.id.graph);
@@ -152,19 +147,19 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
 //        graph.addSeries(series);
 
 
-        double x,y;
+        double x, y;
         x = -3.0;
 
         DataPoint[] data = new DataPoint[500];
 
-        for(int i = 0; i < 500; i++){
+        for (int i = 0; i < 500; i++) {
             x = x + 0.7;
             y = Math.sin(x);
             data[i] = new DataPoint(x, y);
             //series.appendData(new DataPoint(x, y), true, 500);
         }
         series.resetData(data);
-       // graph.addSeries(series);
+        // graph.addSeries(series);
 
 
     }
@@ -181,7 +176,7 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(position)
 
-        switch(position){
+        switch (position) {
             case 0:
                 displayGraphOne();
                 break;

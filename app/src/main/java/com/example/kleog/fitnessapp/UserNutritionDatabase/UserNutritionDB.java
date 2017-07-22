@@ -3,16 +3,14 @@ package com.example.kleog.fitnessapp.UserNutritionDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
-import android.os.AsyncTask;
 
 /**
  * Created by Kevin on 29/05/2017.
  */
 
 
-@Database(entities = {DailyUserInfoModel.class, MealModel.class, FoodItemsModel.class}, version = 2)
+@Database(entities = {DailyUserInfoModel.class, MealModel.class, FoodItemsModel.class}, version = 1)
 public abstract class UserNutritionDB extends RoomDatabase {
 
     private static final String DATABASE_NAME = "user_nutrition_db";
