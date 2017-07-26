@@ -11,6 +11,7 @@ import android.arch.persistence.room.Update;
 import java.util.Date;
 import java.util.List;
 
+import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 /**
@@ -29,10 +30,10 @@ public interface MealModelDAO {
     @Query("SELECT * FROM meal WHERE date = :date")
     LiveData<List<MealModel>> getMealsOnDate(Date date);
 
-    @Insert
+    @Insert (onConflict = IGNORE)
     void insertAll(MealModel... meals);
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     void insert(MealModel meal);
 
     @Update

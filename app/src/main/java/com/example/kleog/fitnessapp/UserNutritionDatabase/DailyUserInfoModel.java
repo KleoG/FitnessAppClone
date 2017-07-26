@@ -69,4 +69,8 @@ public class DailyUserInfoModel {
     public Double getWeight() {
         return weight;
     }
+
+    public String toString(){
+        return "Daily user info on date: " + date + " extras: calories: " + totalCalories + ", carbs: " + totalCarbs + ", protein: "+ totalProtein + ", fat: "+ totalFat;
+    }
 }

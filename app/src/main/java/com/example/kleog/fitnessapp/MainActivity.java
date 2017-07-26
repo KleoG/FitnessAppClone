@@ -31,7 +31,7 @@ public class MainActivity extends LifecycleActivity {
 
     // amount of calories shown on graph on main page
     // should retrieve this figure from database to get total calories of person
-    private Double calories = 0.0;
+    private Double calories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,8 @@ public class MainActivity extends LifecycleActivity {
         setContentView(R.layout.activity_main);
 
         db = UserNutritionDB.getDatabase(this);
+
+        Log.d("MAIN_ACTIVITY", "onCreate: " + db.DailyUserInfoModel().getAll().getValue());
 
         calorieGraph = (GraphView) findViewById(R.id.calorieBarPlaceholder);
 
@@ -67,7 +69,7 @@ public class MainActivity extends LifecycleActivity {
         // remove vertical labels and lines
 
 
-        series.appendData(new DataPoint(0, calories), true, 2000);
+        series.appendData(new DataPoint(0, 0), true, 2000);
         //series.appendData(new DataPoint(1, 300), true, 2000);
 
 
@@ -88,7 +90,7 @@ public class MainActivity extends LifecycleActivity {
 
             calorieGraph.addSeries(series);
 
-            //Log.d("DATABASE", "onCreate: total items in database: " + db.DailyUserInfoModel().getAll());
+            Log.d("DATABASE", "onCreate: total items in database: " + info);
 
         });
 

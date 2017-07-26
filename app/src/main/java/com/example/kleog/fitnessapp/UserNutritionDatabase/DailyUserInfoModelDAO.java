@@ -11,6 +11,7 @@ import android.arch.persistence.room.Update;
 import java.util.Date;
 import java.util.List;
 
+import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 /**
@@ -32,7 +33,7 @@ public interface DailyUserInfoModelDAO {
     @Insert
     void insertAll(DailyUserInfoModel... userInfos);
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     void insert(DailyUserInfoModel userInfo);
 
     @Update
