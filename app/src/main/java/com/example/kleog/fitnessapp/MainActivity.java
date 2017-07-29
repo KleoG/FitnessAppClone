@@ -102,7 +102,7 @@ public class MainActivity extends LifecycleActivity {
      * @param view object being clicked on - in this case the "graphs" button
      */
     public void goToGraphsPage(View view) {
-        Intent intent = new Intent(this, GraphPage.class);
+        Intent intent = new Intent(this, newGraphActivity.class);
         startActivity(intent);  // changes page to the intent (graph page)
     }
 

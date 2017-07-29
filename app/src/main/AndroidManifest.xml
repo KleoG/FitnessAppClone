@@ -24,7 +24,11 @@
         <activity android:name=".MealActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".QuantityActivity" />
-        <activity android:name=".ExerciseActivity"></activity>
+        <activity android:name=".ExerciseActivity" />
+        <activity
+            android:name=".newGraphActivity"
+            android:label="@string/title_activity_new_graph"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
