@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -9,89 +7,82 @@
     android:orientation="vertical"
     tools:context="com.example.kleog.fitnessapp.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/content"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:orientation="horizontal">
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/calorieBarPlaceholder"
+            android:layout_width="145dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <com.jjoe64.graphview.GraphView
-                android:id="@+id/calorieBarPlaceholder"
-                android:layout_width="145dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true" />
-
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/optionsText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:cursorVisible="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:selectAllOnFocus="false"
+                android:text="@string/options"
+                android:textIsSelectable="false" />
 
-                <EditText
-                    android:id="@+id/optionsText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:clickable="false"
-                    android:contextClickable="false"
-                    android:cursorVisible="false"
-                    android:ems="10"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:selectAllOnFocus="false"
-                    android:text="@string/options"
-                    android:textIsSelectable="false" />
+            <Button
+                android:id="@+id/breaskFastButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToMealActivity"
+                android:text="@string/breakfast_button" />
 
-                <Button
-                    android:id="@+id/breaskFastButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="goToMealActivity"
-                    android:text="@string/breakfast_button" />
+            <Button
+                android:id="@+id/LunchButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToMealActivity"
+                android:text="@string/lunch_button" />
 
-                <Button
-                    android:id="@+id/LunchButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="goToMealActivity"
-                    android:text="@string/lunch_button" />
+            <Button
+                android:id="@+id/dinnerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToMealActivity"
+                android:text="@string/dinner_button" />
 
-                <Button
-                    android:id="@+id/dinnerButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="goToMealActivity"
-                    android:text="@string/dinner_button" />
+            <Button
+                android:id="@+id/snackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToMealActivity"
+                android:text="@string/snacks_button" />
 
-                <Button
-                    android:id="@+id/snackButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="goToMealActivity"
-                    android:text="@string/snacks_button" />
+            <Button
+                android:id="@+id/graphButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToGraphsPage"
+                android:text="@string/graphs_button" />
 
-                <Button
-                    android:id="@+id/graphButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="goToGraphsPage"
-                    android:text="@string/graphs_button" />
-
-                <Button
-                    android:id="@+id/button5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="goToExerciseActivityPage"
-                    android:text="@string/Exercise_Button" />
-            </LinearLayout>
-
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToExerciseActivityPage"
+                android:text="@string/Exercise_Button" />
         </LinearLayout>
 
-    </FrameLayout>
+    </LinearLayout>
+
 
 </LinearLayout>

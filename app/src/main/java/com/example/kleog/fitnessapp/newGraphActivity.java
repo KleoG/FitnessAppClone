@@ -1,9 +1,6 @@
 package com.example.kleog.fitnessapp;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,12 +8,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.jjoe64.graphview.GraphView;
 
 public class newGraphActivity extends AppCompatActivity {
 
@@ -35,13 +35,29 @@ public class newGraphActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+    //radio group for the graphs
+    private RadioGroup graphRG;
+
+    //graph view
+    GraphView graph;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_graph);
+        setTitle("Graphs");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //radio buttons initialised
+        graphRG = (RadioGroup) findViewById(R.id.radioGroupGraphs);
+
+        //sets all radio buttons to unclickable
+        for (int i = 0; i < graphRG.getChildCount(); i++) {
+            graphRG.getChildAt(i).setEnabled(false);
+        }
+
+
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -50,23 +66,26 @@ public class newGraphActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        //when swiping from left to write the radio buttons will update accordingly
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                //sets the position of the radio button to checked depending on which fragment number the swipeview is currently on
+                ((RadioButton) graphRG.getChildAt(position)).setChecked(true);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
 
-    }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_new_graph, menu);
-        return true;
     }
 
     @Override
@@ -76,33 +95,54 @@ public class newGraphActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
 
     /**
-     * A placeholder fragment containing a simple view.
+     * fragment for the calorie graph page
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class CalorieGraphFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        public PlaceholderFragment() {
+        public CalorieGraphFragment() {
+        }
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_calorie_graph, container, false);
+            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            textView.setText("calorie graph goes here");
+            return rootView;
+        }
+    }
+
+    /**
+     * fragment for the weight graph page
+     */
+    public static class WeightGraphFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public WeightGraphFragment() {
         }
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
+        public static WeightGraphFragment newInstance(int sectionNumber) {
+            WeightGraphFragment fragment = new WeightGraphFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
@@ -112,9 +152,9 @@ public class newGraphActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_new_graph, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_calorie_graph, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            textView.setText("weight graph goes here");
             return rootView;
         }
     }
@@ -131,9 +171,19 @@ public class newGraphActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            Fragment fragment = null;
+            switch(position) {
+                case 0:
+                    fragment = new CalorieGraphFragment();
+                    break;
+                case 1:
+                    fragment = new WeightGraphFragment();
+                    break;
+                case 2:
+                    fragment = new CalorieGraphFragment();
+                    break;
+            }
+            return fragment;
         }
 
         @Override
