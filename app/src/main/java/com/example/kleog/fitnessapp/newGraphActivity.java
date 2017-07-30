@@ -1,22 +1,28 @@
 package com.example.kleog.fitnessapp;
 
-import android.support.v7.app.AppCompatActivity;
-
+import android.app.DatePickerDialog;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class newGraphActivity extends AppCompatActivity {
 
@@ -57,7 +63,6 @@ public class newGraphActivity extends AppCompatActivity {
         }
 
 
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -96,7 +101,6 @@ public class newGraphActivity extends AppCompatActivity {
         int id = item.getItemId();
 
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -104,13 +108,30 @@ public class newGraphActivity extends AppCompatActivity {
      * fragment for the calorie graph page
      */
     public static class CalorieGraphFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        private GraphView caloreGraph;
+
+        private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
+
+
+        private EditText firstDate;
+        //stores selected dates for the first date
+        private int firstDateYear;
+        private int firstDateMonth;
+        private int firstDateDay;
+        //the date chosen stored in Date format
+        private Date firstDateChosen;
+
+        private EditText secondDate;
+        //stores selected dates for the first date
+        private int secondDateYear;
+        private int secondDateMonth;
+        private int secondDateDay;
+        //the date chosen stored in Date format
+        private Date secondDateChosen;
 
         public CalorieGraphFragment() {
+
         }
 
 
@@ -118,8 +139,82 @@ public class newGraphActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_calorie_graph, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            TextView textView = (TextView) rootView.findViewById(R.id.calorieGraphTextView);
             textView.setText("calorie graph goes here");
+
+            caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
+            caloreGraph.addSeries(series);
+
+
+            //dates selected at bottom of screen
+            firstDate = (EditText) rootView.findViewById(R.id.calorieGraphFirstDate);
+            secondDate = (EditText) rootView.findViewById(R.id.calorieGraphSecondDate);
+
+            //allows the view to be clicked but not edited by the user
+            firstDate.setFocusable(false);
+            firstDate.setClickable(true);
+
+            /**
+             * on click listenser for the first date box will popup a date picker for the user to select from
+             */
+
+            firstDate.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    //To show current date in the datepicker
+                    Calendar mcurrentDate = Calendar.getInstance();
+                    int mYear = mcurrentDate.get(Calendar.YEAR);
+                    int mMonth = mcurrentDate.get(Calendar.MONTH);
+                    int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                        public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                            //TODO set variable firstDateChosen to the date the the user selects
+                            firstDate.setText(selectedday + "/" + selectedmonth + "/" + selectedyear);
+                        }
+                    }, mYear, mMonth, mDay);
+                    mDatePicker.setTitle("Select date");
+                    mDatePicker.show();
+                }
+            });
+
+
+            //allows the view to be clicked but not edited by the user
+            secondDate.setFocusable(false);
+            secondDate.setClickable(true);
+
+            /**
+             * on click listenser for the first date box will popup a date picker for the user to select from
+             */
+
+            secondDate.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    //To show current date in the datepicker
+                    Calendar mcurrentDate = Calendar.getInstance();
+                    int mYear = mcurrentDate.get(Calendar.YEAR);
+                    int mMonth = mcurrentDate.get(Calendar.MONTH);
+                    int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                        public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                            //TODO set variable secondDateChosen to the date the the user selects
+
+                            secondDate.setText(selectedday + "/" + selectedmonth + "/" + selectedyear);
+                        }
+                    }, mYear, mMonth, mDay);
+                    mDatePicker.setTitle("Select date");
+                    mDatePicker.show();
+                }
+            });
+
+
+
+
+
+
             return rootView;
         }
     }
@@ -128,33 +223,22 @@ public class newGraphActivity extends AppCompatActivity {
      * fragment for the weight graph page
      */
     public static class WeightGraphFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+        private GraphView weightGraph;
+
+        private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
 
         public WeightGraphFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static WeightGraphFragment newInstance(int sectionNumber) {
-            WeightGraphFragment fragment = new WeightGraphFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_calorie_graph, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            View rootView = inflater.inflate(R.layout.fragment_weight_graph, container, false);
+            TextView textView = (TextView) rootView.findViewById(R.id.weightgraphTextView);
             textView.setText("weight graph goes here");
+
+            //not yet created
+            //weightGraph = (GraphView) rootView.findViewById(R.id.weightGraphView);
             return rootView;
         }
     }
@@ -172,7 +256,7 @@ public class newGraphActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = null;
-            switch(position) {
+            switch (position) {
                 case 0:
                     fragment = new CalorieGraphFragment();
                     break;
