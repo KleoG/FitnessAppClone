@@ -21,6 +21,7 @@ import com.fatsecret.platform.model.CompactFood;
 import com.fatsecret.platform.model.CompactRecipe;
 import com.fatsecret.platform.model.Food;
 import com.fatsecret.platform.model.Recipe;
+import com.fatsecret.platform.model.Serving;
 import com.fatsecret.platform.services.Response;
 import com.fatsecret.platform.services.android.Request;
 import com.fatsecret.platform.services.android.ResponseListener;
@@ -78,11 +79,9 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                Intent intent = new Intent(SearchActivity.this, QuantityActivity.class);
                 CompactFood obj = (CompactFood) lv.getAdapter().getItem(position);  //Gets whole object in the position
-                //req.getFood(requestQueue, obj.getId());
-                intent.putExtra("FOOD_ITEM", obj.getName());
-                startActivity(intent);
+                req.getFood(requestQueue, obj.getId());
+
             }
         });
 
@@ -179,6 +178,32 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onFoodResponse(Food food) {
             Log.d("FAT_SECRET", "onFoodResponse: FOOD NAME: " + food.getName());
+            Intent intent = new Intent(SearchActivity.this, QuantityActivity.class);
+            Log.d("FAT_SECRET", " ");
+            intent.putExtra("FOOD_NAME", food.getName());
+            intent.putExtra("FOOD_DESCRIPTION", food.getDescription());
+            //for (Serving s : food.getServings()){
+                //the last value appears to be the standardised value
+                Serving s = food.getServings().get(food.getServings().size() - 1);
+
+                Log.d("FAT_SECRET", "onFoodResponse: servings: measurement Description: " + s.getMeasurementDescription());
+                Log.d("FAT_SECRET", "onFoodResponse: servings: serving description: " + s.getServingDescription());
+                //serving amounts in metric "g" , "ml" or "oz"
+                Log.d("FAT_SECRET", "onFoodResponse: servings: metric Serving Unit: " + s.getMetricServingUnit());
+                Log.d("FAT_SECRET", "onFoodResponse: servings: metric Serving amount: " + s.getMetricServingAmount());
+
+            Log.d("FAT_SECRET", "onFoodResponse: servings: serving calories: " + s.getCalories());
+
+                Log.d("FAT_SECRET", " ");
+
+            //}
+            intent.putExtra("FOOD_SERVINGS", food.getServings().toString());
+            Log.d("FAT_SECRET", "onFoodResponse: FOOD DESCRIPTION: " + food.getDescription());
+            //Log.d("FAT_SECRET", "onFoodResponse: FOOD SERVINGS: " + food.getServings().toString());
+
+            //TODO try find a way to pass all the servings to the next activity
+
+            startActivity(intent);
         }
 
         @Override
