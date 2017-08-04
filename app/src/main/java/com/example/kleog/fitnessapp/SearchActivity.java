@@ -30,11 +30,15 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
+    Toast mToast;
+
     ArrayList<CompactFood> arrayFood;
+
     //api
     String key = "9363b5d78a9342818602505dad0b01cb";
     String secret = "02d257d83e6249fd98d20782992c0de3";
     String query;
+
     private APIFoodItemListAdapter adapter;
     private String mealType;
 
@@ -145,10 +149,19 @@ public class SearchActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged(); // Update screen when search text inputted
 
             if (arrayFood.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "0 Results Returned", Toast.LENGTH_SHORT).show(); // if search finds no items, states "0 Results Returned"
+                showAToast("0 Results Returned"); // if search finds no items, states "0 Results Returned"
                 Log.d("SEARCH_VIEW", "onQueryTextChange: items = " + arrayFood.size());
             }
 
+
+        }
+
+        public void showAToast (String message){
+            if (mToast == null) {
+                //if toast is not showing then show one
+                mToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+                mToast.show();
+            }
 
         }
 
