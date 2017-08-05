@@ -3,6 +3,7 @@ package com.example.kleog.fitnessapp;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,8 +26,8 @@ public class QuantityActivity extends AppCompatActivity {
     private ProgressBar mLoadingIcon;
 
     //api
-    String key = "9363b5d78a9342818602505dad0b01cb";
-    String secret = "02d257d83e6249fd98d20782992c0de3";
+    private String key = "9363b5d78a9342818602505dad0b01cb";
+    private String secret = "02d257d83e6249fd98d20782992c0de3";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +48,7 @@ public class QuantityActivity extends AppCompatActivity {
 
         Request req = new Request(key, secret, listener);
 
-        //converts string to long
-        long foodID = Long.parseLong( getIntent().getStringExtra("FOOD_ID") );
-
-        req.getFood(requestQueue, foodID);
+        req.getFood(requestQueue, getIntent().getLongExtra("FOOD_ID", 0L));
 
 
 
@@ -79,7 +77,7 @@ public class QuantityActivity extends AppCompatActivity {
     private class Listener implements ResponseListener {
         @Override
         public void onFoodResponse(Food food) {
-
+            Log.d("QUANTITY_ACTIVITY", "onFoodResponse: " + food.getDescription());
         }
 
 

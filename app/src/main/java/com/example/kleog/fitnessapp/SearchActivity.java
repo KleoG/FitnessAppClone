@@ -83,7 +83,7 @@ public class SearchActivity extends AppCompatActivity {
                 Intent intent = new Intent(SearchActivity.this, QuantityActivity.class);
 
                 CompactFood obj = (CompactFood) lv.getAdapter().getItem(position);  //Gets whole object in the position
-
+                Log.d("SEARCH_ACTIVITY", "onItemClick: food description: " + obj.getDescription());
                 intent.putExtra("FOOD_ID", obj.getId());
                 intent.putExtra("MEAL_TYPE", mealType);
                 startActivity(intent);
