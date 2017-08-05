@@ -4,42 +4,58 @@ import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.fatsecret.platform.model.Food;
+import com.fatsecret.platform.services.android.Request;
+import com.fatsecret.platform.services.android.ResponseListener;
 
 public class QuantityActivity extends AppCompatActivity {
 
     public static final int MAX_QUANTITY = 100;
     public static final int MIN_QUANTITY = 0;
 
-    private String foodItem;
-    private int quantity;
+    private String mMealType;
+    private int mQuantity;
+
+
+    private ProgressBar mLoadingIcon;
+
+    //api
+    String key = "9363b5d78a9342818602505dad0b01cb";
+    String secret = "02d257d83e6249fd98d20782992c0de3";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quantity);
 
-        quantity = 0;
         // gets what type of meal e.g. breakfast, lunch, dinner or snack
-        foodItem = getIntent().getStringExtra("FOOD_ITEM");
+        mMealType = getIntent().getStringExtra("MEAL_TYPE");
 
-        setTitle(foodItem);
-        updateQuantityOnScreen();
-    }
 
-    // must change the quantity which is in an integer to String before setText
-    public void updateQuantityOnScreen() {
-        ((TextView) findViewById(R.id.textView)).setText(String.valueOf(quantity));
-    }
+        mLoadingIcon = (ProgressBar) findViewById(R.id.foodProgressBar);
+        mLoadingIcon.setVisibility(View.VISIBLE);
 
-    public void increaseQuantity(View v) {
-        quantity = Math.min(MAX_QUANTITY, quantity + 1);
-        updateQuantityOnScreen();
-    }
+        //fat secret API stuff
 
-    public void decreaseQuantity(View v) {
-        quantity = Math.max(MIN_QUANTITY, quantity - 1);
-        updateQuantityOnScreen();
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        Listener listener = new Listener();
+
+        Request req = new Request(key, secret, listener);
+
+        //converts string to long
+        long foodID = Long.parseLong( getIntent().getStringExtra("FOOD_ID") );
+
+        req.getFood(requestQueue, foodID);
+
+
+
+
+        mLoadingIcon.setVisibility(View.INVISIBLE);
     }
 
     // called when submit button is pressed - has not been linked to button yet
@@ -48,11 +64,25 @@ public class QuantityActivity extends AppCompatActivity {
     }
 
     public int getQuantity() {
-        return quantity;
+        return mQuantity;
     }
 
     @VisibleForTesting
     public void setQuantity(int qty) {
-        quantity = qty;
+        mQuantity = qty;
     }
+
+
+
+
+
+    private class Listener implements ResponseListener {
+        @Override
+        public void onFoodResponse(Food food) {
+
+        }
+
+
+    }
+
 }

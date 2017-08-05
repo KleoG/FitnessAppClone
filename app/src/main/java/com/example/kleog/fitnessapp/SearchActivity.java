@@ -36,9 +36,9 @@ public class SearchActivity extends AppCompatActivity {
     ArrayList<CompactFood> arrayFood;
 
     //api
-    String key = "9363b5d78a9342818602505dad0b01cb";
-    String secret = "02d257d83e6249fd98d20782992c0de3";
-    String query;
+    private String key = "9363b5d78a9342818602505dad0b01cb";
+    private String secret = "02d257d83e6249fd98d20782992c0de3";
+    private String query;
 
     private APIFoodItemListAdapter adapter;
     private String mealType;
@@ -79,9 +79,14 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                CompactFood obj = (CompactFood) lv.getAdapter().getItem(position);  //Gets whole object in the position
-                req.getFood(requestQueue, obj.getId());
 
+                Intent intent = new Intent(SearchActivity.this, QuantityActivity.class);
+
+                CompactFood obj = (CompactFood) lv.getAdapter().getItem(position);  //Gets whole object in the position
+
+                intent.putExtra("FOOD_ID", obj.getId());
+                intent.putExtra("MEAL_TYPE", mealType);
+                startActivity(intent);
             }
         });
 
@@ -129,7 +134,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    class Listener implements ResponseListener {
+    private class Listener implements ResponseListener {
         @Override
         public void onFoodListRespone(Response<CompactFood> response) {
 
@@ -178,32 +183,6 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onFoodResponse(Food food) {
             Log.d("FAT_SECRET", "onFoodResponse: FOOD NAME: " + food.getName());
-            Intent intent = new Intent(SearchActivity.this, QuantityActivity.class);
-            Log.d("FAT_SECRET", " ");
-            intent.putExtra("FOOD_NAME", food.getName());
-            intent.putExtra("FOOD_DESCRIPTION", food.getDescription());
-            //for (Serving s : food.getServings()){
-                //the last value appears to be the standardised value
-                Serving s = food.getServings().get(food.getServings().size() - 1);
-
-                Log.d("FAT_SECRET", "onFoodResponse: servings: measurement Description: " + s.getMeasurementDescription());
-                Log.d("FAT_SECRET", "onFoodResponse: servings: serving description: " + s.getServingDescription());
-                //serving amounts in metric "g" , "ml" or "oz"
-                Log.d("FAT_SECRET", "onFoodResponse: servings: metric Serving Unit: " + s.getMetricServingUnit());
-                Log.d("FAT_SECRET", "onFoodResponse: servings: metric Serving amount: " + s.getMetricServingAmount());
-
-            Log.d("FAT_SECRET", "onFoodResponse: servings: serving calories: " + s.getCalories());
-
-                Log.d("FAT_SECRET", " ");
-
-            //}
-            intent.putExtra("FOOD_SERVINGS", food.getServings().toString());
-            Log.d("FAT_SECRET", "onFoodResponse: FOOD DESCRIPTION: " + food.getDescription());
-            //Log.d("FAT_SECRET", "onFoodResponse: FOOD SERVINGS: " + food.getServings().toString());
-
-            //TODO try find a way to pass all the servings to the next activity
-
-            startActivity(intent);
         }
 
         @Override
