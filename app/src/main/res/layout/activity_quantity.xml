@@ -21,7 +21,8 @@
         <TextView
             android:id="@+id/foodTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     </LinearLayout>
 
@@ -100,12 +101,11 @@
             android:id="@+id/totalCaloriesAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
+            android:layout_weight="1" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/submitButton"
+        android:id="@+id/foodSubmitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit" />

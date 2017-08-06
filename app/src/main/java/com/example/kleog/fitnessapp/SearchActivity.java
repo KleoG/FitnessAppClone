@@ -21,7 +21,6 @@ import com.fatsecret.platform.model.CompactFood;
 import com.fatsecret.platform.model.CompactRecipe;
 import com.fatsecret.platform.model.Food;
 import com.fatsecret.platform.model.Recipe;
-import com.fatsecret.platform.model.Serving;
 import com.fatsecret.platform.services.Response;
 import com.fatsecret.platform.services.android.Request;
 import com.fatsecret.platform.services.android.ResponseListener;
@@ -83,9 +82,13 @@ public class SearchActivity extends AppCompatActivity {
                 Intent intent = new Intent(SearchActivity.this, QuantityActivity.class);
 
                 CompactFood obj = (CompactFood) lv.getAdapter().getItem(position);  //Gets whole object in the position
+
                 Log.d("SEARCH_ACTIVITY", "onItemClick: food description: " + obj.getDescription());
+
                 intent.putExtra("FOOD_ID", obj.getId());
+                intent.putExtra("FOOD_DESCRIPTION", obj.getDescription());
                 intent.putExtra("MEAL_TYPE", mealType);
+
                 startActivity(intent);
             }
         });
@@ -111,7 +114,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                //TODO make it so onQeryTectChange will wait 0.5s before searching for food
                 Log.d("SEARCH_VIEW", "onQueryTextChange: Search text has changed");
                 arrayFood.clear();  //clears the the current food stored in list when text inputted
 
@@ -160,7 +163,11 @@ public class SearchActivity extends AppCompatActivity {
 
         }
 
-        public void showAToast (String message){
+        /**
+         * shows a toat only when there is not one currently showing to avoid toast spam when typing
+         * @param message
+         */
+        public void showAToast(String message) {
             if (mToast == null) {
                 //if toast is not showing then show one
                 mToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
@@ -169,68 +176,47 @@ public class SearchActivity extends AppCompatActivity {
 
         }
 
-        @Override
-        public void onRecipeListRespone(Response<CompactRecipe> response) {
-            System.out.println("TOTAL RECIPES: " + response.getTotalResults());
-
-            List<CompactRecipe> recipes = response.getResults();
-            System.out.println("=========RECIPES==========");
-            for (CompactRecipe recipe : recipes) {
-                System.out.println(recipe.getName());
-            }
-        }
-
-        @Override
-        public void onFoodResponse(Food food) {
-            Log.d("FAT_SECRET", "onFoodResponse: FOOD NAME: " + food.getName());
-        }
-
-        @Override
-        public void onRecipeResponse(Recipe recipe) {
-            System.out.println("RECIPE NAME: " + recipe.getName());
-        }
     }
 
+
+    private class APIFoodItemListAdapter extends ArrayAdapter<CompactFood> {
+        private LayoutInflater inflater = null;
+        Context context;
+        ArrayList<CompactFood> foods;
+
+        public APIFoodItemListAdapter(Context context, ArrayList<CompactFood> foods) {
+            super(context, R.layout.api_food_item_list, foods);
+            this.context = context;
+            this.foods = foods;
+            inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return foods.size();
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View vi = convertView;
+            if (vi == null)
+                vi = inflater.inflate(R.layout.api_food_item_list, null);
+            TextView foodName = (TextView) vi.findViewById(R.id.apiFood);
+
+
+            //this is where the values of the row are set
+            foodName.setText(foods.get(position).getName());
+
+            return vi;
+        }
+
+
+    }
 
 }
-
-class APIFoodItemListAdapter extends ArrayAdapter<CompactFood> {
-    private static LayoutInflater inflater = null;
-    Context context;
-    ArrayList<CompactFood> foods;
-
-    public APIFoodItemListAdapter(Context context, ArrayList<CompactFood> foods) {
-        super(context, R.layout.api_food_item_list, foods);
-        this.context = context;
-        this.foods = foods;
-        inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    @Override
-    public int getCount() {
-        return foods.size();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        View vi = convertView;
-        if (vi == null)
-            vi = inflater.inflate(R.layout.api_food_item_list, null);
-        TextView foodName = (TextView) vi.findViewById(R.id.apiFood);
-
-
-        //this is where the values of the row are set
-        foodName.setText(foods.get(position).getName());
-
-        return vi;
-    }
-
-
-}
-
