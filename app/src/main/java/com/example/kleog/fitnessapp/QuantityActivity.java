@@ -76,6 +76,7 @@ public class QuantityActivity extends AppCompatActivity {
         mFoodAmountText = (EditText) findViewById(R.id.foodAmountText);
 
         mFoodSpinner = (Spinner) findViewById(R.id.foodQuantityAmountSpinner);
+        //TODO make spinner scrollable and add dividers
 
         mSubmit = (Button) findViewById(R.id.foodSubmitButton);
 
