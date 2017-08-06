@@ -82,10 +82,12 @@ public class QuantityActivity extends AppCompatActivity {
 
         // gets what type of meal e.g. breakfast, lunch, dinner or snack
         mMealType = getIntent().getStringExtra("MEAL_TYPE");
-        mFoodDrescription = getIntent().getStringExtra("FOOD_DESCRIPTION");
         mFoodID = getIntent().getLongExtra("FOOD_ID", 0L);
 
-
+        //formats the description to separate lines with regex
+        mFoodDrescription = getIntent().getStringExtra("FOOD_DESCRIPTION");
+        String regex = "- |\\| ";
+        mFoodDrescription = mFoodDrescription.replaceAll(regex, "\n");
 
         //fat secret API stuff
 
