@@ -4,14 +4,11 @@ import android.content.Context;
 import android.test.InstrumentationTestCase;
 import android.test.mock.MockContext;
 import java.util.Date;
-import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
-import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
+import com.example.kleog.fitnessapp.Models.UserNutritionDB;
+import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

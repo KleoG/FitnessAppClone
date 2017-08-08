@@ -1,4 +1,4 @@
-package com.example.kleog.fitnessapp.UserNutritionDatabase;
+package com.example.kleog.fitnessapp.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -41,12 +41,22 @@ public class FoodItemsModel {
     @ColumnInfo(name = "fat")
     private Double Fat;
 
-    @ColumnInfo(name = "amount_Eaten")
+    /**
+     * standardised units are only grams, ounces and ml for foods
+     */
+    @ColumnInfo(name = "standardised_amount_eaten")
     private Double amountEaten;
 
-    @ColumnInfo(name = "amount_Eaten_Type") //check enum for types
+    @ColumnInfo(name = "standardised_amount_eaten_type") //check enum for types
     @TypeConverters(AmountEatenTypeConverter.class)
     private AmountEatenType amountEatenType;
+
+    //stores index of the serving chosen by user
+    @ColumnInfo(name = "API_Serving_Chosen")
+    private int servingChosen;
+
+    @ColumnInfo (name = "Serving_Units_Chosen")
+    private Double servingUnits;
 
     public FoodItemsModel(Date date, MealType eatenDuringMeal, String foodID, Double Calories, Double Protein, Double Carbs, Double Fat, Double amountEaten, AmountEatenType amountEatenType) {
         this.date = date;
@@ -70,10 +80,6 @@ public class FoodItemsModel {
 
     public MealType getEatenDuringMeal() {
         return eatenDuringMeal;
-    }
-
-    public void setEatenDuringMeal(MealType eatenDuringMeal) {
-        this.eatenDuringMeal = eatenDuringMeal;
     }
 
     public String getFoodID() {

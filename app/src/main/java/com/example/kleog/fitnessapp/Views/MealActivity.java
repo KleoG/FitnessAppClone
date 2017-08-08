@@ -1,17 +1,24 @@
-package com.example.kleog.fitnessapp;
+package com.example.kleog.fitnessapp.Views;
 
 import android.arch.lifecycle.LiveData;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.example.kleog.fitnessapp.UserNutritionDatabase.AmountEatenType;
-import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
-import com.example.kleog.fitnessapp.UserNutritionDatabase.FoodItemsModel;
-import com.example.kleog.fitnessapp.UserNutritionDatabase.MealType;
-import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
+import com.example.kleog.fitnessapp.R;
+import com.example.kleog.fitnessapp.Models.AmountEatenType;
+import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
+import com.example.kleog.fitnessapp.Models.FoodItemsModel;
+import com.example.kleog.fitnessapp.Models.MealType;
+import com.example.kleog.fitnessapp.Models.UserNutritionDB;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,8 +64,7 @@ public class MealActivity extends AppCompatActivity {
         //this is the type of value that will be returned (a liveData that contains the list)
         LiveData<List<DailyUserInfoModel>> info = db.DailyUserInfoModel().getAll();
 
-        //use this to get the list from live data
-        info.getValue();
+        //
 
         //temporary testing data
         FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200.0, 50.0, 10.0, 5.0, 200.0, AmountEatenType.GRAMS);
@@ -138,4 +144,75 @@ public class MealActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * custom adapter to display current foods
+     */
+
+    public static class FoodItemListAdapter extends ArrayAdapter<FoodItemsModel> {
+        private static LayoutInflater inflater = null;
+        Context context;
+        ArrayList<FoodItemsModel> foods;
+
+        public FoodItemListAdapter(Context context, ArrayList<FoodItemsModel> foods) {
+            super(context, R.layout.food_item_list_row, foods);
+            this.context = context;
+            this.foods = foods;
+            inflater = (LayoutInflater) context
+                    .getSystemService(LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return foods.size();
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View vi = convertView;
+            if (vi == null)
+                vi = inflater.inflate(R.layout.food_item_list_row, null);
+            TextView foodName = (TextView) vi.findViewById(R.id.foodItemName);
+
+            //this is what happens when the remove button is pressed
+            ImageButton deleteButton = (ImageButton) vi.findViewById(R.id.deleteImageButton);
+            deleteButton.setTag(position);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    int pos = (int) view.getTag();
+                    //TODO also remove from database on this line
+
+                    foods.remove(pos);
+                    notifyDataSetChanged();
+
+                }
+            });
+
+            //this is where the values of the row are set
+            foodName.setText(foods.get(position).getFoodID());
+
+            return vi;
+        }
+
+        @Override
+        public void add(FoodItemsModel food) {
+            foods.add(food);
+            //super.add(food);
+            notifyDataSetChanged();
+
+        }
+
+        @Override
+        public void remove(FoodItemsModel food) {
+            foods.remove(food);
+            notifyDataSetChanged();
+            //super.remove(employee);
+        }
+    }
 }

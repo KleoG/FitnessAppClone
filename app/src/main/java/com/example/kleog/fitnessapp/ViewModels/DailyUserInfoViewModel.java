@@ -6,10 +6,10 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
-import com.example.kleog.fitnessapp.UserNutritionDatabase.MealModel;
-import com.example.kleog.fitnessapp.UserNutritionDatabase.MealType;
-import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
+import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
+import com.example.kleog.fitnessapp.Models.MealModel;
+import com.example.kleog.fitnessapp.Models.MealType;
+import com.example.kleog.fitnessapp.Models.UserNutritionDB;
 
 import java.util.Date;
 import java.util.List;

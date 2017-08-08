@@ -1,4 +1,4 @@
-package com.example.kleog.fitnessapp;
+package com.example.kleog.fitnessapp.Views;
 
 import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.ViewModelProviders;
@@ -9,8 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.kleog.fitnessapp.UserNutritionDatabase.DailyUserInfoModel;
-import com.example.kleog.fitnessapp.UserNutritionDatabase.UserNutritionDB;
+import com.example.kleog.fitnessapp.R;
+import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
+import com.example.kleog.fitnessapp.Models.UserNutritionDB;
 import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;

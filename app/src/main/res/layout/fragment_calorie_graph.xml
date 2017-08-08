@@ -4,7 +4,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="com.example.kleog.fitnessapp.newGraphActivity"
+    tools:context="com.example.kleog.fitnessapp.Views.newGraphActivity"
     android:orientation="vertical">
 
     <TextView

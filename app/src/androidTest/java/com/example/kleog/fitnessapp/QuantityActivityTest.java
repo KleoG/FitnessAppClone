@@ -3,6 +3,8 @@ package com.example.kleog.fitnessapp;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.example.kleog.fitnessapp.Views.QuantityActivity;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,8 +12,8 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static com.example.kleog.fitnessapp.QuantityActivity.MAX_QUANTITY;
-import static com.example.kleog.fitnessapp.QuantityActivity.MIN_QUANTITY;
+import static com.example.kleog.fitnessapp.Views.QuantityActivity.MAX_QUANTITY;
+import static com.example.kleog.fitnessapp.Views.QuantityActivity.MIN_QUANTITY;
 import static org.junit.Assert.assertEquals;
 
 /**

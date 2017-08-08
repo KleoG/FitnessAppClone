@@ -1,4 +1,4 @@
-package com.example.kleog.fitnessapp.UserNutritionDatabase;
+package com.example.kleog.fitnessapp.Models;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 
 import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
-import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 /**
  * Created by Kevin on 29/05/2017.

@@ -1,4 +1,4 @@
-package com.example.kleog.fitnessapp;
+package com.example.kleog.fitnessapp.Views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,10 +17,8 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.kleog.fitnessapp.R;
 import com.fatsecret.platform.model.CompactFood;
-import com.fatsecret.platform.model.CompactRecipe;
-import com.fatsecret.platform.model.Food;
-import com.fatsecret.platform.model.Recipe;
 import com.fatsecret.platform.services.Response;
 import com.fatsecret.platform.services.android.Request;
 import com.fatsecret.platform.services.android.ResponseListener;

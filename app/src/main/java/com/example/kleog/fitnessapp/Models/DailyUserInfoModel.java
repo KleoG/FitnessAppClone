@@ -1,4 +1,4 @@
-package com.example.kleog.fitnessapp.UserNutritionDatabase;
+package com.example.kleog.fitnessapp.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

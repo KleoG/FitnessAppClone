@@ -1,4 +1,4 @@
-package com.example.kleog.fitnessapp;
+package com.example.kleog.fitnessapp.Views;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.kleog.fitnessapp.R;
 import com.fatsecret.platform.model.Food;
 import com.fatsecret.platform.model.Serving;
 import com.fatsecret.platform.services.android.Request;

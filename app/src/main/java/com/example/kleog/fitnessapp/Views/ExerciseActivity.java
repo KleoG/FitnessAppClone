@@ -1,7 +1,9 @@
-package com.example.kleog.fitnessapp;
+package com.example.kleog.fitnessapp.Views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.kleog.fitnessapp.R;
 
 public class ExerciseActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.kleog.fitnessapp.UserNutritionDatabase;
+package com.example.kleog.fitnessapp.Models;
 
 /**
  * Created by Kevin on 29/05/2017.
@@ -11,10 +11,16 @@ public enum AmountEatenType {
             return "GRAMS";
         }
     },
-    LBS {
+    OUNCE {
         @Override
         public String toString() {
-            return "LBS";
+            return "OUNCE";
+        }
+    },
+    ML {
+        @Override
+        public String toString() {
+            return "ML";
         }
     },
     UNITS {

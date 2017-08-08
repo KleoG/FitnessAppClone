@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="com.example.kleog.fitnessapp.newGraphActivity">
+    tools:context="com.example.kleog.fitnessapp.Views.newGraphActivity">
 
     <RadioGroup
         android:id="@+id/radioGroupGraphs"
