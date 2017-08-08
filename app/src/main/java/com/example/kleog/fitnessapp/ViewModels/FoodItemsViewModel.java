@@ -32,7 +32,7 @@ public class FoodItemsViewModel extends AndroidViewModel {
 
     public LiveData<List<FoodItemsModel>> getCurrentDayFoodsOfType(MealType type){
 
-        if(foods == null || foodTypeCurrentlyInLiveData != type){
+        if(foodTypeCurrentlyInLiveData != type){
 
             foods = appDatabase.FoodItemsModel().getFoodEatenOnDateAndMealType(new Date(), type);
             //updates what the meal type of the foods currently stored

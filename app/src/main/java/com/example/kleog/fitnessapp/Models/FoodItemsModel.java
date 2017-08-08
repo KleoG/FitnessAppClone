@@ -20,94 +20,98 @@ import java.util.Date;
 public class FoodItemsModel {
 
     @TypeConverters(DateConverter.class) //used to covert Java date into SQLite compatible data type
-    public Date date;
+    private Date date;
 
     @ColumnInfo(name = "eaten_during_meal")
     @TypeConverters(MealTypeConverter.class)
     private MealType eatenDuringMeal;
 
     @ColumnInfo(name = "food_ID")
-    private String foodID;
+    private int foodID;
 
-    @ColumnInfo(name = "calories")
-    private Double Calories;
+    private Double calories;
 
-    @ColumnInfo(name = "protein")
-    private Double Protein;
+    private Double protein;
 
-    @ColumnInfo(name = "carbs")
-    private Double Carbs;
+    private Double carbs;
 
-    @ColumnInfo(name = "fat")
-    private Double Fat;
+    private Double fat;
 
     /**
      * standardised units are only grams, ounces and ml for foods
      */
     @ColumnInfo(name = "standardised_amount_eaten")
-    private Double amountEaten;
+    private Double standardisedAmountEaten;
 
     @ColumnInfo(name = "standardised_amount_eaten_type") //check enum for types
     @TypeConverters(AmountEatenTypeConverter.class)
-    private AmountEatenType amountEatenType;
+    private AmountEatenType standardisedAmountEatenType;
 
-    //stores index of the serving chosen by user
+    /**
+     * stores index of the serving chosen by user
+     */
     @ColumnInfo(name = "API_Serving_Chosen")
     private int servingChosen;
 
-    @ColumnInfo (name = "Serving_Units_Chosen")
+    @ColumnInfo(name = "Serving_Units_Chosen")
     private Double servingUnits;
 
-    public FoodItemsModel(Date date, MealType eatenDuringMeal, String foodID, Double Calories, Double Protein, Double Carbs, Double Fat, Double amountEaten, AmountEatenType amountEatenType) {
+    public FoodItemsModel(Date date, MealType eatenDuringMeal, int foodID, Double calories, Double protein, Double carbs, Double fat, Double standardisedAmountEaten, AmountEatenType standardisedAmountEatenType, int servingChosen, Double servingUnits) {
         this.date = date;
         this.eatenDuringMeal = eatenDuringMeal;
         this.foodID = foodID;
-        this.Calories = Calories;
-        this.Protein = Protein;
-        this.Carbs = Carbs;
-        this.Fat = Fat;
-        this.amountEaten = amountEaten;
-        this.amountEatenType = amountEatenType;
+        this.calories = calories;
+        this.protein = protein;
+        this.carbs = carbs;
+        this.fat = fat;
+        this.standardisedAmountEaten = standardisedAmountEaten;
+        this.standardisedAmountEatenType = standardisedAmountEatenType;
+        this.servingChosen = servingChosen;
+        this.servingUnits = servingUnits;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public MealType getEatenDuringMeal() {
         return eatenDuringMeal;
     }
 
-    public String getFoodID() {
+    public int getFoodID() {
         return foodID;
     }
 
     public Double getCalories() {
-        return Calories;
+        return calories;
     }
 
     public Double getProtein() {
-        return Protein;
+        return protein;
     }
 
     public Double getCarbs() {
-        return Carbs;
+        return carbs;
     }
 
     public Double getFat() {
-        return Fat;
+        return fat;
     }
 
-    public Double getAmountEaten() {
-        return amountEaten;
+    public Double getStandardisedAmountEaten() {
+        return standardisedAmountEaten;
     }
 
-    public AmountEatenType getAmountEatenType() {
-        return amountEatenType;
+    public AmountEatenType getStandardisedAmountEatenType() {
+        return standardisedAmountEatenType;
+    }
+
+    public int getServingChosen() {
+        return servingChosen;
+    }
+
+    public Double getServingUnits() {
+        return servingUnits;
     }
 
 }

@@ -67,12 +67,12 @@ public class MealActivity extends AppCompatActivity {
         //
 
         //temporary testing data
-        FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200.0, 50.0, 10.0, 5.0, 200.0, AmountEatenType.GRAMS);
-        FoodItemsModel item2 = new FoodItemsModel(new Date(), MealType.LUNCH, "Eggs", 100.0, 30.0, 20.0, 10.0, 3.0, AmountEatenType.UNITS);
-        FoodItemsModel item3 = new FoodItemsModel(new Date(), MealType.LUNCH, "rice", 250.0, 10.0, 30.0, 15.0, 150.0, AmountEatenType.GRAMS);
-        adapter.add(item1);
-        adapter.add(item2);
-        adapter.add(item3);
+//        FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200.0, 50.0, 10.0, 5.0, 200.0, AmountEatenType.GRAMS);
+//        FoodItemsModel item2 = new FoodItemsModel(new Date(), MealType.LUNCH, "Eggs", 100.0, 30.0, 20.0, 10.0, 3.0, AmountEatenType.UNITS);
+//        FoodItemsModel item3 = new FoodItemsModel(new Date(), MealType.LUNCH, "rice", 250.0, 10.0, 30.0, 15.0, 150.0, AmountEatenType.GRAMS);
+//        adapter.add(item1);
+//        adapter.add(item2);
+//        adapter.add(item3);
 
 
     }
@@ -118,8 +118,8 @@ public class MealActivity extends AppCompatActivity {
 
 
         // temp useless adding of food
-        FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200.0, 50.0, 10.0, 5.0, 200.0, AmountEatenType.GRAMS);
-        adapter.add(item1);
+        //FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200.0, 50.0, 10.0, 5.0, 200.0, AmountEatenType.GRAMS);
+        //adapter.add(item1);
     }
 
     /**
@@ -195,7 +195,7 @@ public class MealActivity extends AppCompatActivity {
             });
 
             //this is where the values of the row are set
-            foodName.setText(foods.get(position).getFoodID());
+            //foodName.setText(foods.get(position).getFoodID());
 
             return vi;
         }
