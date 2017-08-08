@@ -3,11 +3,16 @@ package com.example.kleog.fitnessapp.ViewModels;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.os.AsyncTask;
+import android.util.Log;
 
+import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.Models.FoodItemsModel;
+import com.example.kleog.fitnessapp.Models.MealModel;
 import com.example.kleog.fitnessapp.Models.MealType;
 import com.example.kleog.fitnessapp.Models.UserNutritionDB;
 
+import java.net.ConnectException;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +48,36 @@ public class FoodItemsViewModel extends AndroidViewModel {
 
     }
 
-//    public FoodItemsModel getFoodWithID(long ID, MealType type){
-//
-//    }
+    public FoodItemsModel getFoodWithID(Integer ID, MealType type) throws Exception{
+        try{
+            return new RetrieveAsyncTask(appDatabase).execute(ID, type).get();
+        }
+        catch (Exception e){
+            throw new Exception("error trying to retrieve food item with id:" + ID + " meal type: " + type);
+        }
+
+    }
+
+    private static class RetrieveAsyncTask extends AsyncTask<Object, Void, FoodItemsModel> {
+
+        private UserNutritionDB db;
+
+        RetrieveAsyncTask(UserNutritionDB appDatabase) {
+            db = appDatabase;
+        }
+
+        @Override
+        /**
+         * params[0] = food id
+         * params[1] = meal type
+         */
+        protected FoodItemsModel doInBackground(Object... params) {
+
+            Date date = new Date();
+
+
+            return db.FoodItemsModel().getsingleFoodItem(date, (MealType) params[1], (int) params[0]);
+        }
+
+    }
 }

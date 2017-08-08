@@ -30,7 +30,7 @@ public interface FoodItemsModelDAO {
     LiveData<List<FoodItemsModel>> getFoodEatenOnDateAndMealType(Date date, MealType mealType);
 
     @Query("SELECT * FROM food_items WHERE date = :date AND eaten_during_meal = :mealType AND food_ID = :foodID")
-    FoodItemsModel getsingleFoodItem(Date date, MealType mealType, String foodID);
+    FoodItemsModel getsingleFoodItem(Date date, MealType mealType, int foodID);
 
     @Insert
     void insertAll(FoodItemsModel... foodItems);
