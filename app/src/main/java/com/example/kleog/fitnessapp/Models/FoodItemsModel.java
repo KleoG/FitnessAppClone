@@ -37,15 +37,15 @@ public class FoodItemsModel {
 
     private Double fat;
 
-    /**
-     * standardised units are only grams, ounces and ml for foods
-     */
-    @ColumnInfo(name = "standardised_amount_eaten")
-    private Double standardisedAmountEaten;
-
-    @ColumnInfo(name = "standardised_amount_eaten_type") //check enum for types
-    @TypeConverters(AmountEatenTypeConverter.class)
-    private AmountEatenType standardisedAmountEatenType;
+//    /**
+//     * standardised units are only grams, ounces and ml for foods
+//     */
+//    @ColumnInfo(name = "standardised_amount_eaten")
+//    private Double standardisedAmountEaten;
+//
+//    @ColumnInfo(name = "standardised_amount_eaten_type") //check enum for types
+//    @TypeConverters(AmountEatenTypeConverter.class)
+//    private AmountEatenType standardisedAmountEatenType;
 
     /**
      * stores index of the serving chosen by user
@@ -61,7 +61,7 @@ public class FoodItemsModel {
 
     //TODO add food description
 
-    public FoodItemsModel(Date date, MealType eatenDuringMeal, long foodID, Double calories, Double protein, Double carbs, Double fat, Double standardisedAmountEaten, AmountEatenType standardisedAmountEatenType, int servingChosen, Double servingUnits, String foodDescription) {
+    public FoodItemsModel(Date date, MealType eatenDuringMeal, long foodID, Double calories, Double protein, Double carbs, Double fat, int servingChosen, Double servingUnits, String foodDescription) {
         this.date = date;
         this.eatenDuringMeal = eatenDuringMeal;
         this.foodID = foodID;
@@ -69,8 +69,6 @@ public class FoodItemsModel {
         this.protein = protein;
         this.carbs = carbs;
         this.fat = fat;
-        this.standardisedAmountEaten = standardisedAmountEaten;
-        this.standardisedAmountEatenType = standardisedAmountEatenType;
         this.servingChosen = servingChosen;
         this.servingUnits = servingUnits;
         this.foodDescription = foodDescription;
@@ -104,13 +102,13 @@ public class FoodItemsModel {
         return fat;
     }
 
-    public Double getStandardisedAmountEaten() {
-        return standardisedAmountEaten;
-    }
-
-    public AmountEatenType getStandardisedAmountEatenType() {
-        return standardisedAmountEatenType;
-    }
+//    public Double getStandardisedAmountEaten() {
+//        return standardisedAmountEaten;
+//    }
+//
+//    public AmountEatenType getStandardisedAmountEatenType() {
+//        return standardisedAmountEatenType;
+//    }
 
     public int getServingChosen() {
         return servingChosen;
