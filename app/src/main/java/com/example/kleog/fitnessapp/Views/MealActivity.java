@@ -1,10 +1,13 @@
 package com.example.kleog.fitnessapp.Views;
 
+import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,31 +16,43 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.kleog.fitnessapp.Models.MealModel;
 import com.example.kleog.fitnessapp.R;
-import com.example.kleog.fitnessapp.Models.AmountEatenType;
 import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.Models.FoodItemsModel;
 import com.example.kleog.fitnessapp.Models.MealType;
 import com.example.kleog.fitnessapp.Models.UserNutritionDB;
+import com.example.kleog.fitnessapp.ViewModels.FoodItemsViewModel;
+import com.example.kleog.fitnessapp.ViewModels.MealModelViewModel;
+import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Kevin on 23/05/2017.
  */
 
-public class MealActivity extends AppCompatActivity {
-    public UserNutritionDB db;
+public class MealActivity extends LifecycleActivity {
+    private UserNutritionDB db;
 
-    public String mealType;
+    private String mMealType;
+    private MealType mMealTypeEnum;
 
-    ListView foodListView;
 
-    ArrayList<FoodItemsModel> foodItemsList;
+    //food list variables
+    private ListView mFoodListView;
 
-    FoodItemListAdapter adapter;
+    private ArrayList<FoodItemsModel> mFoodItemsList;
+
+    private FoodItemListAdapter mAdapter;
+
+    private TextView calorieValue, carbsValue, proteinValue, fatValue;
+
+
+    //view models
+    private MealModelViewModel mMealVM;
+    private FoodItemsViewModel mFoodVM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,24 +60,44 @@ public class MealActivity extends AppCompatActivity {
 
         //sets the title of the page to the button pressed
         setContentView(R.layout.activity_meal_page);
-        mealType = getIntent().getStringExtra("MEAL_TYPE");
+        mMealType = getIntent().getStringExtra("MEAL_TYPE");
+        mMealTypeEnum = converToMEALTYPE(mMealType);
 
-        setTitle(mealType);
+        setTitle(mMealType);
 
         db = UserNutritionDB.getDatabase(this.getApplicationContext());
 
+        //initialise View Models
+        mMealVM = ViewModelProviders.of(this).get(MealModelViewModel.class);
+        mFoodVM = ViewModelProviders.of(this).get(FoodItemsViewModel.class);
+
+        //initialise textViews to be updated
+        calorieValue = (TextView) findViewById(R.id.calorieValue);
+        carbsValue = (TextView) findViewById(R.id.carbsValue);
+        proteinValue= (TextView) findViewById(R.id.proteinValue);
+        fatValue = (TextView) findViewById(R.id.fatValue);
+
+
         //sets up the list underneath the add view button
-        foodListView = (ListView) findViewById(R.id.foodList);
-        foodItemsList = new ArrayList<>();
-        adapter = new FoodItemListAdapter(this, foodItemsList);
-        foodListView.setAdapter(adapter);
+        mFoodListView = (ListView) findViewById(R.id.foodList);
+        mFoodItemsList = new ArrayList<>();
+        mAdapter = new FoodItemListAdapter(this, mFoodItemsList);
+        mFoodListView.setAdapter(mAdapter);
 
 
-        //this is how to create and insert data into the db with Async task
-        //db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
+
 
         //this is the type of value that will be returned (a liveData that contains the list)
-        LiveData<List<DailyUserInfoModel>> info = db.DailyUserInfoModel().getAll();
+        LiveData<MealModel> MealInfo = mMealVM.getMealInfo(mMealTypeEnum);
+
+        MealInfo.observe(this, info -> {
+            Log.d("LIVE_DATA_OBSERVER_MEAL", "onCreate: observed change in live data for Meal" + info.getMealType());
+            calorieValue.setText(info.getTotalCalories().toString());
+            carbsValue.setText(info.getTotalCarbs().toString());
+            proteinValue.setText(info.getTotalProtein().toString());
+            fatValue.setText(info.getTotalFat().toString());
+
+        });
 
         //
 
@@ -70,9 +105,9 @@ public class MealActivity extends AppCompatActivity {
 //        FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200.0, 50.0, 10.0, 5.0, 200.0, AmountEatenType.GRAMS);
 //        FoodItemsModel item2 = new FoodItemsModel(new Date(), MealType.LUNCH, "Eggs", 100.0, 30.0, 20.0, 10.0, 3.0, AmountEatenType.UNITS);
 //        FoodItemsModel item3 = new FoodItemsModel(new Date(), MealType.LUNCH, "rice", 250.0, 10.0, 30.0, 15.0, 150.0, AmountEatenType.GRAMS);
-//        adapter.add(item1);
-//        adapter.add(item2);
-//        adapter.add(item3);
+//        mAdapter.add(item1);
+//        mAdapter.add(item2);
+//        mAdapter.add(item3);
 
 
     }
@@ -119,7 +154,7 @@ public class MealActivity extends AppCompatActivity {
 
         // temp useless adding of food
         //FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200.0, 50.0, 10.0, 5.0, 200.0, AmountEatenType.GRAMS);
-        //adapter.add(item1);
+        //mAdapter.add(item1);
     }
 
     /**
@@ -129,7 +164,7 @@ public class MealActivity extends AppCompatActivity {
      */
     public void goToSearchPage(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra("MEAL_TYPE", mealType);
+        intent.putExtra("MEAL_TYPE", mMealType);
 
         startActivity(intent);  // changes page to the intent (graph page)
     }
@@ -144,8 +179,23 @@ public class MealActivity extends AppCompatActivity {
 
     }
 
+    private MealType converToMEALTYPE(String meal_type) {
+        switch (meal_type) {
+            case "Breakfast":
+                return MealType.BREAKFAST;
+            case "Lunch":
+                return MealType.LUNCH;
+            case "Dinner":
+                return MealType.DINNER;
+            case "Snacks":
+                return MealType.SNACKS;
+            default:
+                return null;
+        }
+    }
+
     /**
-     * custom adapter to display current foods
+     * custom mAdapter to display current foods
      */
 
     public static class FoodItemListAdapter extends ArrayAdapter<FoodItemsModel> {
@@ -187,8 +237,9 @@ public class MealActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     int pos = (int) view.getTag();
                     //TODO also remove from database on this line
+                    FoodItemsModel foodToRemove = foods.remove(pos);
 
-                    foods.remove(pos);
+
                     notifyDataSetChanged();
 
                 }

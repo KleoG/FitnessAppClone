@@ -277,11 +277,6 @@ public class QuantityActivity extends AppCompatActivity {
         }
     }
 
-    // called when submit button is pressed - has not been linked to button yet
-    public void submitQuantity(View view) {
-
-    }
-
 
     private class Listener implements ResponseListener {
         @Override
@@ -313,7 +308,7 @@ public class QuantityActivity extends AppCompatActivity {
 
     }
 
-    public class FoodSpinnerAdapter extends ArrayAdapter<Serving> {
+    private class FoodSpinnerAdapter extends ArrayAdapter<Serving> {
 
         private final LayoutInflater mInflater;
         private final Context mContext;

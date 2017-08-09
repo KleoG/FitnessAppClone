@@ -29,4 +29,5 @@ public enum MealType {
             return "SNACKS";
         }
     }
+
 }
