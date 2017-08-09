@@ -124,6 +124,8 @@ public class QuantityActivity extends AppCompatActivity {
         }
 
         if (foodInDB != null) {
+            Log.d(TAG, "onCreate: food was found in database");
+
             //sets the values that the user chose before
             mFoodSpinner.setSelection(foodInDB.getServingChosen());
             mFoodAmountText.setText(foodInDB.getServingUnits().toString());
@@ -143,6 +145,7 @@ public class QuantityActivity extends AppCompatActivity {
 
             foodInDatabase = true;
         } else {
+            Log.d(TAG, "onCreate: food was not found in database");
             mServingChosen = -1;
             foodInDatabase = false;
         }
@@ -164,7 +167,7 @@ public class QuantityActivity extends AppCompatActivity {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //if user hasnt entered the amount then do nothing
-                if (mServingAmount == null || mServingAmount == 0.0) {
+                if (mServingAmount == -1 || mServingAmount == 0.0) {
                     Log.d(TAG, "onClick: submit button pressed but no serving amount entered or serving amount is 0.0");
 
                     Toast.makeText(getApplicationContext(), "must choose valid serving amount (cannot be empty or 0)", Toast.LENGTH_SHORT).show();
@@ -290,7 +293,6 @@ public class QuantityActivity extends AppCompatActivity {
             mFoodTotalCarbs = null;
             mFoodTotalProtein = null;
             mFoodTotalFat = null;
-            mServingAmount = null;
 
 
             //creates and attaches adapter to spinner
