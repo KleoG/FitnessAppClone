@@ -208,7 +208,7 @@ public class MealActivity extends LifecycleActivity {
             });
 
             //this is where the values of the row are set
-            //foodName.setText(foods.get(position).getFoodID());
+            foodName.setText(foods.get(position).getFoodName());
 
             return vi;
         }

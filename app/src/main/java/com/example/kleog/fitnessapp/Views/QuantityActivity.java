@@ -171,7 +171,7 @@ public class QuantityActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "must choose valid serving amount (cannot be empty or 0)", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "onClick: submit button pressed with serving amount :" + mServingAmount);
-                    FoodItemsModel foodToAdd = new FoodItemsModel(new Date(), mMealTypeEnum, mFoodID, mFoodTotalCalories, mFoodTotalProtein, mFoodTotalCarbs, mFoodTotalFat, mServingChosen, mServingAmount, mFoodDrescription);
+                    FoodItemsModel foodToAdd = new FoodItemsModel(new Date(), mMealTypeEnum, mFoodID,mFoodName, mFoodTotalCalories, mFoodTotalProtein, mFoodTotalCarbs, mFoodTotalFat, mServingChosen, mServingAmount, mFoodDrescription);
                     try {
                         FoodItemsModel checkIfFoodIsInDBAlready = mfoodItemsVM.getCurrentDayFoodWithID(mFoodID, mMealTypeEnum);
 

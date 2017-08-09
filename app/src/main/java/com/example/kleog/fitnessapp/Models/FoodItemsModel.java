@@ -62,8 +62,6 @@ public class FoodItemsModel {
     @ColumnInfo(name = "food_description")
     private String foodDescription;
 
-    //TODO add food description
-
     public FoodItemsModel(Date date, MealType eatenDuringMeal, long foodID,String foodName, Double calories, Double protein, Double carbs, Double fat, int servingChosen, Double servingUnits, String foodDescription) {
         this.date = date;
         this.eatenDuringMeal = eatenDuringMeal;
