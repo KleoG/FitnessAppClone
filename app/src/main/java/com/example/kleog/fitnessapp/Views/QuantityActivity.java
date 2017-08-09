@@ -1,5 +1,6 @@
 package com.example.kleog.fitnessapp.Views;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
@@ -19,7 +20,11 @@ import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.kleog.fitnessapp.Models.FoodItemsModel;
+import com.example.kleog.fitnessapp.Models.MealType;
 import com.example.kleog.fitnessapp.R;
+import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
+import com.example.kleog.fitnessapp.ViewModels.FoodItemsViewModel;
 import com.fatsecret.platform.model.Food;
 import com.fatsecret.platform.model.Serving;
 import com.fatsecret.platform.services.android.Request;
@@ -32,15 +37,20 @@ public class QuantityActivity extends AppCompatActivity {
 
     public static final int MIN_QUANTITY = 0;
 
+    //view model
+    private FoodItemsViewModel mfoodItemsVM;
+
+    //food details
     private String mMealType;
     private int mQuantity;
     private List<Serving> mServingsList;
     private String mFoodName;
     private String mFoodDrescription;
     private long mFoodID;
+    private boolean foodInDatabase; //set to true if the food item is already in the database
 
 
-
+    //views
     private ProgressBar mLoadingIcon;
     private ImageView mFoodImage;
     private TextView mFoodTitle, mTotalCaloriesAmount;
@@ -59,7 +69,11 @@ public class QuantityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quantity);
 
+        mfoodItemsVM = ViewModelProviders.of(this).get(FoodItemsViewModel.class);
+
+
         //TODO check if item is already in database and if so load from there instead
+
 
         //starts the loading icon
         mLoadingIcon = (ProgressBar) findViewById(R.id.foodProgressBar);
@@ -81,15 +95,30 @@ public class QuantityActivity extends AppCompatActivity {
 
         mSubmit = (Button) findViewById(R.id.foodSubmitButton);
 
-
         // gets what type of meal e.g. breakfast, lunch, dinner or snack
         mMealType = getIntent().getStringExtra("MEAL_TYPE");
         mFoodID = getIntent().getLongExtra("FOOD_ID", 0L);
 
-        //formats the description to separate lines with regex
         mFoodDrescription = getIntent().getStringExtra("FOOD_DESCRIPTION");
+        //formats the description to separate lines with regex
         String regex = "- |\\| ";
         mFoodDrescription = mFoodDrescription.replaceAll(regex, "\n");
+
+
+
+        //checking if food in already in DB
+        FoodItemsModel foodInDB = null;
+        try{
+            foodInDB = mfoodItemsVM.getCurrentDayFoodWithID(mFoodID, MealType.valueOf(mMealType));
+
+        }catch(Exception e){
+            Log.d("DATABASE", "onCreate: Error on finding food in the DB");
+        }
+
+
+
+
+
 
         //fat secret API stuff
 
@@ -100,9 +129,18 @@ public class QuantityActivity extends AppCompatActivity {
 
         req.getFood(requestQueue, mFoodID);
 
+        if(foodInDB != null){
+            //sets the values that the user chose before
+            mFoodSpinner.setSelection(foodInDB.getServingChosen());
+            mFoodAmountText.setText(foodInDB.getServingUnits().toString());
 
+            foodInDatabase = false;
+        }
+        else{
+            foodInDatabase = false;
+        }
 
-
+        //TODO make submit button enter new food if food is not in db otherwise update
         mLoadingIcon.setVisibility(View.INVISIBLE);
     }
 
@@ -119,7 +157,6 @@ public class QuantityActivity extends AppCompatActivity {
     public void setQuantity(int qty) {
         mQuantity = qty;
     }
-
 
 
 

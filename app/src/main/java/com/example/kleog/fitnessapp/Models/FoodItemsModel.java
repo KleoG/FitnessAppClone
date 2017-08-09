@@ -27,7 +27,7 @@ public class FoodItemsModel {
     private MealType eatenDuringMeal;
 
     @ColumnInfo(name = "food_ID")
-    private int foodID;
+    private long foodID;
 
     private Double calories;
 
@@ -56,7 +56,9 @@ public class FoodItemsModel {
     @ColumnInfo(name = "Serving_Units_Chosen")
     private Double servingUnits;
 
-    public FoodItemsModel(Date date, MealType eatenDuringMeal, int foodID, Double calories, Double protein, Double carbs, Double fat, Double standardisedAmountEaten, AmountEatenType standardisedAmountEatenType, int servingChosen, Double servingUnits) {
+    //TODO add food description
+
+    public FoodItemsModel(Date date, MealType eatenDuringMeal, long foodID, Double calories, Double protein, Double carbs, Double fat, Double standardisedAmountEaten, AmountEatenType standardisedAmountEatenType, int servingChosen, Double servingUnits) {
         this.date = date;
         this.eatenDuringMeal = eatenDuringMeal;
         this.foodID = foodID;
@@ -78,7 +80,7 @@ public class FoodItemsModel {
         return eatenDuringMeal;
     }
 
-    public int getFoodID() {
+    public long getFoodID() {
         return foodID;
     }
 

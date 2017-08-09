@@ -48,7 +48,7 @@ public class FoodItemsViewModel extends AndroidViewModel {
 
     }
 
-    public FoodItemsModel getFoodWithID(Integer ID, MealType type) throws Exception{
+    public FoodItemsModel getCurrentDayFoodWithID(long ID, MealType type) throws Exception{
         try{
             return new RetrieveAsyncTask(appDatabase).execute(ID, type).get();
         }
@@ -76,7 +76,7 @@ public class FoodItemsViewModel extends AndroidViewModel {
             Date date = new Date();
 
 
-            return db.FoodItemsModel().getsingleFoodItem(date, (MealType) params[1], (int) params[0]);
+            return db.FoodItemsModel().getSingleFoodItem(date, (MealType) params[1], (long) params[0]);
         }
 
     }
