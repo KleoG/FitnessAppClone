@@ -111,11 +111,11 @@ public class MealActivity extends LifecycleActivity {
     }
 
 
-        /**
-         * is called when the graphs button is clicked
-         *
-         * @param view object being clicked on - in this case the "graphs" button
-         */
+    /**
+     * is called when the graphs button is clicked
+     *
+     * @param view object being clicked on - in this case the "graphs" button
+     */
 
     public void goToSearchPage(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
@@ -189,7 +189,9 @@ public class MealActivity extends LifecycleActivity {
                 vi = inflater.inflate(R.layout.food_item_list_row, null);
             TextView foodName = (TextView) vi.findViewById(R.id.foodItemName);
 
-            //this is what happens when the remove button is pressed
+            /**
+             * this is what happens when the remove button is pressed
+             */
             ImageButton deleteButton = (ImageButton) vi.findViewById(R.id.deleteImageButton);
             deleteButton.setTag(position);
             deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +199,6 @@ public class MealActivity extends LifecycleActivity {
                 @Override
                 public void onClick(View view) {
                     int pos = (int) view.getTag();
-                    //TODO also remove from database on this line
 
                     FoodItemsModel foodToRemove = foods.remove(pos);
 
@@ -210,25 +211,42 @@ public class MealActivity extends LifecycleActivity {
                 }
             });
 
+            ImageButton modifyButton = (ImageButton) vi.findViewById(R.id.modifyImageButton);
+            modifyButton.setTag(position);
+            modifyButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    int pos = (int) view.getTag();
+
+                    FoodItemsModel foodToModify = foods.get(pos);
+
+
+                    Intent i = new Intent(getContext(), QuantityActivity.class);
+                    i.putExtra("FOOD_ID", foodToModify.getFoodID());
+                    i.putExtra("FOOD_DESCRIPTION", foodToModify.getFoodDescription());
+                    String mealType = convertMealTypeToString(foodToModify.getEatenDuringMeal());
+                    i.putExtra("MEAL_TYPE", mealType);
+                    context.startActivity(i);
+
+                }
+            });
+
+
             //this is where the values of the row are set
             foodName.setText(foods.get(position).getFoodName());
 
             return vi;
         }
 
-        @Override
-        public void add(FoodItemsModel food) {
-            foods.add(food);
-            //super.add(food);
-            notifyDataSetChanged();
-
-        }
-
-        @Override
-        public void remove(FoodItemsModel food) {
-            foods.remove(food);
-            notifyDataSetChanged();
-            //super.remove(employee);
+        public String convertMealTypeToString(MealType type){
+            switch (type){
+                case BREAKFAST: return "Breakfast";
+                case LUNCH: return "Lunch";
+                case DINNER: return "Dinner";
+                case SNACKS: return "Snacks";
+                default: return null;
+            }
         }
     }
 }
