@@ -123,16 +123,6 @@ public class QuantityActivity extends AppCompatActivity {
             Log.d("DATABASE", "onCreate: Error on finding food in the DB");
         }
 
-
-        //fat secret API stuff
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        Listener listener = new Listener();
-
-        Request req = new Request(key, secret, listener);
-
-        req.getFood(requestQueue, mFoodID);
-
         if (foodInDB != null) {
             //sets the values that the user chose before
             mFoodSpinner.setSelection(foodInDB.getServingChosen());
@@ -146,19 +136,28 @@ public class QuantityActivity extends AppCompatActivity {
             mFoodTotalProtein = foodInDB.getProtein();
             mFoodTotalFat = foodInDB.getFat();
             mServingAmount = foodInDB.getServingUnits();
-            mServingChosen = foodInDB.getServingChosen();
 
-            Serving selectedServing = mServingsList.get(mServingChosen);
-            mCaloriesPerServing = selectedServing.getCalories().doubleValue(); // gets selected item and converts it to double
-            mCarbsPerServing = selectedServing.getCarbohydrate().doubleValue();
-            mProteinPerServing = selectedServing.getProtein().doubleValue();
-            mFatPerServing = selectedServing.getFat().doubleValue();
+            //set serving chosen
+            mServingChosen = foodInDB.getServingChosen();
 
 
             foodInDatabase = true;
         } else {
+            mServingChosen = -1;
             foodInDatabase = false;
         }
+
+
+        //fat secret API stuff
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        Listener listener = new Listener();
+
+        Request req = new Request(key, secret, listener);
+
+        req.getFood(requestQueue, mFoodID);
+
+
         /**
          * submit button functionality
          */
@@ -172,24 +171,18 @@ public class QuantityActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "onClick: submit button pressed with serving amount :" + mServingAmount);
                     FoodItemsModel foodToAdd = new FoodItemsModel(new Date(), mMealTypeEnum, mFoodID,mFoodName, mFoodTotalCalories, mFoodTotalProtein, mFoodTotalCarbs, mFoodTotalFat, mServingChosen, mServingAmount, mFoodDrescription);
-                    try {
-                        FoodItemsModel checkIfFoodIsInDBAlready = mfoodItemsVM.getCurrentDayFoodWithID(mFoodID, mMealTypeEnum);
 
-                        //if already in db then update the food
-                        if (checkIfFoodIsInDBAlready != null && checkIfFoodIsInDBAlready.getFoodID() == foodToAdd.getFoodID()) {
-                            mfoodItemsVM.updateFood(foodToAdd);
-                        } else { //otherwise insert it into db
-                            mfoodItemsVM.insertFood(foodToAdd);
-                        }
+                    //if food is already in database then update it
+                    if(foodInDatabase){
+                        mfoodItemsVM.updateFood(foodToAdd);
 
-                        Intent i = new Intent(getApplicationContext(), MealActivity.class);
-                        i.putExtra("MEAL_TYPE", mMealType);
-                        startActivity(i);
-
-                    } catch (Exception e) {
-                        Log.d(TAG, "onClick: exception was found when trying to check if food was already in the db");
-                        Toast.makeText(getApplicationContext(), "could not add food to db", Toast.LENGTH_SHORT);
                     }
+                    else { //otherwise insert it into db
+                        mfoodItemsVM.insertFood(foodToAdd);
+                    }
+                    Intent i = new Intent(getApplicationContext(), MealActivity.class);
+                    i.putExtra("MEAL_TYPE", mMealType);
+                    startActivity(i);
                 }
             }
         });
@@ -304,9 +297,17 @@ public class QuantityActivity extends AppCompatActivity {
             adapter = new FoodSpinnerAdapter(getApplicationContext(), R.layout.food_serving_type_spinner_list, mServingsList);
             mFoodSpinner.setAdapter(adapter);
 
-            //must be done after adapter is set
-            mServingChosen = mFoodSpinner.getSelectedItemPosition();
-            mCaloriesPerServing = ((Serving) mFoodSpinner.getSelectedItem()).getCalories().doubleValue(); // gets selected item and converts it to double
+            //if it is a net item that is not in the db
+            if(mServingChosen == -1){
+                //must be done after adapter is set
+                mServingChosen = mFoodSpinner.getSelectedItemPosition();
+
+            }
+            Serving selectedServing = (Serving) mFoodSpinner.getItemAtPosition(mServingChosen);
+            mCaloriesPerServing = selectedServing.getCalories().doubleValue(); // gets selected item and converts it to double
+            mCarbsPerServing = selectedServing.getCarbohydrate().doubleValue();
+            mProteinPerServing = selectedServing.getProtein().doubleValue();
+            mFatPerServing = selectedServing.getFat().doubleValue();
 
             mFoodTitle.setText(mFoodName);
             mFoodInformation.setText(mFoodDrescription);
