@@ -2,6 +2,7 @@ package com.example.kleog.fitnessapp.Views;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -44,7 +45,8 @@ public class QuantityActivity extends AppCompatActivity {
     private FoodItemsViewModel mfoodItemsVM;
 
     //food details
-    private MealType mMealType;
+    private String mMealType;
+    private MealType mMealTypeEnum;
     private int mServingChosen;
     private List<Serving> mServingsList;
     private String mFoodName;
@@ -101,7 +103,9 @@ public class QuantityActivity extends AppCompatActivity {
         mSubmit = (Button) findViewById(R.id.foodSubmitButton);
 
         // gets what type of meal e.g. breakfast, lunch, dinner or snack
-        mMealType = converToMEALTYPE(getIntent().getStringExtra("MEAL_TYPE"));
+        mMealType = getIntent().getStringExtra("MEAL_TYPE");
+        mMealTypeEnum = converToMEALTYPE(mMealType);
+
         mFoodID = getIntent().getLongExtra("FOOD_ID", 0L);
 
         mFoodDrescription = getIntent().getStringExtra("FOOD_DESCRIPTION");
@@ -113,7 +117,7 @@ public class QuantityActivity extends AppCompatActivity {
         //checking if food in already in DB
         FoodItemsModel foodInDB = null;
         try {
-            foodInDB = mfoodItemsVM.getCurrentDayFoodWithID(mFoodID, mMealType);
+            foodInDB = mfoodItemsVM.getCurrentDayFoodWithID(mFoodID, mMealTypeEnum);
 
         } catch (Exception e) {
             Log.d("DATABASE", "onCreate: Error on finding food in the DB");
@@ -167,9 +171,9 @@ public class QuantityActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "must choose valid serving amount (cannot be empty or 0)", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "onClick: submit button pressed with serving amount :" + mServingAmount);
-                    FoodItemsModel foodToAdd = new FoodItemsModel(new Date(), mMealType, mFoodID, mFoodTotalCalories, mFoodTotalProtein, mFoodTotalCarbs, mFoodTotalFat, mServingChosen, mServingAmount, mFoodDrescription);
+                    FoodItemsModel foodToAdd = new FoodItemsModel(new Date(), mMealTypeEnum, mFoodID, mFoodTotalCalories, mFoodTotalProtein, mFoodTotalCarbs, mFoodTotalFat, mServingChosen, mServingAmount, mFoodDrescription);
                     try {
-                        FoodItemsModel checkIfFoodIsInDBAlready = mfoodItemsVM.getCurrentDayFoodWithID(mFoodID, mMealType);
+                        FoodItemsModel checkIfFoodIsInDBAlready = mfoodItemsVM.getCurrentDayFoodWithID(mFoodID, mMealTypeEnum);
 
                         //if already in db then update the food
                         if (checkIfFoodIsInDBAlready != null && checkIfFoodIsInDBAlready.getFoodID() == foodToAdd.getFoodID()) {
@@ -177,6 +181,10 @@ public class QuantityActivity extends AppCompatActivity {
                         } else { //otherwise insert it into db
                             mfoodItemsVM.insertFood(foodToAdd);
                         }
+
+                        Intent i = new Intent(getApplicationContext(), MealActivity.class);
+                        i.putExtra("MEAL_TYPE", mMealType);
+                        startActivity(i);
 
                     } catch (Exception e) {
                         Log.d(TAG, "onClick: exception was found when trying to check if food was already in the db");

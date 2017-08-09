@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +15,13 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.kleog.fitnessapp.Models.MealModel;
-import com.example.kleog.fitnessapp.R;
-import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.Models.FoodItemsModel;
+import com.example.kleog.fitnessapp.Models.MealModel;
 import com.example.kleog.fitnessapp.Models.MealType;
 import com.example.kleog.fitnessapp.Models.UserNutritionDB;
+import com.example.kleog.fitnessapp.R;
 import com.example.kleog.fitnessapp.ViewModels.FoodItemsViewModel;
 import com.example.kleog.fitnessapp.ViewModels.MealModelViewModel;
-import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +71,7 @@ public class MealActivity extends LifecycleActivity {
         //initialise textViews to be updated
         calorieValue = (TextView) findViewById(R.id.calorieValue);
         carbsValue = (TextView) findViewById(R.id.carbsValue);
-        proteinValue= (TextView) findViewById(R.id.proteinValue);
+        proteinValue = (TextView) findViewById(R.id.proteinValue);
         fatValue = (TextView) findViewById(R.id.fatValue);
 
 
@@ -83,8 +80,6 @@ public class MealActivity extends LifecycleActivity {
         mFoodItemsList = new ArrayList<>();
         mAdapter = new FoodItemListAdapter(this, mFoodItemsList, mFoodVM);
         mFoodListView.setAdapter(mAdapter);
-
-
 
 
         //this is the type of value that will be returned (a liveData that contains the list)
@@ -112,70 +107,15 @@ public class MealActivity extends LifecycleActivity {
 
             mAdapter.notifyDataSetChanged();
         });
-
-        //
-
-        //temporary testing data
-//        FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200.0, 50.0, 10.0, 5.0, 200.0, AmountEatenType.GRAMS);
-//        FoodItemsModel item2 = new FoodItemsModel(new Date(), MealType.LUNCH, "Eggs", 100.0, 30.0, 20.0, 10.0, 3.0, AmountEatenType.UNITS);
-//        FoodItemsModel item3 = new FoodItemsModel(new Date(), MealType.LUNCH, "rice", 250.0, 10.0, 30.0, 15.0, 150.0, AmountEatenType.GRAMS);
-//        mAdapter.add(item1);
-//        mAdapter.add(item2);
-//        mAdapter.add(item3);
-
-
     }
 
-    public void onClickNotFinished(View view) {
-        //first thread for inserting data
-        /*
-        the commented out code below is used to insert random data into the db then retrieve the data and display a part of it
-        leave it commented for now
+
+        /**
+         * is called when the graphs button is clicked
+         *
+         * @param view object being clicked on - in this case the "graphs" button
          */
-//        new AsyncTask<Void, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(Void... params) {
-//                db.DailyUserInfoModel().insert(new DailyUserInfoModel(new Date(), 150, 100, 75, 50, 73));
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void param) {
-//                Toast.makeText(getApplicationContext(), "user information was inserted", Toast.LENGTH_LONG).show();
-//                String info = "user info not found";
-//                try {
-//                    //value returned by the async task is passed into info
-//                    info = new AsyncTask<Void, Void, String>(){
-//                        @Override
-//                        protected String doInBackground(Void... params){
-//
-//                            //Log.d("MEAL_ACTIVITY", "doInBackground: retriving information: params[0]: " + params[0]);
-//                            return db.DailyUserInfoModel().getDateLiveData(new Date()).getWeight().toString();
-//                        }
-//
-//                    }.execute().get();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                } catch (ExecutionException e) {
-//                    e.printStackTrace();
-//                }
-//                Toast.makeText(getApplicationContext(), info, Toast.LENGTH_LONG).show();
-//
-//
-//            }
-//        }.execute();
 
-
-        // temp useless adding of food
-        //FoodItemsModel item1 = new FoodItemsModel(new Date(), MealType.LUNCH, "Chicken", 200.0, 50.0, 10.0, 5.0, 200.0, AmountEatenType.GRAMS);
-        //mAdapter.add(item1);
-    }
-
-    /**
-     * is called when the graphs button is clicked
-     *
-     * @param view object being clicked on - in this case the "graphs" button
-     */
     public void goToSearchPage(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
         intent.putExtra("MEAL_TYPE", mMealType);
