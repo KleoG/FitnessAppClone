@@ -103,6 +103,7 @@ public class MealActivity extends LifecycleActivity {
          * list view for food will be updated here
          */
         foodListInfo.observe(this, foodInfo -> {
+            mAdapter.clear();
             mAdapter.addAll(foodInfo);
 
             mAdapter.notifyDataSetChanged();
@@ -127,6 +128,8 @@ public class MealActivity extends LifecycleActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 
     public void updateFoodEatenList() {
