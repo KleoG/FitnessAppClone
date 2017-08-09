@@ -167,7 +167,7 @@ public class QuantityActivity extends AppCompatActivity {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //if user hasnt entered the amount then do nothing
-                if (mServingAmount == -1 || mServingAmount == 0.0) {
+                if (mServingAmount == null || mServingAmount == 0.0) {
                     Log.d(TAG, "onClick: submit button pressed but no serving amount entered or serving amount is 0.0");
 
                     Toast.makeText(getApplicationContext(), "must choose valid serving amount (cannot be empty or 0)", Toast.LENGTH_SHORT).show();
@@ -304,6 +304,8 @@ public class QuantityActivity extends AppCompatActivity {
                 //must be done after adapter is set
                 mServingChosen = mFoodSpinner.getSelectedItemPosition();
 
+            }else{
+                mFoodSpinner.setSelection(mServingChosen);
             }
             Serving selectedServing = (Serving) mFoodSpinner.getItemAtPosition(mServingChosen);
             mCaloriesPerServing = selectedServing.getCalories().doubleValue(); // gets selected item and converts it to double
