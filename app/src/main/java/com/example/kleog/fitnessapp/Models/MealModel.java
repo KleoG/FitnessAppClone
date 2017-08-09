@@ -76,4 +76,23 @@ public class MealModel {
         return totalFat;
     }
 
+    public void setMealType(MealType mealType) {
+        this.mealType = mealType;
+    }
+
+    public void setTotalCalories(Double totalCalories) {
+        this.totalCalories = totalCalories;
+    }
+
+    public void setTotalProtein(Double totalProtein) {
+        this.totalProtein = totalProtein;
+    }
+
+    public void setTotalCarbs(Double totalCarbs) {
+        this.totalCarbs = totalCarbs;
+    }
+
+    public void setTotalFat(Double totalFat) {
+        this.totalFat = totalFat;
+    }
 }

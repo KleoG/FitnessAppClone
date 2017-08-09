@@ -27,7 +27,10 @@ public interface DailyUserInfoModelDAO {
     LiveData<List<DailyUserInfoModel>> loadBetweenDates(Date from, Date to);
 
     @Query("SELECT * FROM Daily_User_Info WHERE date = :date")
-    LiveData<DailyUserInfoModel> getDate(Date date);
+    LiveData<DailyUserInfoModel> getDateLiveData(Date date);
+
+    @Query("SELECT * FROM Daily_User_Info WHERE date = :date")
+    DailyUserInfoModel getDate(Date date);
 
     @Insert
     void insertAll(DailyUserInfoModel... userInfos);

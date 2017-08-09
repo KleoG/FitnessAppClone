@@ -21,13 +21,28 @@ import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 @TypeConverters({DateConverter.class, MealTypeConverter.class})
 public interface MealModelDAO {
     @Query("SELECT * FROM meal")
-    LiveData<List<MealModel>> getAll();
+    LiveData<List<MealModel>> getAllLiveData();
 
+    /**
+     *
+     * @param mealType
+     * @param date
+     * @return live data meal model
+     */
     @Query("SELECT * FROM meal WHERE date = :date and meal_type = :mealType")
-    LiveData<MealModel> getMeal(MealType mealType, Date date);
+    LiveData<MealModel> getMealLiveData(MealType mealType, Date date);
+
+    /**
+     *
+     * @param mealType
+     * @param date
+     * @return meal model object (not live data)
+     */
+    @Query("SELECT * FROM meal WHERE date = :date and meal_type = :mealType")
+    MealModel getMeal(MealType mealType, Date date);
 
     @Query("SELECT * FROM meal WHERE date = :date")
-    LiveData<List<MealModel>> getMealsOnDate(Date date);
+    LiveData<List<MealModel>> getMealsOnDateLiveData(Date date);
 
     @Insert (onConflict = IGNORE)
     void insertAll(MealModel... meals);

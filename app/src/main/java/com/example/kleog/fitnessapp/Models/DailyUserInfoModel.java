@@ -46,10 +46,6 @@ public class DailyUserInfoModel {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public Double getTotalCalories() {
         return totalCalories;
     }
@@ -68,6 +64,26 @@ public class DailyUserInfoModel {
 
     public Double getWeight() {
         return weight;
+    }
+
+    public void setTotalCalories(Double totalCalories) {
+        this.totalCalories = totalCalories;
+    }
+
+    public void setTotalProtein(Double totalProtein) {
+        this.totalProtein = totalProtein;
+    }
+
+    public void setTotalCarbs(Double totalCarbs) {
+        this.totalCarbs = totalCarbs;
+    }
+
+    public void setTotalFat(Double totalFat) {
+        this.totalFat = totalFat;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
     }
 
     public String toString(){

@@ -12,7 +12,6 @@ import com.example.kleog.fitnessapp.Models.MealModel;
 import com.example.kleog.fitnessapp.Models.MealType;
 import com.example.kleog.fitnessapp.Models.UserNutritionDB;
 
-import java.net.ConnectException;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +47,15 @@ public class FoodItemsViewModel extends AndroidViewModel {
 
     }
 
+    /**
+     *
+     * retrieves a particular food on the current day
+     *
+     * @param ID food id
+     * @param type what mealType the food was eaten at
+     * @return the food if it is found
+     * @throws Exception
+     */
     public FoodItemsModel getCurrentDayFoodWithID(long ID, MealType type) throws Exception{
         try{
             return new RetrieveAsyncTask(appDatabase).execute(ID, type).get();
@@ -80,4 +88,140 @@ public class FoodItemsViewModel extends AndroidViewModel {
         }
 
     }
+
+    /**
+     * inserts a new food into the database only use if not there already
+     * @param food food object to be inserted
+     */
+    public void insertFood(FoodItemsModel food){
+        Log.d(TAG, "insertFood: inserting foodID: " + food.getFoodID());
+        new InsertAsyncTask(appDatabase).execute(food);
+    }
+
+    private static class InsertAsyncTask extends AsyncTask<FoodItemsModel, Void, Void> {
+
+        private UserNutritionDB db;
+
+        InsertAsyncTask(UserNutritionDB appDatabase) {
+            db = appDatabase;
+        }
+
+        @Override
+        protected Void doInBackground(FoodItemsModel... foods) {
+            FoodItemsModel food = foods[0];
+
+            db.FoodItemsModel().insert(food);
+
+            //how much to add to meal and daily user info
+            Double caloriesToAdd = food.getCalories();
+            Double carbsToAdd = food.getCarbs();
+            Double proteinToAdd = food.getProtein();
+            Double fatToAdd = food.getFat();
+
+
+            //get meal that food was eaten during
+            MealModel oldMeal = db.MealModel().getMeal(food.getEatenDuringMeal(), food.getDate());
+
+            //update oldMeal
+            oldMeal.setTotalCalories(oldMeal.getTotalCalories() + caloriesToAdd);
+            oldMeal.setTotalCarbs(oldMeal.getTotalCarbs() + carbsToAdd);
+            oldMeal.setTotalProtein(oldMeal.getTotalProtein() + proteinToAdd);
+            oldMeal.setTotalFat(oldMeal.getTotalFat() + fatToAdd);
+
+            //update oldMeal
+            db.MealModel().update(oldMeal);
+
+            //get daily user info
+            DailyUserInfoModel oldInfo = db.DailyUserInfoModel().getDate(food.getDate());
+
+            //update old info
+            oldInfo.setTotalCalories(oldInfo.getTotalCalories() + caloriesToAdd);
+            oldInfo.setTotalCarbs(oldInfo.getTotalCarbs() + carbsToAdd);
+            oldInfo.setTotalProtein(oldInfo.getTotalProtein() + proteinToAdd);
+            oldInfo.setTotalFat(oldInfo.getTotalFat() + fatToAdd);
+
+            //update user info
+            db.DailyUserInfoModel().update(oldInfo);
+
+            Log.d(TAG, "doInBackground: finished inserting foodID: " + food.getFoodID());
+
+            return null;
+
+        }
+
+    }
+
+    public void updateFood(FoodItemsModel food){
+        Log.d(TAG, "updateFood: updating foodID: " + food.getFoodID());
+        new UpdateAsyncTask(appDatabase).execute(food);
+    }
+
+    private static class UpdateAsyncTask extends AsyncTask<FoodItemsModel, Void, Void> {
+
+        private UserNutritionDB db;
+
+        UpdateAsyncTask(UserNutritionDB appDatabase) {
+            db = appDatabase;
+        }
+
+        @Override
+        protected Void doInBackground(FoodItemsModel... foods) {
+
+            Date date = foods[0].getDate();
+
+            FoodItemsModel updatedFood = foods[0];
+
+            FoodItemsModel oldFood = db.FoodItemsModel().getSingleFoodItem(date, updatedFood.getEatenDuringMeal(), updatedFood.getFoodID());
+
+            //if food is not already in db then cannot update and throws exception
+            if (oldFood == null){
+                throw new NullPointerException("food item with ID: " + updatedFood.getFoodID() + " was not found there cannot update");
+            }
+
+            //otherwise continue as normal
+            db.FoodItemsModel().update(updatedFood);
+
+
+
+            //how much to add to meal and daily user info (updated food - old food)
+            Double caloriesToAdd = updatedFood.getCalories() - oldFood.getCalories();
+            Double carbsToAdd = updatedFood.getCarbs() - oldFood.getCarbs();
+            Double proteinToAdd = updatedFood.getProtein() - oldFood.getProtein();
+            Double fatToAdd = updatedFood.getFat() - oldFood.getFat();
+
+            //get meal that food was eaten during
+            MealModel oldMeal = db.MealModel().getMeal(updatedFood.getEatenDuringMeal(), date);
+
+            //update oldMeal
+            oldMeal.setTotalCalories(oldMeal.getTotalCalories() + caloriesToAdd);
+            oldMeal.setTotalCarbs(oldMeal.getTotalCarbs() + carbsToAdd);
+            oldMeal.setTotalProtein(oldMeal.getTotalProtein() + proteinToAdd);
+            oldMeal.setTotalFat(oldMeal.getTotalFat() + fatToAdd);
+
+            //update oldMeal
+            db.MealModel().update(oldMeal);
+
+            //get daily user info
+            DailyUserInfoModel oldInfo = db.DailyUserInfoModel().getDate(date);
+
+            //update old info
+            oldInfo.setTotalCalories(oldInfo.getTotalCalories() + caloriesToAdd);
+            oldInfo.setTotalCarbs(oldInfo.getTotalCarbs() + carbsToAdd);
+            oldInfo.setTotalProtein(oldInfo.getTotalProtein() + proteinToAdd);
+            oldInfo.setTotalFat(oldInfo.getTotalFat() + fatToAdd);
+
+            //update user info
+            db.DailyUserInfoModel().update(oldInfo);
+
+
+            Log.d(TAG, "doInBackground: finished updating foodID: " + updatedFood.getFoodID());
+
+            return null;
+
+        }
+
+    }
+
+
+
 }

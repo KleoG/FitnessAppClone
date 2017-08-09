@@ -113,7 +113,7 @@ public class MealModelViewModel extends AndroidViewModel {
             }
 
 
-            Double oldWeight = db.DailyUserInfoModel().getDate(date).getValue().getWeight();
+            Double oldWeight = db.DailyUserInfoModel().getDateLiveData(date).getValue().getWeight();
 
             DailyUserInfoModel newUserInfo = new DailyUserInfoModel(date, totalCalories, totalProtein, totalCarbs, totalFat, oldWeight);
 

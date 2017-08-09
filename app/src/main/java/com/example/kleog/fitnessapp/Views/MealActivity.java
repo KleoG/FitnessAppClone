@@ -101,7 +101,7 @@ public class MealActivity extends AppCompatActivity {
 //                        protected String doInBackground(Void... params){
 //
 //                            //Log.d("MEAL_ACTIVITY", "doInBackground: retriving information: params[0]: " + params[0]);
-//                            return db.DailyUserInfoModel().getDate(new Date()).getWeight().toString();
+//                            return db.DailyUserInfoModel().getDateLiveData(new Date()).getWeight().toString();
 //                        }
 //
 //                    }.execute().get();

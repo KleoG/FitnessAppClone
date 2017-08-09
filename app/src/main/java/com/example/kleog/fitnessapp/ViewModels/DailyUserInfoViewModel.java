@@ -39,7 +39,7 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
 
         if (currentDayUserInfo == null) {
 
-            currentDayUserInfo = appDatabase.DailyUserInfoModel().getDate(new Date());
+            currentDayUserInfo = appDatabase.DailyUserInfoModel().getDateLiveData(new Date());
 
             //if new day and no data inserted yet then create and add to database
             if (currentDayUserInfo.getValue() == null) {
