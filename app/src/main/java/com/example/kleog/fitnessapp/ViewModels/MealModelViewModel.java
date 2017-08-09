@@ -35,13 +35,13 @@ public class MealModelViewModel extends AndroidViewModel {
         appDatabase = UserNutritionDB.getDatabase(this.getApplication());
 
         //gets live data for all meals since they are small and should always have data ready
-        breakfastMeal = appDatabase.MealModel().getMeal(MealType.BREAKFAST, new Date());
+        breakfastMeal = appDatabase.MealModel().getMealLiveData(MealType.BREAKFAST, new Date());
 
-        lunchMeal = appDatabase.MealModel().getMeal(MealType.LUNCH, new Date());
+        lunchMeal = appDatabase.MealModel().getMealLiveData(MealType.LUNCH, new Date());
 
-        dinnerMeal = appDatabase.MealModel().getMeal(MealType.DINNER, new Date());
+        dinnerMeal = appDatabase.MealModel().getMealLiveData(MealType.DINNER, new Date());
 
-        snacksMeal = appDatabase.MealModel().getMeal(MealType.SNACKS, new Date());
+        snacksMeal = appDatabase.MealModel().getMealLiveData(MealType.SNACKS, new Date());
 
     }
 
@@ -103,7 +103,7 @@ public class MealModelViewModel extends AndroidViewModel {
             Double totalFat = 0.0;
             Double totalCalories = 0.0;
 
-            List<MealModel> mealsToday = db.MealModel().getMealsOnDate(date).getValue();
+            List<MealModel> mealsToday = db.MealModel().getMealsOnDateLiveData(date).getValue();
 
             for (MealModel currentMeal : mealsToday) {
                 totalCarbs += currentMeal.getTotalCarbs();
