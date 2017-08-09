@@ -81,7 +81,7 @@ public class MealActivity extends LifecycleActivity {
         //sets up the list underneath the add view button
         mFoodListView = (ListView) findViewById(R.id.foodList);
         mFoodItemsList = new ArrayList<>();
-        mAdapter = new FoodItemListAdapter(this, mFoodItemsList);
+        mAdapter = new FoodItemListAdapter(this, mFoodItemsList, mFoodVM);
         mFoodListView.setAdapter(mAdapter);
 
 
@@ -212,17 +212,21 @@ public class MealActivity extends LifecycleActivity {
      * custom mAdapter to display current foods
      */
 
-    public static class FoodItemListAdapter extends ArrayAdapter<FoodItemsModel> {
+    private static class FoodItemListAdapter extends ArrayAdapter<FoodItemsModel> {
         private static LayoutInflater inflater = null;
         Context context;
         ArrayList<FoodItemsModel> foods;
 
-        public FoodItemListAdapter(Context context, ArrayList<FoodItemsModel> foods) {
+        FoodItemsViewModel foodVM;
+
+        public FoodItemListAdapter(Context context, ArrayList<FoodItemsModel> foods, FoodItemsViewModel foodVM) {
             super(context, R.layout.food_item_list_row, foods);
             this.context = context;
             this.foods = foods;
             inflater = (LayoutInflater) context
                     .getSystemService(LAYOUT_INFLATER_SERVICE);
+
+            this.foodVM = foodVM;
         }
 
         @Override
@@ -251,7 +255,11 @@ public class MealActivity extends LifecycleActivity {
                 public void onClick(View view) {
                     int pos = (int) view.getTag();
                     //TODO also remove from database on this line
+
                     FoodItemsModel foodToRemove = foods.remove(pos);
+
+                    foodVM.removeFood(foodToRemove);
+                    Log.d("FOOD_LIST_VIEW", "onClick delete: food with name: " + foodName + " + ID: " + foodToRemove.getFoodID());
 
 
                     notifyDataSetChanged();

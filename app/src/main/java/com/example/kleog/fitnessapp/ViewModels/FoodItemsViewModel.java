@@ -223,6 +223,61 @@ public class FoodItemsViewModel extends AndroidViewModel {
 
     }
 
+    public void removeFood(FoodItemsModel food){
+        new RemoveAsyncTask(appDatabase).execute(food);
+    }
+
+    private static class RemoveAsyncTask extends AsyncTask<FoodItemsModel, Void, Void>{
+        private UserNutritionDB db;
+
+        RemoveAsyncTask(UserNutritionDB appDatabase) {
+            db = appDatabase;
+        }
+
+        @Override
+        protected Void doInBackground(FoodItemsModel... foods) {
+            FoodItemsModel food = foods[0];
+
+            db.FoodItemsModel().delete(food);
+
+            //how much to remove from meal and daily user info
+            Double caloriesToRemove = food.getCalories();
+            Double carbsToRemove = food.getCarbs();
+            Double proteinToRemove = food.getProtein();
+            Double fatToRemove = food.getFat();
+
+
+            //get meal that food was eaten during
+            MealModel oldMeal = db.MealModel().getMeal(food.getEatenDuringMeal(), food.getDate());
+
+            //update oldMeal
+            oldMeal.setTotalCalories(oldMeal.getTotalCalories() - caloriesToRemove);
+            oldMeal.setTotalCarbs(oldMeal.getTotalCarbs() - carbsToRemove);
+            oldMeal.setTotalProtein(oldMeal.getTotalProtein() - proteinToRemove);
+            oldMeal.setTotalFat(oldMeal.getTotalFat() - fatToRemove);
+
+            //update oldMeal
+            db.MealModel().update(oldMeal);
+
+            //get daily user info
+            DailyUserInfoModel oldInfo = db.DailyUserInfoModel().getDate(food.getDate());
+
+            //update old info
+            oldInfo.setTotalCalories(oldInfo.getTotalCalories() - caloriesToRemove);
+            oldInfo.setTotalCarbs(oldInfo.getTotalCarbs() - carbsToRemove);
+            oldInfo.setTotalProtein(oldInfo.getTotalProtein() - proteinToRemove);
+            oldInfo.setTotalFat(oldInfo.getTotalFat() - fatToRemove);
+
+            //update user info
+            db.DailyUserInfoModel().update(oldInfo);
+
+            Log.d(TAG, "doInBackground: finished removing foodID: " + food.getFoodID());
+
+
+            return null;
+        }
+    }
+
 
 
 }
