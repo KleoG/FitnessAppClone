@@ -203,6 +203,16 @@ public class QuantityActivity extends AppCompatActivity {
 
                         mServingChosen = pos;
 
+                        //if selected new item without changing amount then update values and UI
+                        if(mServingAmount != null){
+                            mFoodTotalCalories = mServingAmount * mCaloriesPerServing;
+                            mFoodTotalCarbs = mServingAmount * mCarbsPerServing;
+                            mFoodTotalProtein = mServingAmount * mProteinPerServing;
+                            mFoodTotalFat = mServingAmount * mFatPerServing;
+
+                            mTotalCaloriesAmount.setText(mFoodTotalCalories.toString());
+                        }
+
                     }
 
                     public void onNothingSelected(AdapterView<?> parent) {
