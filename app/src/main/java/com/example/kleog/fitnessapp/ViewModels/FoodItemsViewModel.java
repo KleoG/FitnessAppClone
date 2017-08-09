@@ -61,7 +61,8 @@ public class FoodItemsViewModel extends AndroidViewModel {
             return new RetrieveAsyncTask(appDatabase).execute(ID, type).get();
         }
         catch (Exception e){
-            throw new Exception("error trying to retrieve food item with id:" + ID + " meal type: " + type);
+            return null;
+            //throw new Exception("error trying to retrieve food item with id:" + ID + " meal type: " + type);
         }
 
     }

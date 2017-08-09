@@ -3,7 +3,6 @@ package com.example.kleog.fitnessapp.Views;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,7 +25,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.kleog.fitnessapp.Models.FoodItemsModel;
 import com.example.kleog.fitnessapp.Models.MealType;
 import com.example.kleog.fitnessapp.R;
-import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
 import com.example.kleog.fitnessapp.ViewModels.FoodItemsViewModel;
 import com.fatsecret.platform.model.Food;
 import com.fatsecret.platform.model.Serving;
@@ -47,14 +44,14 @@ public class QuantityActivity extends AppCompatActivity {
     private FoodItemsViewModel mfoodItemsVM;
 
     //food details
-    private String mMealType;
+    private MealType mMealType;
     private int mServingChosen;
     private List<Serving> mServingsList;
     private String mFoodName;
     private String mFoodDrescription;
     private long mFoodID;
     private Double mFoodTotalCalories, mFoodTotalCarbs, mFoodTotalProtein, mFoodTotalFat,
-            mCaloriesPerServing,mCarbsPerServing, mProteinPerServing,mFatPerServing, mServingAmount;
+            mCaloriesPerServing, mCarbsPerServing, mProteinPerServing, mFatPerServing, mServingAmount;
     private boolean foodInDatabase; //set to true if the food item is already in the database
 
 
@@ -104,7 +101,7 @@ public class QuantityActivity extends AppCompatActivity {
         mSubmit = (Button) findViewById(R.id.foodSubmitButton);
 
         // gets what type of meal e.g. breakfast, lunch, dinner or snack
-        mMealType = getIntent().getStringExtra("MEAL_TYPE");
+        mMealType = converToMEALTYPE(getIntent().getStringExtra("MEAL_TYPE"));
         mFoodID = getIntent().getLongExtra("FOOD_ID", 0L);
 
         mFoodDrescription = getIntent().getStringExtra("FOOD_DESCRIPTION");
@@ -113,19 +110,14 @@ public class QuantityActivity extends AppCompatActivity {
         mFoodDrescription = mFoodDrescription.replaceAll(regex, "\n");
 
 
-
         //checking if food in already in DB
         FoodItemsModel foodInDB = null;
-        try{
-            foodInDB = mfoodItemsVM.getCurrentDayFoodWithID(mFoodID, MealType.valueOf(mMealType));
+        try {
+            foodInDB = mfoodItemsVM.getCurrentDayFoodWithID(mFoodID, mMealType);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.d("DATABASE", "onCreate: Error on finding food in the DB");
         }
-
-
-
-
 
 
         //fat secret API stuff
@@ -137,7 +129,7 @@ public class QuantityActivity extends AppCompatActivity {
 
         req.getFood(requestQueue, mFoodID);
 
-        if(foodInDB != null){
+        if (foodInDB != null) {
             //sets the values that the user chose before
             mFoodSpinner.setSelection(foodInDB.getServingChosen());
             mFoodAmountText.setText(foodInDB.getServingUnits().toString());
@@ -152,17 +144,15 @@ public class QuantityActivity extends AppCompatActivity {
             mServingAmount = foodInDB.getServingUnits();
             mServingChosen = foodInDB.getServingChosen();
 
-            Serving selectedServing = (Serving) mFoodSpinner.getSelectedItem();
+            Serving selectedServing = mServingsList.get(mServingChosen);
             mCaloriesPerServing = selectedServing.getCalories().doubleValue(); // gets selected item and converts it to double
             mCarbsPerServing = selectedServing.getCarbohydrate().doubleValue();
             mProteinPerServing = selectedServing.getProtein().doubleValue();
             mFatPerServing = selectedServing.getFat().doubleValue();
 
 
-
             foodInDatabase = true;
-        }
-        else{
+        } else {
             foodInDatabase = false;
         }
         /**
@@ -171,25 +161,24 @@ public class QuantityActivity extends AppCompatActivity {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //if user hasnt entered the amount then do nothing
-                if(mServingAmount == null || mServingAmount == 0.0){
+                if (mServingAmount == null || mServingAmount == 0.0) {
                     Log.d(TAG, "onClick: submit button pressed but no serving amount entered or serving amount is 0.0");
 
                     Toast.makeText(getApplicationContext(), "must choose valid serving amount (cannot be empty or 0)", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     Log.d(TAG, "onClick: submit button pressed with serving amount :" + mServingAmount);
-                    FoodItemsModel foodToAdd = new FoodItemsModel(new Date(), MealType.valueOf(mMealType), mFoodID, mFoodTotalCalories, mFoodTotalProtein, mFoodTotalCarbs,mFoodTotalFat, mServingChosen, mServingAmount, mFoodDrescription);
-                    try{
-                        FoodItemsModel checkIfFoodIsInDBAlready = mfoodItemsVM.getCurrentDayFoodWithID(mFoodID, MealType.valueOf(mMealType));
+                    FoodItemsModel foodToAdd = new FoodItemsModel(new Date(), mMealType, mFoodID, mFoodTotalCalories, mFoodTotalProtein, mFoodTotalCarbs, mFoodTotalFat, mServingChosen, mServingAmount, mFoodDrescription);
+                    try {
+                        FoodItemsModel checkIfFoodIsInDBAlready = mfoodItemsVM.getCurrentDayFoodWithID(mFoodID, mMealType);
 
                         //if already in db then update the food
-                        if (checkIfFoodIsInDBAlready.getFoodID() == foodToAdd.getFoodID()){
+                        if (checkIfFoodIsInDBAlready != null && checkIfFoodIsInDBAlready.getFoodID() == foodToAdd.getFoodID()) {
                             mfoodItemsVM.updateFood(foodToAdd);
-                        }else{ //otherwise insert it into db
+                        } else { //otherwise insert it into db
                             mfoodItemsVM.insertFood(foodToAdd);
                         }
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Log.d(TAG, "onClick: exception was found when trying to check if food was already in the db");
                         Toast.makeText(getApplicationContext(), "could not add food to db", Toast.LENGTH_SHORT);
                     }
@@ -215,6 +204,7 @@ public class QuantityActivity extends AppCompatActivity {
                         mServingChosen = pos;
 
                     }
+
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
@@ -225,7 +215,8 @@ public class QuantityActivity extends AppCompatActivity {
         mFoodAmountText.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start,
@@ -236,13 +227,13 @@ public class QuantityActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 //if empty or value is not greater than 0 then do nothing
-                if(s.length() == 0 || !(Double.valueOf(s.toString()) > 0)){
+                if (s.length() == 0 || !(Double.valueOf(s.toString()) > 0)) {
                     mFoodTotalCalories = null;
                     mFoodTotalCarbs = null;
                     mFoodTotalProtein = null;
                     mFoodTotalFat = null;
                     mServingAmount = null;
-                }else{
+                } else {
                     mServingAmount = Double.parseDouble(mFoodAmountText.getText().toString()); //convert string to double
 
                     mFoodTotalCalories = mServingAmount * mCaloriesPerServing;
@@ -261,12 +252,25 @@ public class QuantityActivity extends AppCompatActivity {
         mLoadingIcon.setVisibility(View.INVISIBLE);
     }
 
+    private MealType converToMEALTYPE(String meal_type) {
+        switch (meal_type) {
+            case "Breakfast":
+                return MealType.BREAKFAST;
+            case "Lunch":
+                return MealType.LUNCH;
+            case "Dinner":
+                return MealType.DINNER;
+            case "Snacks":
+                return MealType.SNACKS;
+            default:
+                return null;
+        }
+    }
+
     // called when submit button is pressed - has not been linked to button yet
     public void submitQuantity(View view) {
 
     }
-
-
 
 
     private class Listener implements ResponseListener {
@@ -281,7 +285,6 @@ public class QuantityActivity extends AppCompatActivity {
             mFoodTotalProtein = null;
             mFoodTotalFat = null;
             mServingAmount = null;
-
 
 
             //creates and attaches adapter to spinner
@@ -307,8 +310,8 @@ public class QuantityActivity extends AppCompatActivity {
         private final List<Serving> servings;
         private final int mResource;
 
-        public FoodSpinnerAdapter( Context context, int resource,
-                                   List objects) {
+        public FoodSpinnerAdapter(Context context, int resource,
+                                  List objects) {
             super(context, resource, 0, objects);
 
 
@@ -317,18 +320,19 @@ public class QuantityActivity extends AppCompatActivity {
             mResource = resource;
             servings = objects;
         }
+
         @Override
-        public View getDropDownView(int position,  View convertView,
+        public View getDropDownView(int position, View convertView,
                                     ViewGroup parent) {
             return createItemView(position, convertView, parent);
         }
 
         @Override
-        public  View getView(int position,  View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             return createItemView(position, convertView, parent);
         }
 
-        private View createItemView(int position, View convertView, ViewGroup parent){
+        private View createItemView(int position, View convertView, ViewGroup parent) {
             final View view = mInflater.inflate(mResource, parent, false);
 
             TextView name = (TextView) view.findViewById(R.id.foodSpinnerTypeName);
@@ -341,7 +345,8 @@ public class QuantityActivity extends AppCompatActivity {
             return view;
         }
 
-        public Serving getItem(int position){
+        @Override
+        public Serving getItem(int position) {
 
             return servings.get(position);
         }
