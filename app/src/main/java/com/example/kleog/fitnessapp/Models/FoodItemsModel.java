@@ -50,15 +50,18 @@ public class FoodItemsModel {
     /**
      * stores index of the serving chosen by user
      */
-    @ColumnInfo(name = "API_Serving_Chosen")
+    @ColumnInfo(name = "API_serving_chosen")
     private int servingChosen;
 
-    @ColumnInfo(name = "Serving_Units_Chosen")
+    @ColumnInfo(name = "Serving_units_chosen")
     private Double servingUnits;
+
+    @ColumnInfo(name = "food_description")
+    private String foodDescription;
 
     //TODO add food description
 
-    public FoodItemsModel(Date date, MealType eatenDuringMeal, long foodID, Double calories, Double protein, Double carbs, Double fat, Double standardisedAmountEaten, AmountEatenType standardisedAmountEatenType, int servingChosen, Double servingUnits) {
+    public FoodItemsModel(Date date, MealType eatenDuringMeal, long foodID, Double calories, Double protein, Double carbs, Double fat, Double standardisedAmountEaten, AmountEatenType standardisedAmountEatenType, int servingChosen, Double servingUnits, String foodDescription) {
         this.date = date;
         this.eatenDuringMeal = eatenDuringMeal;
         this.foodID = foodID;
@@ -70,6 +73,7 @@ public class FoodItemsModel {
         this.standardisedAmountEatenType = standardisedAmountEatenType;
         this.servingChosen = servingChosen;
         this.servingUnits = servingUnits;
+        this.foodDescription = foodDescription;
     }
 
     public Date getDate() {
@@ -116,4 +120,7 @@ public class FoodItemsModel {
         return servingUnits;
     }
 
+    public String getFoodDescription() {
+        return foodDescription;
+    }
 }
