@@ -90,6 +90,9 @@ public class MealActivity extends LifecycleActivity {
         //this is the type of value that will be returned (a liveData that contains the list)
         LiveData<MealModel> MealInfo = mMealVM.getMealInfo(mMealTypeEnum);
 
+        /**
+         * the values at the top of the page will be updated here
+         */
         MealInfo.observe(this, info -> {
             Log.d("LIVE_DATA_OBSERVER_MEAL", "onCreate: observed change in live data for Meal" + info.getMealType());
             calorieValue.setText(info.getTotalCalories().toString());
@@ -97,6 +100,17 @@ public class MealActivity extends LifecycleActivity {
             proteinValue.setText(info.getTotalProtein().toString());
             fatValue.setText(info.getTotalFat().toString());
 
+        });
+
+        LiveData<List<FoodItemsModel>> foodListInfo = mFoodVM.getCurrentDayFoodsOfType(mMealTypeEnum);
+
+        /**
+         * list view for food will be updated here
+         */
+        foodListInfo.observe(this, foodInfo -> {
+            mAdapter.addAll(foodInfo);
+
+            mAdapter.notifyDataSetChanged();
         });
 
         //
