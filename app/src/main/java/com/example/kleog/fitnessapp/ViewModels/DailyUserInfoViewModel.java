@@ -47,7 +47,7 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
                 try {
                     new InsertAsyncTask(appDatabase).execute(emptyCurrentDay).get(); //waits for the data to be inserted before moving on
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     Log.d(TAG, "getCurrentDayUserInfo: this shouldnt happen");
                 }
 
@@ -62,6 +62,21 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
         return listOfDailyUserInfo;
     }
 
+    public void updateCurrentDayUserInfo(DailyUserInfoModel data) {
+
+        new UpdateAsyncTask(appDatabase).execute(data);
+    }
+
+    private DailyUserInfoModel retrieveCurrentDayUserInfo() {
+        try {
+            return new RetrieveAsyncTask(appDatabase).execute().get();
+
+        } catch (Exception e) {
+            Log.d(TAG, "RetrieveCurrentDayUserInfo: no value returned due to Exception: " + e);
+            return null;
+
+        }
+    }
 
     //private static class created for inserting into database with async task to prevent memory leaks
     private static class InsertAsyncTask extends AsyncTask<DailyUserInfoModel, Void, Void> {
@@ -93,11 +108,6 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
 
     }
 
-    public void updateCurrentDayUserInfo(DailyUserInfoModel data) {
-
-        new UpdateAsyncTask(appDatabase).execute(data);
-    }
-
     //private static class created for updating database with async task to prevent memory leaks
     private static class UpdateAsyncTask extends AsyncTask<DailyUserInfoModel, Void, Void> {
 
@@ -116,19 +126,7 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
 
     }
 
-    private DailyUserInfoModel retrieveCurrentDayUserInfo(){
-        try{
-            return new RetrieveAsyncTask(appDatabase).execute().get();
-
-        }catch(Exception e){
-            Log.d(TAG, "RetrieveCurrentDayUserInfo: no value returned due to Exception: " + e);
-            return null;
-
-        }
-    }
-
-
-    private static class RetrieveAsyncTask extends AsyncTask<Void, Void, DailyUserInfoModel>{
+    private static class RetrieveAsyncTask extends AsyncTask<Void, Void, DailyUserInfoModel> {
         private UserNutritionDB db;
 
         RetrieveAsyncTask(UserNutritionDB appDatabase) {

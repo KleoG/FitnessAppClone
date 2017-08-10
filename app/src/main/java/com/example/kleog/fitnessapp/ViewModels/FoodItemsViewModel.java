@@ -34,9 +34,9 @@ public class FoodItemsViewModel extends AndroidViewModel {
         foodTypeCurrentlyInLiveData = null;
     }
 
-    public LiveData<List<FoodItemsModel>> getCurrentDayFoodsOfType(MealType type){
+    public LiveData<List<FoodItemsModel>> getCurrentDayFoodsOfType(MealType type) {
 
-        if(foodTypeCurrentlyInLiveData != type){
+        if (foodTypeCurrentlyInLiveData != type) {
 
             foods = appDatabase.FoodItemsModel().getFoodEatenOnDateAndMealType(new Date(), type);
             //updates what the meal type of the foods currently stored
@@ -48,23 +48,40 @@ public class FoodItemsViewModel extends AndroidViewModel {
     }
 
     /**
-     *
      * retrieves a particular food on the current day
      *
-     * @param ID food id
+     * @param ID   food id
      * @param type what mealType the food was eaten at
      * @return the food if it is found
      * @throws Exception
      */
-    public FoodItemsModel getCurrentDayFoodWithID(long ID, MealType type) throws Exception{
-        try{
+    public FoodItemsModel getCurrentDayFoodWithID(long ID, MealType type) throws Exception {
+        try {
             return new RetrieveAsyncTask(appDatabase).execute(ID, type).get();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return null;
             //throw new Exception("error trying to retrieve food item with id:" + ID + " meal type: " + type);
         }
 
+    }
+
+    /**
+     * inserts a new food into the database only use if not there already
+     *
+     * @param food food object to be inserted
+     */
+    public void insertFood(FoodItemsModel food) {
+        Log.d(TAG, "insertFood: inserting foodID: " + food.getFoodID());
+        new InsertAsyncTask(appDatabase).execute(food);
+    }
+
+    public void updateFood(FoodItemsModel food) {
+        Log.d(TAG, "updateFood: updating foodID: " + food.getFoodID());
+        new UpdateAsyncTask(appDatabase).execute(food);
+    }
+
+    public void removeFood(FoodItemsModel food) {
+        new RemoveAsyncTask(appDatabase).execute(food);
     }
 
     private static class RetrieveAsyncTask extends AsyncTask<Object, Void, FoodItemsModel> {
@@ -88,15 +105,6 @@ public class FoodItemsViewModel extends AndroidViewModel {
             return db.FoodItemsModel().getSingleFoodItem(date, (MealType) params[1], (long) params[0]);
         }
 
-    }
-
-    /**
-     * inserts a new food into the database only use if not there already
-     * @param food food object to be inserted
-     */
-    public void insertFood(FoodItemsModel food){
-        Log.d(TAG, "insertFood: inserting foodID: " + food.getFoodID());
-        new InsertAsyncTask(appDatabase).execute(food);
     }
 
     private static class InsertAsyncTask extends AsyncTask<FoodItemsModel, Void, Void> {
@@ -152,11 +160,6 @@ public class FoodItemsViewModel extends AndroidViewModel {
 
     }
 
-    public void updateFood(FoodItemsModel food){
-        Log.d(TAG, "updateFood: updating foodID: " + food.getFoodID());
-        new UpdateAsyncTask(appDatabase).execute(food);
-    }
-
     private static class UpdateAsyncTask extends AsyncTask<FoodItemsModel, Void, Void> {
 
         private UserNutritionDB db;
@@ -175,13 +178,12 @@ public class FoodItemsViewModel extends AndroidViewModel {
             FoodItemsModel oldFood = db.FoodItemsModel().getSingleFoodItem(date, updatedFood.getEatenDuringMeal(), updatedFood.getFoodID());
 
             //if food is not already in db then cannot update and throws exception
-            if (oldFood == null){
+            if (oldFood == null) {
                 throw new NullPointerException("food item with ID: " + updatedFood.getFoodID() + " was not found there cannot update");
             }
 
             //otherwise continue as normal
             db.FoodItemsModel().update(updatedFood);
-
 
 
             //how much to add to meal and daily user info (updated food - old food)
@@ -223,11 +225,7 @@ public class FoodItemsViewModel extends AndroidViewModel {
 
     }
 
-    public void removeFood(FoodItemsModel food){
-        new RemoveAsyncTask(appDatabase).execute(food);
-    }
-
-    private static class RemoveAsyncTask extends AsyncTask<FoodItemsModel, Void, Void>{
+    private static class RemoveAsyncTask extends AsyncTask<FoodItemsModel, Void, Void> {
         private UserNutritionDB db;
 
         RemoveAsyncTask(UserNutritionDB appDatabase) {
@@ -277,7 +275,6 @@ public class FoodItemsViewModel extends AndroidViewModel {
             return null;
         }
     }
-
 
 
 }

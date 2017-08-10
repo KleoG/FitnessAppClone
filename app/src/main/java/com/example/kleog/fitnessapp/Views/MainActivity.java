@@ -9,17 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.kleog.fitnessapp.R;
-import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.Models.UserNutritionDB;
+import com.example.kleog.fitnessapp.R;
 import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-
-import java.util.Date;
-import java.util.Random;
 
 public class MainActivity extends LifecycleActivity {
     private UserNutritionDB db;
@@ -41,18 +37,21 @@ public class MainActivity extends LifecycleActivity {
 
         db = UserNutritionDB.getDatabase(this);
 
-        Log.d("MAIN_ACTIVITY", "onCreate: " + db.DailyUserInfoModel().getAll().getValue());
 
         calorieGraph = (GraphView) findViewById(R.id.calorieBarPlaceholder);
 
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>();
 
+        /**
+         * commented code below can change the colour of the graph
+         */
 //        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
 //            @Override
 //            public int get(DataPoint data) {
 //                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
 //            }
 //        });
+
         calorieGraph.setTitle("calories eaten");
         //draws value of bar directly ontop of the bar
         series.setDrawValuesOnTop(true);

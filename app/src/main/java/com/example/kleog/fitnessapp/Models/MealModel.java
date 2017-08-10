@@ -60,36 +60,36 @@ public class MealModel {
         return mealType;
     }
 
-    public Double getTotalCalories() {
-        return totalCalories;
-    }
-
-    public Double getTotalProtein() {
-        return totalProtein;
-    }
-
-    public Double getTotalCarbs() {
-        return totalCarbs;
-    }
-
-    public Double getTotalFat() {
-        return totalFat;
-    }
-
     public void setMealType(MealType mealType) {
         this.mealType = mealType;
+    }
+
+    public Double getTotalCalories() {
+        return totalCalories;
     }
 
     public void setTotalCalories(Double totalCalories) {
         this.totalCalories = totalCalories;
     }
 
+    public Double getTotalProtein() {
+        return totalProtein;
+    }
+
     public void setTotalProtein(Double totalProtein) {
         this.totalProtein = totalProtein;
     }
 
+    public Double getTotalCarbs() {
+        return totalCarbs;
+    }
+
     public void setTotalCarbs(Double totalCarbs) {
         this.totalCarbs = totalCarbs;
+    }
+
+    public Double getTotalFat() {
+        return totalFat;
     }
 
     public void setTotalFat(Double totalFat) {

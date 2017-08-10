@@ -79,7 +79,7 @@ public class QuantityActivity extends AppCompatActivity {
         mfoodItemsVM = ViewModelProviders.of(this).get(FoodItemsViewModel.class);
 
 
-        //TODO check if item is already in database and if so load from there instead
+        //TODO add button that shows in depth data of food
 
 
         //starts the loading icon
@@ -173,14 +173,13 @@ public class QuantityActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "must choose valid serving amount (cannot be empty or 0)", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "onClick: submit button pressed with serving amount :" + mServingAmount);
-                    FoodItemsModel foodToAdd = new FoodItemsModel(new Date(), mMealTypeEnum, mFoodID,mFoodName, mFoodTotalCalories, mFoodTotalProtein, mFoodTotalCarbs, mFoodTotalFat, mServingChosen, mServingAmount, mFoodDrescription);
+                    FoodItemsModel foodToAdd = new FoodItemsModel(new Date(), mMealTypeEnum, mFoodID, mFoodName, mFoodTotalCalories, mFoodTotalProtein, mFoodTotalCarbs, mFoodTotalFat, mServingChosen, mServingAmount, mFoodDrescription);
 
                     //if food is already in database then update it
-                    if(foodInDatabase){
+                    if (foodInDatabase) {
                         mfoodItemsVM.updateFood(foodToAdd);
 
-                    }
-                    else { //otherwise insert it into db
+                    } else { //otherwise insert it into db
                         mfoodItemsVM.insertFood(foodToAdd);
                     }
                     Intent i = new Intent(getApplicationContext(), MealActivity.class);
@@ -208,7 +207,7 @@ public class QuantityActivity extends AppCompatActivity {
                         mServingChosen = pos;
 
                         //if selected new item without changing amount then update values and UI
-                        if(mServingAmount != null){
+                        if (mServingAmount != null) {
                             mFoodTotalCalories = mServingAmount * mCaloriesPerServing;
                             mFoodTotalCarbs = mServingAmount * mCarbsPerServing;
                             mFoodTotalProtein = mServingAmount * mProteinPerServing;
@@ -300,11 +299,11 @@ public class QuantityActivity extends AppCompatActivity {
             mFoodSpinner.setAdapter(adapter);
 
             //if it is a net item that is not in the db
-            if(mServingChosen == -1){
+            if (mServingChosen == -1) {
                 //must be done after adapter is set
                 mServingChosen = mFoodSpinner.getSelectedItemPosition();
 
-            }else{
+            } else {
                 mFoodSpinner.setSelection(mServingChosen);
             }
             Serving selectedServing = (Serving) mFoodSpinner.getItemAtPosition(mServingChosen);

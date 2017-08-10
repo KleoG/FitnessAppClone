@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 
 import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
-import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 /**
  * Created by Kevin on 29/05/2017.

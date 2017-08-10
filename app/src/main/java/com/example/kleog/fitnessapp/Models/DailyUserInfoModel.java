@@ -50,43 +50,43 @@ public class DailyUserInfoModel {
         return totalCalories;
     }
 
-    public Double getTotalProtein() {
-        return totalProtein;
-    }
-
-    public Double getTotalCarbs() {
-        return totalCarbs;
-    }
-
-    public Double getTotalFat() {
-        return totalFat;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
     public void setTotalCalories(Double totalCalories) {
         this.totalCalories = totalCalories;
+    }
+
+    public Double getTotalProtein() {
+        return totalProtein;
     }
 
     public void setTotalProtein(Double totalProtein) {
         this.totalProtein = totalProtein;
     }
 
+    public Double getTotalCarbs() {
+        return totalCarbs;
+    }
+
     public void setTotalCarbs(Double totalCarbs) {
         this.totalCarbs = totalCarbs;
+    }
+
+    public Double getTotalFat() {
+        return totalFat;
     }
 
     public void setTotalFat(Double totalFat) {
         this.totalFat = totalFat;
     }
 
+    public Double getWeight() {
+        return weight;
+    }
+
     public void setWeight(Double weight) {
         this.weight = weight;
     }
 
-    public String toString(){
-        return "Daily user info on date: " + date + " extras: calories: " + totalCalories + ", carbs: " + totalCarbs + ", protein: "+ totalProtein + ", fat: "+ totalFat;
+    public String toString() {
+        return "Daily user info on date: " + date + " extras: calories: " + totalCalories + ", carbs: " + totalCarbs + ", protein: " + totalProtein + ", fat: " + totalFat;
     }
 }

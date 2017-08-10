@@ -163,6 +163,7 @@ public class SearchActivity extends AppCompatActivity {
 
         /**
          * shows a toat only when there is not one currently showing to avoid toast spam when typing
+         *
          * @param message
          */
         public void showAToast(String message) {
@@ -178,9 +179,9 @@ public class SearchActivity extends AppCompatActivity {
 
 
     private class APIFoodItemListAdapter extends ArrayAdapter<CompactFood> {
-        private LayoutInflater inflater = null;
         Context context;
         ArrayList<CompactFood> foods;
+        private LayoutInflater inflater = null;
 
         public APIFoodItemListAdapter(Context context, ArrayList<CompactFood> foods) {
             super(context, R.layout.api_food_item_list, foods);

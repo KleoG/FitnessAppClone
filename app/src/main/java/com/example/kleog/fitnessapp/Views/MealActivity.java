@@ -89,6 +89,7 @@ public class MealActivity extends LifecycleActivity {
          * the values at the top of the page will be updated here
          */
         MealInfo.observe(this, info -> {
+            //TODO make the numbers displayed only show up to 1 decimal place
             Log.d("LIVE_DATA_OBSERVER_MEAL", "onCreate: observed change in live data for Meal" + info.getMealType());
             calorieValue.setText(info.getTotalCalories().toString());
             carbsValue.setText(info.getTotalCarbs().toString());
@@ -239,13 +240,18 @@ public class MealActivity extends LifecycleActivity {
             return vi;
         }
 
-        public String convertMealTypeToString(MealType type){
-            switch (type){
-                case BREAKFAST: return "Breakfast";
-                case LUNCH: return "Lunch";
-                case DINNER: return "Dinner";
-                case SNACKS: return "Snacks";
-                default: return null;
+        public String convertMealTypeToString(MealType type) {
+            switch (type) {
+                case BREAKFAST:
+                    return "Breakfast";
+                case LUNCH:
+                    return "Lunch";
+                case DINNER:
+                    return "Dinner";
+                case SNACKS:
+                    return "Snacks";
+                default:
+                    return null;
             }
         }
     }

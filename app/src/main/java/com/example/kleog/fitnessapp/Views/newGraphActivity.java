@@ -27,6 +27,8 @@ import java.util.Date;
 
 public class newGraphActivity extends AppCompatActivity {
 
+    //graph view
+    GraphView graph;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -36,18 +38,12 @@ public class newGraphActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-
     //radio group for the graphs
     private RadioGroup graphRG;
-
-    //graph view
-    GraphView graph;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,10 +206,6 @@ public class newGraphActivity extends AppCompatActivity {
                     mDatePicker.show();
                 }
             });
-
-
-
-
 
 
             return rootView;

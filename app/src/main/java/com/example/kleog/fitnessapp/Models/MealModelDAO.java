@@ -24,7 +24,6 @@ public interface MealModelDAO {
     LiveData<List<MealModel>> getAllLiveData();
 
     /**
-     *
      * @param mealType
      * @param date
      * @return live data meal model
@@ -33,7 +32,6 @@ public interface MealModelDAO {
     LiveData<MealModel> getMealLiveData(MealType mealType, Date date);
 
     /**
-     *
      * @param mealType
      * @param date
      * @return meal model object (not live data)
@@ -44,7 +42,7 @@ public interface MealModelDAO {
     @Query("SELECT * FROM meal WHERE date = :date")
     LiveData<List<MealModel>> getMealsOnDateLiveData(Date date);
 
-    @Insert (onConflict = IGNORE)
+    @Insert(onConflict = IGNORE)
     void insertAll(MealModel... meals);
 
     @Insert(onConflict = IGNORE)
