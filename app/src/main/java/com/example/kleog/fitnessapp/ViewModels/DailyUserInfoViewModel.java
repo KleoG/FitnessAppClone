@@ -39,17 +39,21 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
 
         if (currentDayUserInfo == null) {
 
-            currentDayUserInfo = appDatabase.DailyUserInfoModel().getDateLiveData(new Date());
-
             //if new day and no data inserted yet then create and add to database
-            if (currentDayUserInfo.getValue() == null) {
+            if (retrieveCurrentDayUserInfo() == null) {
                 Log.d(TAG, "getCurrentDayUserInfo: creating new entries for new date: " + new Date());
 
                 DailyUserInfoModel emptyCurrentDay = new DailyUserInfoModel(new Date(), 0.0, 0.0, 0.0, 0.0, 0.0);
+                try {
+                    new InsertAsyncTask(appDatabase).execute(emptyCurrentDay).get(); //waits for the data to be inserted before moving on
 
-                new InsertAsyncTask(appDatabase).execute(emptyCurrentDay);
+                }catch (Exception e){
+                    Log.d(TAG, "getCurrentDayUserInfo: this shouldnt happen");
+                }
 
             }
+
+            currentDayUserInfo = appDatabase.DailyUserInfoModel().getDateLiveData(new Date());
         }
         return currentDayUserInfo;
     }
@@ -58,10 +62,6 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
         return listOfDailyUserInfo;
     }
 
-    public void updateCurrentDayUserInfo(DailyUserInfoModel data) {
-
-        new UpdateAsyncTask(appDatabase).execute(data);
-    }
 
     //private static class created for inserting into database with async task to prevent memory leaks
     private static class InsertAsyncTask extends AsyncTask<DailyUserInfoModel, Void, Void> {
@@ -93,6 +93,11 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
 
     }
 
+    public void updateCurrentDayUserInfo(DailyUserInfoModel data) {
+
+        new UpdateAsyncTask(appDatabase).execute(data);
+    }
+
     //private static class created for updating database with async task to prevent memory leaks
     private static class UpdateAsyncTask extends AsyncTask<DailyUserInfoModel, Void, Void> {
 
@@ -111,5 +116,29 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
 
     }
 
+    private DailyUserInfoModel retrieveCurrentDayUserInfo(){
+        try{
+            return new RetrieveAsyncTask(appDatabase).execute().get();
 
+        }catch(Exception e){
+            Log.d(TAG, "RetrieveCurrentDayUserInfo: no value returned due to Exception: " + e);
+            return null;
+
+        }
+    }
+
+
+    private static class RetrieveAsyncTask extends AsyncTask<Void, Void, DailyUserInfoModel>{
+        private UserNutritionDB db;
+
+        RetrieveAsyncTask(UserNutritionDB appDatabase) {
+            db = appDatabase;
+        }
+
+        @Override
+        protected DailyUserInfoModel doInBackground(Void... params) {
+            return db.DailyUserInfoModel().getDate(new Date());
+
+        }
+    }
 }
