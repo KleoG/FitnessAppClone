@@ -154,9 +154,9 @@ public class newGraphActivity extends AppCompatActivity {
             // data for the graph
             //DataPoint[] data = new DataPoint[500];
 
-            for (int i = 0; i < 500; i++) {
+            for (int i = 0; i < 3; i++) {
                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-                series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(0).getTotalCalories()), true, 500);
+                series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
             }
             //series.resetData(data);
             caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
