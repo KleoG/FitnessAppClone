@@ -139,6 +139,21 @@ public class newGraphActivity extends AppCompatActivity {
             TextView textView = (TextView) rootView.findViewById(R.id.calorieGraphTextView);
             textView.setText("calorie graph goes here");
 
+            // data for the graph
+            double x, y;
+            x = -7.0;
+
+            DataPoint[] data = new DataPoint[500];
+
+            for (int i = 0; i < 500; i++) {
+                x = x + 0.1;
+                y = Math.sin(x);
+                data[i] = new DataPoint(x, y);
+                //series.appendData(new DataPoint(x, y), true, 500);
+            }
+            //weightGraph.addSeries(series);
+            series.resetData(data);
+
             caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
             caloreGraph.addSeries(series);
 
@@ -212,6 +227,8 @@ public class newGraphActivity extends AppCompatActivity {
         }
     }
 
+
+
     /**
      * fragment for the weight graph page
      */
@@ -221,6 +238,8 @@ public class newGraphActivity extends AppCompatActivity {
         private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
 
         public WeightGraphFragment() {
+
+
         }
 
         @Override

@@ -70,7 +70,7 @@ public class GraphPage extends AppCompatActivity implements AdapterView.OnItemSe
 
         //this is the type of value that will be returned (a liveData that contains the list)
         // modify db. to access calorie info
-        LiveData<List<DailyUserInfoModel>> info = db.DailyUserInfoModel().getAll();
+        List<DailyUserInfoModel> info = db.DailyUserInfoModel().getAll();
 
 
         double x, y;
