@@ -84,6 +84,18 @@ public class FoodItemsViewModel extends AndroidViewModel {
         new RemoveAsyncTask(appDatabase).execute(food);
     }
 
+
+//    public List<FoodItemsModel> loadBetweenDates(Date from, Date to){
+//        try {
+//
+//            return new GetAllAsyncTask(appDatabase).execute().get();
+//        } catch (Exception e) {
+//            Log.d(TAG, "RetrieveCurrentDayUserInfo: no value returned due to Exception: " + e);
+//            return null;
+//
+//        }
+//    }
+
     private static class RetrieveAsyncTask extends AsyncTask<Object, Void, FoodItemsModel> {
 
         private UserNutritionDB db;
@@ -275,6 +287,20 @@ public class FoodItemsViewModel extends AndroidViewModel {
             return null;
         }
     }
+
+//    private static class GetAllAsyncTask extends AsyncTask<Void, Void, List<FoodItemsModel>> {
+//        private UserNutritionDB db;
+//
+//        GetAllAsyncTask(UserNutritionDB appDatabase) {
+//            db = appDatabase;
+//
+//        }
+//
+//        @Override
+//        protected List<FoodItemsModel> doInBackground(Void... params) {
+//            return db.FoodItemsModel().getAll();
+//        }
+//    }
 
 
 }

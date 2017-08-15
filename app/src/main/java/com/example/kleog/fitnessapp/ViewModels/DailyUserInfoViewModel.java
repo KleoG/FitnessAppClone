@@ -163,7 +163,6 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
         @Override
         protected List<DailyUserInfoModel> doInBackground(Void... params) {
             return db.DailyUserInfoModel().getAll();
-
         }
     }
 

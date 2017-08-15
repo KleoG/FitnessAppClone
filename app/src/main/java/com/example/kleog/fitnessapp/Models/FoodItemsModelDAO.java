@@ -21,7 +21,7 @@ import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 @TypeConverters({DateConverter.class, MealTypeConverter.class, AmountEatenTypeConverter.class})
 public interface FoodItemsModelDAO {
     @Query("SELECT * FROM food_items")
-    LiveData<List<FoodItemsModel>> getAll();
+    List<FoodItemsModel> getAll();
 
     @Query("SELECT * FROM food_items WHERE date = :date")
     LiveData<List<FoodItemsModel>> getFoodsEatenOnDate(Date date);
