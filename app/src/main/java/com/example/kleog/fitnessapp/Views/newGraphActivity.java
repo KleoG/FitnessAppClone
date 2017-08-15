@@ -1,6 +1,7 @@
 package com.example.kleog.fitnessapp.Views;
 
 import android.app.DatePickerDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,13 +18,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.R;
+import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
+import com.example.kleog.fitnessapp.ViewModels.FoodItemsViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class newGraphActivity extends AppCompatActivity {
 
@@ -106,6 +111,9 @@ public class newGraphActivity extends AppCompatActivity {
      */
     public static class CalorieGraphFragment extends Fragment {
 
+        // view model
+        private DailyUserInfoViewModel dailyUserInfoViewModel;
+
         private GraphView caloreGraph;
 
         private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
@@ -139,21 +147,18 @@ public class newGraphActivity extends AppCompatActivity {
             TextView textView = (TextView) rootView.findViewById(R.id.calorieGraphTextView);
             textView.setText("calorie graph goes here");
 
-            // data for the graph
-            double x, y;
-            x = -7.0;
+            dailyUserInfoViewModel = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
 
-            DataPoint[] data = new DataPoint[500];
+            List<DailyUserInfoModel> dailyUserInfoModels = dailyUserInfoViewModel.loadBetweenDates(new Date(), new Date());
+
+            // data for the graph
+            //DataPoint[] data = new DataPoint[500];
 
             for (int i = 0; i < 500; i++) {
-                x = x + 0.1;
-                y = Math.sin(x);
-                data[i] = new DataPoint(x, y);
-                //series.appendData(new DataPoint(x, y), true, 500);
+                //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
+                series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(0).getTotalCalories()), true, 500);
             }
-            //weightGraph.addSeries(series);
-            series.resetData(data);
-
+            //series.resetData(data);
             caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
             caloreGraph.addSeries(series);
 
