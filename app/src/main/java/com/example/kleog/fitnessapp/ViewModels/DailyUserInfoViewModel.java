@@ -78,6 +78,17 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
         }
     }
 
+    public List<DailyUserInfoModel> loadBetweenDates(Date from, Date to){
+        try {
+
+            return new GetAllAsyncTask(appDatabase).execute().get();
+        } catch (Exception e) {
+            Log.d(TAG, "RetrieveCurrentDayUserInfo: no value returned due to Exception: " + e);
+            return null;
+
+        }
+    }
+
     //private static class created for inserting into database with async task to prevent memory leaks
     private static class InsertAsyncTask extends AsyncTask<DailyUserInfoModel, Void, Void> {
 
@@ -131,6 +142,7 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
 
         RetrieveAsyncTask(UserNutritionDB appDatabase) {
             db = appDatabase;
+
         }
 
         @Override
@@ -139,4 +151,20 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
 
         }
     }
+
+    private static class GetAllAsyncTask extends AsyncTask<Void, Void, List<DailyUserInfoModel>> {
+        private UserNutritionDB db;
+
+        GetAllAsyncTask(UserNutritionDB appDatabase) {
+            db = appDatabase;
+
+        }
+
+        @Override
+        protected List<DailyUserInfoModel> doInBackground(Void... params) {
+            return db.DailyUserInfoModel().getAll();
+
+        }
+    }
+
 }
