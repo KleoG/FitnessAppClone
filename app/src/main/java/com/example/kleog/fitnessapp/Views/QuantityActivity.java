@@ -240,6 +240,7 @@ public class QuantityActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 //if empty or value is not greater than 0 then do nothing
+                //TODO fix crash where user enters decimal points first
                 if (s.length() == 0 || !(Double.valueOf(s.toString()) > 0)) {
                     mFoodTotalCalories = null;
                     mFoodTotalCarbs = null;

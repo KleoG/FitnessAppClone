@@ -91,10 +91,11 @@ public class MealActivity extends LifecycleActivity {
         MealInfo.observe(this, info -> {
             //TODO make the numbers displayed only show up to 1 decimal place
             Log.d("LIVE_DATA_OBSERVER_MEAL", "onCreate: observed change in live data for Meal" + info.getMealType());
-            calorieValue.setText(info.getTotalCalories().toString());
-            carbsValue.setText(info.getTotalCarbs().toString());
-            proteinValue.setText(info.getTotalProtein().toString());
-            fatValue.setText(info.getTotalFat().toString());
+            //String.format("%.1f" will convert the double into into a string with only 1 decimal place
+            calorieValue.setText(String.format("%.1f", info.getTotalCalories() ) );
+            carbsValue.setText(String.format("%.1f", info.getTotalCarbs() ) );
+            proteinValue.setText(String.format("%.1f", info.getTotalProtein() ) );
+            fatValue.setText(String.format("%.1f", info.getTotalFat() ) );
 
         });
 
