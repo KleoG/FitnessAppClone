@@ -95,6 +95,7 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
         new InsertAsyncTask(appDatabase).execute(userInfo);
      }
 
+    // previous
     //private static class created for inserting into database with async task to prevent memory leaks
     private static class InsertAsyncTask extends AsyncTask<DailyUserInfoModel, Void, Void> {
 
@@ -110,7 +111,11 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
             Date date = new Date();
             DailyUserInfoModel emptyCurrentDay = new DailyUserInfoModel(date, 0.0, 0.0, 0.0, 0.0, 0.0);
 
-            db.DailyUserInfoModel().insert(params[0]);
+            for(int i = 0; i < params.length; i++){
+                // it is inserts correctly
+                //Log.d("DUIM", "" + params[i]);
+                db.DailyUserInfoModel().insert(params[i]);
+            }
 
             MealModel breakfast = new MealModel(date, MealType.BREAKFAST, 0.0, 0.0, 0.0, 0.0);
             MealModel lunch = new MealModel(date, MealType.LUNCH, 0.0, 0.0, 0.0, 0.0);
@@ -163,11 +168,11 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
 
         GetAllAsyncTask(UserNutritionDB appDatabase) {
             db = appDatabase;
-
         }
 
         @Override
         protected List<DailyUserInfoModel> doInBackground(Void... params) {
+            Log.d("getallasync2", "" + db.DailyUserInfoModel().getAll().get(0));
             return db.DailyUserInfoModel().getAll();
         }
     }

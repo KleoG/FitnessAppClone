@@ -184,7 +184,8 @@ public class newGraphActivity extends AppCompatActivity {
             dailyUserInfoViewModel.insert(new DailyUserInfoModel(d1, 200.0, 300.0, 400.0, 500.0, 20.0));
             dailyUserInfoViewModel.insert(new DailyUserInfoModel(d2, 250.0, 450.0, 700.0, 550.0, 18.0));
             dailyUserInfoViewModel.insert(new DailyUserInfoModel(d3, 350.0, 777.0, 777.0, 777.0, 15.0));
-           
+            dailyUserInfoViewModel.insert(new DailyUserInfoModel(d3, 355.0, 777.0, 777.0, 777.0, 15.0));
+
 
             //GraphView graph = (GraphView) findViewById(R.id.graph);
 
