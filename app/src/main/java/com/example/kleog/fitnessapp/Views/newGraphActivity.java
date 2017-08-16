@@ -334,7 +334,7 @@ public class newGraphActivity extends AppCompatActivity {
             // parameters: Date date, Double totalCalories, Double totalProtein, Double totalCarbs, Double totalFat, Double weight
             dailyUserInfoModels.insert(new DailyUserInfoModel(d1, 200, 300, 400, 500, 20));
             dailyUserInfoModels.insert(new DailyUserInfoModel(d2, 250, 450, 700, 550, 18));
-            dailyUserInfoModels.insert(new DailyUserInfoModel(d3, 350, 777, 777, 777, 15));
+            dailyUserInfoModels.insert(new DailyUserInfoModel(d3, 350, 777, 777, 777, 17));
            
 
             //GraphView graph = (GraphView) findViewById(R.id.graph);
@@ -348,9 +348,9 @@ public class newGraphActivity extends AppCompatActivity {
 //             });
             for (int i = 0; i < 3; i++) {
                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-                series.appendData(new DataPoint(d1, dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
-                series.appendData(new DataPoint(d2, dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
-                series.appendData(new DataPoint(d3, dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
+                series.appendData(new DataPoint(d1, dailyUserInfoModels.get(i).getWeight()), true, 500);
+                series.appendData(new DataPoint(d2, dailyUserInfoModels.get(i).getWeight()), true, 500);
+                series.appendData(new DataPoint(d3, dailyUserInfoModels.get(i).getWeight()), true, 500);
             }
 
             weightGraph.addSeries(series);
