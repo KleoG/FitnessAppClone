@@ -1,11 +1,13 @@
 package com.example.kleog.fitnessapp.Views;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,20 +20,19 @@ import android.widget.TextView;
 import com.example.kleog.fitnessapp.Models.FoodItemsModel;
 import com.example.kleog.fitnessapp.Models.MealModel;
 import com.example.kleog.fitnessapp.Models.MealType;
-import com.example.kleog.fitnessapp.Models.UserNutritionDB;
 import com.example.kleog.fitnessapp.R;
 import com.example.kleog.fitnessapp.ViewModels.FoodItemsViewModel;
 import com.example.kleog.fitnessapp.ViewModels.MealModelViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Kevin on 23/05/2017.
  */
 
 public class MealActivity extends LifecycleActivity {
-    private UserNutritionDB db;
 
     private String mMealType;
     private MealType mMealTypeEnum;
@@ -62,8 +63,6 @@ public class MealActivity extends LifecycleActivity {
 
         setTitle(mMealType);
 
-        db = UserNutritionDB.getDatabase(this.getApplicationContext());
-
         //initialise View Models
         mMealVM = ViewModelProviders.of(this).get(MealModelViewModel.class);
         mFoodVM = ViewModelProviders.of(this).get(FoodItemsViewModel.class);
@@ -85,27 +84,38 @@ public class MealActivity extends LifecycleActivity {
         //this is the type of value that will be returned (a liveData that contains the list)
         LiveData<MealModel> MealInfo = mMealVM.getMealInfo(mMealTypeEnum);
 
-        /**
-         * the values at the top of the page will be updated here
+        /*
+          the values at the top of the page will be updated here
          */
         MealInfo.observe(this, info -> {
-            //TODO make the numbers displayed only show up to 1 decimal place
-            Log.d("LIVE_DATA_OBSERVER_MEAL", "onCreate: observed change in live data for Meal" + info.getMealType());
+            //TODO try to replicate bug where the values are negative and check if there are no foods left then make all values to 0 by default
+
+            assert info != null;
+            Log.d("LIVE_DATA_OBSERVER_MEAL", "onCreate: observed change in live data for Meal: " + info.getMealType());
+
+            Log.d("LIVE_DATA_OBSERVER_MEAL", "onCreate: " + info.getMealType() + " total calories: " + info.getTotalCalories());
+            Log.d("LIVE_DATA_OBSERVER_MEAL", "onCreate: " + info.getMealType() + " total carbs: " + info.getTotalCarbs());
+            Log.d("LIVE_DATA_OBSERVER_MEAL", "onCreate: " + info.getMealType() + " total protein: " + info.getTotalProtein());
+            Log.d("LIVE_DATA_OBSERVER_MEAL", "onCreate: " + info.getMealType() + " total fat: " + info.getTotalFat());
+
             //String.format("%.1f" will convert the double into into a string with only 1 decimal place
-            calorieValue.setText(String.format("%.1f", info.getTotalCalories() ) );
-            carbsValue.setText(String.format("%.1f", info.getTotalCarbs() ) );
-            proteinValue.setText(String.format("%.1f", info.getTotalProtein() ) );
-            fatValue.setText(String.format("%.1f", info.getTotalFat() ) );
+            calorieValue.setText(String.format(Locale.UK, "%.1f", info.getTotalCalories()));
+            carbsValue.setText(String.format(Locale.UK, "%.1f", info.getTotalCarbs()));
+            proteinValue.setText(String.format(Locale.UK, "%.1f", info.getTotalProtein()));
+            fatValue.setText(String.format(Locale.UK, "%.1f", info.getTotalFat()));
 
         });
 
         LiveData<List<FoodItemsModel>> foodListInfo = mFoodVM.getCurrentDayFoodsOfType(mMealTypeEnum);
 
-        /**
-         * list view for food will be updated here
+        /*
+          list view for food will be updated here
          */
         foodListInfo.observe(this, foodInfo -> {
+            assert foodInfo != null;
+
             mAdapter.clear();
+
             mAdapter.addAll(foodInfo);
 
             mAdapter.notifyDataSetChanged();
@@ -134,10 +144,6 @@ public class MealActivity extends LifecycleActivity {
         startActivity(i);
     }
 
-    public void updateFoodEatenList() {
-
-    }
-
     private MealType converToMEALTYPE(String meal_type) {
         switch (meal_type) {
             case "Breakfast":
@@ -164,7 +170,7 @@ public class MealActivity extends LifecycleActivity {
 
         FoodItemsViewModel foodVM;
 
-        public FoodItemListAdapter(Context context, ArrayList<FoodItemsModel> foods, FoodItemsViewModel foodVM) {
+        FoodItemListAdapter(Context context, ArrayList<FoodItemsModel> foods, FoodItemsViewModel foodVM) {
             super(context, R.layout.food_item_list_row, foods);
             this.context = context;
             this.foods = foods;
@@ -184,54 +190,48 @@ public class MealActivity extends LifecycleActivity {
             return position;
         }
 
+        @NonNull
+        @SuppressLint("InflateParams")
         @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
             View vi = convertView;
             if (vi == null)
                 vi = inflater.inflate(R.layout.food_item_list_row, null);
             TextView foodName = (TextView) vi.findViewById(R.id.foodItemName);
 
-            /**
-             * this is what happens when the remove button is pressed
+            /*
+              this is what happens when the remove button is pressed
              */
             ImageButton deleteButton = (ImageButton) vi.findViewById(R.id.deleteImageButton);
             deleteButton.setTag(position);
-            deleteButton.setOnClickListener(new View.OnClickListener() {
+            deleteButton.setOnClickListener(view -> {
+                int pos = (int) view.getTag();
 
-                @Override
-                public void onClick(View view) {
-                    int pos = (int) view.getTag();
+                FoodItemsModel foodToRemove = foods.remove(pos);
 
-                    FoodItemsModel foodToRemove = foods.remove(pos);
-
-                    foodVM.removeFood(foodToRemove);
-                    Log.d("FOOD_LIST_VIEW", "onClick delete: food with name: " + foodName + " + ID: " + foodToRemove.getFoodID());
+                foodVM.removeFood(foodToRemove);
+                Log.d("FOOD_LIST_VIEW", "onClick delete: food with name: " + foodName + " + ID: " + foodToRemove.getFoodID());
 
 
-                    notifyDataSetChanged();
+                notifyDataSetChanged();
 
-                }
             });
 
             ImageButton modifyButton = (ImageButton) vi.findViewById(R.id.modifyImageButton);
             modifyButton.setTag(position);
-            modifyButton.setOnClickListener(new View.OnClickListener() {
+            modifyButton.setOnClickListener(view -> {
+                int pos = (int) view.getTag();
 
-                @Override
-                public void onClick(View view) {
-                    int pos = (int) view.getTag();
-
-                    FoodItemsModel foodToModify = foods.get(pos);
+                FoodItemsModel foodToModify = foods.get(pos);
 
 
-                    Intent i = new Intent(getContext(), QuantityActivity.class);
-                    i.putExtra("FOOD_ID", foodToModify.getFoodID());
-                    i.putExtra("FOOD_DESCRIPTION", foodToModify.getFoodDescription());
-                    String mealType = convertMealTypeToString(foodToModify.getEatenDuringMeal());
-                    i.putExtra("MEAL_TYPE", mealType);
-                    context.startActivity(i);
+                Intent i = new Intent(getContext(), QuantityActivity.class);
+                i.putExtra("FOOD_ID", foodToModify.getFoodID());
+                i.putExtra("FOOD_DESCRIPTION", foodToModify.getFoodDescription());
+                String mealType = convertMealTypeToString(foodToModify.getEatenDuringMeal());
+                i.putExtra("MEAL_TYPE", mealType);
+                context.startActivity(i);
 
-                }
             });
 
 
@@ -241,7 +241,7 @@ public class MealActivity extends LifecycleActivity {
             return vi;
         }
 
-        public String convertMealTypeToString(MealType type) {
+        String convertMealTypeToString(MealType type) {
             switch (type) {
                 case BREAKFAST:
                     return "Breakfast";
