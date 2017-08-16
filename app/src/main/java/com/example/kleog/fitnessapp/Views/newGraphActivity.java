@@ -197,12 +197,17 @@ public class newGraphActivity extends AppCompatActivity {
             }
 
             caloreGraph.addSeries(series);
-
+            
+            // sets the titles of the axis on the graph
+            caloreGraph.getGridLabelRenderer().setVerticalAxisTitle("Calories");
+            caloreGraph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
+                
             // set date label formatter
             caloreGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
             caloreGraph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
             // set manual x bounds to have nice steps
+            // TODO: use this to set what is viewed on the graph between 2 dates that are specified by the user
             caloreGraph.getViewport().setMinX(d1.getTime());
             caloreGraph.getViewport().setMaxX(d3.getTime());
             caloreGraph.getViewport().setXAxisBoundsManual(true);
@@ -237,7 +242,7 @@ public class newGraphActivity extends AppCompatActivity {
 
                     DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                         public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                            //TODO set variable firstDateChosen to the date the the user selects
+                            // TODO: set variable firstDateChosen to the date the the user selects
                             firstDate.setText(selectedday + "/" + selectedmonth + "/" + selectedyear);
                         }
                     }, mYear, mMonth, mDay);
@@ -274,6 +279,14 @@ public class newGraphActivity extends AppCompatActivity {
                     }, mYear, mMonth, mDay);
                     mDatePicker.setTitle("Select date");
                     mDatePicker.show();
+                }
+            });
+            
+            // this allows data points to be tapped. Information is shown about whichever one they tap.
+            series.setOnDataPointTapListener(new OnDataPointTapListener() {
+                @Override
+                public void onTap(Series series, DataPointInterface dataPoint) {
+                    Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
                 }
             });
 
