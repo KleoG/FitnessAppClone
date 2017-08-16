@@ -163,6 +163,8 @@ public class newGraphActivity extends AppCompatActivity {
 //             caloreGraph.addSeries(series);
             
             // generate Dates
+            //change the Calender.DATE to Calender.MONTH or Calender.YEAR and change the second parameter (determioning a point in time)
+            // e.g. Calender.DATE, 1 = tomorrow and Calender.MONTH, -1 = one month ago
             Calendar calendar = Calendar.getInstance();
             Date d1 = calendar.getTime();
             calendar.add(Calendar.DATE, 1);
