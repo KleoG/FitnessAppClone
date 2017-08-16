@@ -154,14 +154,54 @@ public class newGraphActivity extends AppCompatActivity {
             // data for the graph
             //DataPoint[] data = new DataPoint[500];
 
+//             for (int i = 0; i < 3; i++) {
+//                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
+//                 series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
+//             }
+//             //series.resetData(data);
+//             caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
+//             caloreGraph.addSeries(series);
+            
+            // generate Dates
+            Calendar calendar = Calendar.getInstance();
+            Date d1 = calendar.getTime();
+            calendar.add(Calendar.DATE, 1);
+            Date d2 = calendar.getTime();
+            calendar.add(Calendar.DATE, 1);
+            Date d3 = calendar.getTime();
+
+            GraphView graph = (GraphView) findViewById(R.id.graph);
+
+            // you can directly pass Date objects to DataPoint-Constructor
+            // this will convert the Date to double via Date#getTime()
+//             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+//                 new DataPoint(d1, 1),
+//                 new DataPoint(d2, 5),
+//                 new DataPoint(d3, 3)
+//             });
             for (int i = 0; i < 3; i++) {
                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-                series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
+                series.appendData(new DataPoint(d1, 1), true, 500);
+                series.appendData(new DataPoint(d2, 5), true, 500);
+                series.appendData(new DataPoint(d3, 3), true, 500);
             }
-            //series.resetData(data);
-            caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
-            caloreGraph.addSeries(series);
 
+            graph.addSeries(series);
+
+            // set date label formatter
+            graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+            graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+
+            // set manual x bounds to have nice steps
+            graph.getViewport().setMinX(d1.getTime());
+            graph.getViewport().setMaxX(d3.getTime());
+            graph.getViewport().setXAxisBoundsManual(true);
+
+            // as we use dates as labels, the human rounding to nice readable numbers
+            // is not necessary
+            graph.getGridLabelRenderer().setHumanRounding(false);
+            // end of data test
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             //dates selected at bottom of screen
             firstDate = (EditText) rootView.findViewById(R.id.calorieGraphFirstDate);
