@@ -88,7 +88,6 @@ public class MealActivity extends LifecycleActivity {
           the values at the top of the page will be updated here
          */
         MealInfo.observe(this, info -> {
-            //TODO try to replicate bug where the values are negative and check if there are no foods left then make all values to 0 by default
 
             assert info != null;
             Log.d("LIVE_DATA_OBSERVER_MEAL", "onCreate: observed change in live data for Meal: " + info.getMealType());
