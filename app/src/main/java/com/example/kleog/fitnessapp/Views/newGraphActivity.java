@@ -375,6 +375,98 @@ public class newGraphActivity extends AppCompatActivity {
             return rootView;
         }
     }
+    
+//     /**
+//      * fragment for the weight graph page
+//      */
+//     public static class CarbsGraphFragment extends Fragment {
+//         private GraphView carbsGraph;
+
+//         private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
+
+//         public CarbsGraphFragment() {
+
+
+//         }
+
+//         @Override
+//         public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                                  Bundle savedInstanceState) {
+//             View rootView = inflater.inflate(R.layout.fragment_weight_graph, container, false);
+//             TextView textView = (TextView) rootView.findViewById(R.id.weightgraphTextView);
+//             textView.setText("weight graph goes here");
+            
+//             dailyUserInfoViewModel = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
+
+//             List<DailyUserInfoModel> dailyUserInfoModels = dailyUserInfoViewModel.loadBetweenDates(new Date(), new Date());
+
+//             // data for the graph
+//             //DataPoint[] data = new DataPoint[500];
+
+// //             for (int i = 0; i < 3; i++) {
+// //                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
+// //                 series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
+// //             }
+// //             //series.resetData(data);
+//              weightGraph = (GraphView) rootView.findViewById(R.id.weightGraphView);
+// //             caloreGraph.addSeries(series);
+            
+//             // generate Dates
+//             //change the Calender.DATE to Calender.MONTH or Calender.YEAR and change the second parameter (determioning a point in time)
+//             // e.g. Calender.DATE, 1 = tomorrow and Calender.MONTH, -1 = one month ago
+//             Calendar calendar = Calendar.getInstance();
+//             Date d1 = calendar.getTime();
+//             calendar.add(Calendar.DATE, 1);
+//             Date d2 = calendar.getTime();
+//             calendar.add(Calendar.DATE, 1);
+//             Date d3 = calendar.getTime();
+            
+            
+//             // insert test data for dailyuserinfomodels
+//             // parameters: Date date, Double totalCalories, Double totalProtein, Double totalCarbs, Double totalFat, Double weight
+//             dailyUserInfoModels.insert(new DailyUserInfoModel(d1, 200, 300, 400, 500, 20));
+//             dailyUserInfoModels.insert(new DailyUserInfoModel(d2, 250, 450, 700, 550, 18));
+//             dailyUserInfoModels.insert(new DailyUserInfoModel(d3, 350, 777, 777, 777, 17));
+           
+
+//             //GraphView graph = (GraphView) findViewById(R.id.graph);
+
+//             // you can directly pass Date objects to DataPoint-Constructor
+//             // this will convert the Date to double via Date#getTime()
+// //             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+// //                 new DataPoint(d1, 1),
+// //                 new DataPoint(d2, 5),
+// //                 new DataPoint(d3, 3)
+// //             });
+//             for (int i = 0; i < 3; i++) {
+//                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
+//                 series.appendData(new DataPoint(d1, dailyUserInfoModels.get(i).getWeight()), true, 500);
+//                 series.appendData(new DataPoint(d2, dailyUserInfoModels.get(i).getWeight()), true, 500);
+//                 series.appendData(new DataPoint(d3, dailyUserInfoModels.get(i).getWeight()), true, 500);
+//             }
+
+//             carbsGraph.addSeries(series);
+
+//             // set date label formatter
+//             carbsGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+//             carbsGraph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+
+//             // set manual x bounds to have nice steps
+//             carbsGraph.getViewport().setMinX(d1.getTime());
+//             carbsGraph.getViewport().setMaxX(d3.getTime());
+//             carbsGraph.getViewport().setXAxisBoundsManual(true);
+
+//             // as we use dates as labels, the human rounding to nice readable numbers
+//             // is not necessary
+//             carbsGraph.getGridLabelRenderer().setHumanRounding(false);
+//             // end of data test
+//             ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//             //not yet created
+//             //weightGraph = (GraphView) rootView.findViewById(R.id.weightGraphView);
+//             return rootView;
+//         }
+//     }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
