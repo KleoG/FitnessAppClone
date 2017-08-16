@@ -159,10 +159,10 @@ public class newGraphActivity extends AppCompatActivity {
 //                 series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
 //             }
 //             //series.resetData(data);
-//             caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
+             caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
 //             caloreGraph.addSeries(series);
             
-            // generate Dates
+                        // generate Dates
             //change the Calender.DATE to Calender.MONTH or Calender.YEAR and change the second parameter (determioning a point in time)
             // e.g. Calender.DATE, 1 = tomorrow and Calender.MONTH, -1 = one month ago
             Calendar calendar = Calendar.getInstance();
@@ -171,8 +171,14 @@ public class newGraphActivity extends AppCompatActivity {
             Date d2 = calendar.getTime();
             calendar.add(Calendar.DATE, 1);
             Date d3 = calendar.getTime();
+            
+            
+            // insert test data for dailyuserinfomodels
+            // parameters: Date date, Double totalCalories, Double totalProtein, Double totalCarbs, Double totalFat, Double weight
+            dailyUserInfoModels.insert(new DailyUserInfoModel(d1, 200, 300, 400, 500, 20));
+           
 
-            GraphView graph = (GraphView) findViewById(R.id.graph);
+            //GraphView graph = (GraphView) findViewById(R.id.graph);
 
             // you can directly pass Date objects to DataPoint-Constructor
             // this will convert the Date to double via Date#getTime()
@@ -188,20 +194,20 @@ public class newGraphActivity extends AppCompatActivity {
                 series.appendData(new DataPoint(d3, 3), true, 500);
             }
 
-            graph.addSeries(series);
+            caloreGraph.addSeries(series);
 
             // set date label formatter
-            graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
-            graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+            caloreGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+            caloreGraph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
             // set manual x bounds to have nice steps
-            graph.getViewport().setMinX(d1.getTime());
-            graph.getViewport().setMaxX(d3.getTime());
-            graph.getViewport().setXAxisBoundsManual(true);
+            caloreGraph.getViewport().setMinX(d1.getTime());
+            caloreGraph.getViewport().setMaxX(d3.getTime());
+            caloreGraph.getViewport().setXAxisBoundsManual(true);
 
             // as we use dates as labels, the human rounding to nice readable numbers
             // is not necessary
-            graph.getGridLabelRenderer().setHumanRounding(false);
+            caloreGraph.getGridLabelRenderer().setHumanRounding(false);
             // end of data test
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
