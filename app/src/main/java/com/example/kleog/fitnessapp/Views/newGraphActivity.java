@@ -162,7 +162,7 @@ public class newGraphActivity extends AppCompatActivity {
              caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
 //             caloreGraph.addSeries(series);
             
-                        // generate Dates
+            // generate Dates
             //change the Calender.DATE to Calender.MONTH or Calender.YEAR and change the second parameter (determioning a point in time)
             // e.g. Calender.DATE, 1 = tomorrow and Calender.MONTH, -1 = one month ago
             Calendar calendar = Calendar.getInstance();
@@ -176,6 +176,8 @@ public class newGraphActivity extends AppCompatActivity {
             // insert test data for dailyuserinfomodels
             // parameters: Date date, Double totalCalories, Double totalProtein, Double totalCarbs, Double totalFat, Double weight
             dailyUserInfoModels.insert(new DailyUserInfoModel(d1, 200, 300, 400, 500, 20));
+            dailyUserInfoModels.insert(new DailyUserInfoModel(d2, 250, 450, 700, 550, 18));
+            dailyUserInfoModels.insert(new DailyUserInfoModel(d3, 350, 777, 777, 777, 15));
            
 
             //GraphView graph = (GraphView) findViewById(R.id.graph);
@@ -189,9 +191,9 @@ public class newGraphActivity extends AppCompatActivity {
 //             });
             for (int i = 0; i < 3; i++) {
                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-                series.appendData(new DataPoint(d1, 1), true, 500);
-                series.appendData(new DataPoint(d2, 5), true, 500);
-                series.appendData(new DataPoint(d3, 3), true, 500);
+                series.appendData(new DataPoint(d1, dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
+                series.appendData(new DataPoint(d2, dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
+                series.appendData(new DataPoint(d3, dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
             }
 
             caloreGraph.addSeries(series);
