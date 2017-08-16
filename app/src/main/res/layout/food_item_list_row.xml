@@ -6,19 +6,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.kleog.fitnessapp.Views.MealActivity">
 
-    <ImageView
-        android:id="@+id/foodItemImagePlaceholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:srcCompat="@android:drawable/btn_star" />
-
     <TextView
         android:id="@+id/foodItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="chicken"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
     <ImageButton
@@ -26,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:minWidth="50dp"
         app:srcCompat="@android:drawable/ic_menu_manage" />
 
     <ImageButton
@@ -33,5 +28,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:minWidth="50dp"
         app:srcCompat="@android:drawable/ic_menu_delete" />
 </LinearLayout>
