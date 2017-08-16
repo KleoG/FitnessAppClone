@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,14 +18,19 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.R;
 import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
 import com.example.kleog.fitnessapp.ViewModels.FoodItemsViewModel;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -175,9 +181,9 @@ public class newGraphActivity extends AppCompatActivity {
             
             // insert test data for dailyuserinfomodels
             // parameters: Date date, Double totalCalories, Double totalProtein, Double totalCarbs, Double totalFat, Double weight
-            dailyUserInfoModels.insert(new DailyUserInfoModel(d1, 200, 300, 400, 500, 20));
-            dailyUserInfoModels.insert(new DailyUserInfoModel(d2, 250, 450, 700, 550, 18));
-            dailyUserInfoModels.insert(new DailyUserInfoModel(d3, 350, 777, 777, 777, 15));
+            dailyUserInfoViewModel.insert(new DailyUserInfoModel(d1, 200.0, 300.0, 400.0, 500.0, 20.0));
+            dailyUserInfoViewModel.insert(new DailyUserInfoModel(d2, 250.0, 450.0, 700.0, 550.0, 18.0));
+            dailyUserInfoViewModel.insert(new DailyUserInfoModel(d3, 350.0, 777.0, 777.0, 777.0, 15.0));
            
 
             //GraphView graph = (GraphView) findViewById(R.id.graph);
@@ -189,12 +195,19 @@ public class newGraphActivity extends AppCompatActivity {
 //                 new DataPoint(d2, 5),
 //                 new DataPoint(d3, 3)
 //             });
-            for (int i = 0; i < 3; i++) {
-                //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-                series.appendData(new DataPoint(d1, dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
-                series.appendData(new DataPoint(d2, dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
-                series.appendData(new DataPoint(d3, dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
+
+            // this information is not being returned properly - comes out as zeros
+            for(int i = 0; i < dailyUserInfoModels.size(); i++){
+                Log.d("calories", "" + dailyUserInfoModels.get(i).getTotalCalories());
+                Log.d("date", "" + dailyUserInfoModels.get(i).getDate());
             }
+
+            //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
+            series.appendData(new DataPoint(dailyUserInfoModels.get(0).getDate(), dailyUserInfoModels.get(0).getTotalCalories()), true, 500);
+            series.appendData(new DataPoint(d2, dailyUserInfoModels.get(1).getTotalCalories()), true, 500);
+            series.appendData(new DataPoint(d3, dailyUserInfoModels.get(2).getTotalCalories()), true, 500);
+
+
 
             caloreGraph.addSeries(series);
             
@@ -317,71 +330,71 @@ public class newGraphActivity extends AppCompatActivity {
             TextView textView = (TextView) rootView.findViewById(R.id.weightgraphTextView);
             textView.setText("weight graph goes here");
             
-            dailyUserInfoViewModel = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
-
-            List<DailyUserInfoModel> dailyUserInfoModels = dailyUserInfoViewModel.loadBetweenDates(new Date(), new Date());
-
-            // data for the graph
-            //DataPoint[] data = new DataPoint[500];
-
-//             for (int i = 0; i < 3; i++) {
-//                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-//                 series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
-//             }
-//             //series.resetData(data);
-             weightGraph = (GraphView) rootView.findViewById(R.id.weightGraphView);
-//             caloreGraph.addSeries(series);
-            
-            // generate Dates
-            //change the Calender.DATE to Calender.MONTH or Calender.YEAR and change the second parameter (determioning a point in time)
-            // e.g. Calender.DATE, 1 = tomorrow and Calender.MONTH, -1 = one month ago
-            Calendar calendar = Calendar.getInstance();
-            Date d1 = calendar.getTime();
-            calendar.add(Calendar.DATE, 1);
-            Date d2 = calendar.getTime();
-            calendar.add(Calendar.DATE, 1);
-            Date d3 = calendar.getTime();
-            
-            
-            // insert test data for dailyuserinfomodels
-            // parameters: Date date, Double totalCalories, Double totalProtein, Double totalCarbs, Double totalFat, Double weight
-            dailyUserInfoModels.insert(new DailyUserInfoModel(d1, 200, 300, 400, 500, 20));
-            dailyUserInfoModels.insert(new DailyUserInfoModel(d2, 250, 450, 700, 550, 18));
-            dailyUserInfoModels.insert(new DailyUserInfoModel(d3, 350, 777, 777, 777, 17));
-           
-
-            //GraphView graph = (GraphView) findViewById(R.id.graph);
-
-            // you can directly pass Date objects to DataPoint-Constructor
-            // this will convert the Date to double via Date#getTime()
-//             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-//                 new DataPoint(d1, 1),
-//                 new DataPoint(d2, 5),
-//                 new DataPoint(d3, 3)
-//             });
-            for (int i = 0; i < 3; i++) {
-                //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-                series.appendData(new DataPoint(d1, dailyUserInfoModels.get(i).getWeight()), true, 500);
-                series.appendData(new DataPoint(d2, dailyUserInfoModels.get(i).getWeight()), true, 500);
-                series.appendData(new DataPoint(d3, dailyUserInfoModels.get(i).getWeight()), true, 500);
-            }
-
-            weightGraph.addSeries(series);
-
-            // set date label formatter
-            weightGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
-            weightGraph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
-
-            // set manual x bounds to have nice steps
-            weightGraph.getViewport().setMinX(d1.getTime());
-            weightGraph.getViewport().setMaxX(d3.getTime());
-            weightGraph.getViewport().setXAxisBoundsManual(true);
-
-            // as we use dates as labels, the human rounding to nice readable numbers
-            // is not necessary
-            weightGraph.getGridLabelRenderer().setHumanRounding(false);
-            // end of data test
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//            dailyUserInfoViewModel = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
+//
+//            List<DailyUserInfoModel> dailyUserInfoModels = dailyUserInfoViewModel.loadBetweenDates(new Date(), new Date());
+//
+//            // data for the graph
+//            //DataPoint[] data = new DataPoint[500];
+//
+////             for (int i = 0; i < 3; i++) {
+////                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
+////                 series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
+////             }
+////             //series.resetData(data);
+//             weightGraph = (GraphView) rootView.findViewById(R.id.weightGraphView);
+////             caloreGraph.addSeries(series);
+//
+//            // generate Dates
+//            //change the Calender.DATE to Calender.MONTH or Calender.YEAR and change the second parameter (determioning a point in time)
+//            // e.g. Calender.DATE, 1 = tomorrow and Calender.MONTH, -1 = one month ago
+//            Calendar calendar = Calendar.getInstance();
+//            Date d1 = calendar.getTime();
+//            calendar.add(Calendar.DATE, 1);
+//            Date d2 = calendar.getTime();
+//            calendar.add(Calendar.DATE, 1);
+//            Date d3 = calendar.getTime();
+//
+//
+//            // insert test data for dailyuserinfomodels
+//            // parameters: Date date, Double totalCalories, Double totalProtein, Double totalCarbs, Double totalFat, Double weight
+//            dailyUserInfoModels.insert(new DailyUserInfoModel(d1, 200, 300, 400, 500, 20));
+//            dailyUserInfoModels.insert(new DailyUserInfoModel(d2, 250, 450, 700, 550, 18));
+//            dailyUserInfoModels.insert(new DailyUserInfoModel(d3, 350, 777, 777, 777, 17));
+//
+//
+//            //GraphView graph = (GraphView) findViewById(R.id.graph);
+//
+//            // you can directly pass Date objects to DataPoint-Constructor
+//            // this will convert the Date to double via Date#getTime()
+////             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+////                 new DataPoint(d1, 1),
+////                 new DataPoint(d2, 5),
+////                 new DataPoint(d3, 3)
+////             });
+//            for (int i = 0; i < 3; i++) {
+//                //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
+//                series.appendData(new DataPoint(d1, dailyUserInfoModels.get(i).getWeight()), true, 500);
+//                series.appendData(new DataPoint(d2, dailyUserInfoModels.get(i).getWeight()), true, 500);
+//                series.appendData(new DataPoint(d3, dailyUserInfoModels.get(i).getWeight()), true, 500);
+//            }
+//
+//            weightGraph.addSeries(series);
+//
+//            // set date label formatter
+//            weightGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+//            weightGraph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+//
+//            // set manual x bounds to have nice steps
+//            weightGraph.getViewport().setMinX(d1.getTime());
+//            weightGraph.getViewport().setMaxX(d3.getTime());
+//            weightGraph.getViewport().setXAxisBoundsManual(true);
+//
+//            // as we use dates as labels, the human rounding to nice readable numbers
+//            // is not necessary
+//            weightGraph.getGridLabelRenderer().setHumanRounding(false);
+//            // end of data test
+//            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             //not yet created
             //weightGraph = (GraphView) rootView.findViewById(R.id.weightGraphView);
