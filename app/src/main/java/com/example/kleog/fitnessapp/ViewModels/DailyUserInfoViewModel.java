@@ -88,6 +88,12 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
 
         }
     }
+    
+    // used to insert a new DailyUserInfoModel
+     public void insert(DailyUserInfoModel userInfo){
+        Log.d(TAG, "insertFood: inserting foodID: " + userInfo.toString());
+        new InsertAsyncTask(appDatabase).execute(userInfo);
+     }
 
     //private static class created for inserting into database with async task to prevent memory leaks
     private static class InsertAsyncTask extends AsyncTask<DailyUserInfoModel, Void, Void> {
