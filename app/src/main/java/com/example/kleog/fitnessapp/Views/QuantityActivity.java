@@ -239,8 +239,15 @@ public class QuantityActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
+
+                //if the first character selected is a decimal point (".") then change to ("0.") so avoid crashing the app (since "." cannot be converted into a number)
+                if(s.length() != 0 && s.charAt(0) == '.'){
+                    mFoodAmountText.setText("0.");
+                    s = "0.";
+                    mFoodAmountText.setSelection(2);
+                }
+
                 //if empty or value is not greater than 0 then do nothing
-                //TODO fix crash where user enters decimal points first
                 if (s.length() == 0 || !(Double.valueOf(s.toString()) > 0)) {
                     mFoodTotalCalories = null;
                     mFoodTotalCarbs = null;
