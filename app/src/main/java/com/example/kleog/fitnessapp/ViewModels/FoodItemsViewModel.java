@@ -66,7 +66,7 @@ public class FoodItemsViewModel extends AndroidViewModel {
     }
 
     /**
-     * inserts a new food into the database only use if not there already
+     * inserts a new food into the database, only use if not in database already
      *
      * @param food food object to be inserted
      */
@@ -85,17 +85,6 @@ public class FoodItemsViewModel extends AndroidViewModel {
     }
 
 
-//    public List<FoodItemsModel> loadBetweenDates(Date from, Date to){
-//        try {
-//
-//            return new GetAllAsyncTask(appDatabase).execute().get();
-//        } catch (Exception e) {
-//            Log.d(TAG, "RetrieveCurrentDayUserInfo: no value returned due to Exception: " + e);
-//            return null;
-//
-//        }
-//    }
-
     private static class RetrieveAsyncTask extends AsyncTask<Object, Void, FoodItemsModel> {
 
         private UserNutritionDB db;
@@ -105,9 +94,9 @@ public class FoodItemsViewModel extends AndroidViewModel {
         }
 
         @Override
-        /**
-         * params[0] = food id
-         * params[1] = meal type
+        /*
+          params[0] = food id
+          params[1] = meal type
          */
         protected FoodItemsModel doInBackground(Object... params) {
 
@@ -260,11 +249,22 @@ public class FoodItemsViewModel extends AndroidViewModel {
             //get meal that food was eaten during
             MealModel oldMeal = db.MealModel().getMeal(food.getEatenDuringMeal(), food.getDate());
 
-            //update oldMeal
-            oldMeal.setTotalCalories(oldMeal.getTotalCalories() - caloriesToRemove);
-            oldMeal.setTotalCarbs(oldMeal.getTotalCarbs() - carbsToRemove);
-            oldMeal.setTotalProtein(oldMeal.getTotalProtein() - proteinToRemove);
-            oldMeal.setTotalFat(oldMeal.getTotalFat() - fatToRemove);
+            //update oldMeal and check if values are less than 0, if so set them to 0
+            Double newMealTotalCalories = oldMeal.getTotalCalories() - caloriesToRemove;
+            if (newMealTotalCalories < 0.0) newMealTotalCalories = 0.0;
+            oldMeal.setTotalCalories(newMealTotalCalories);
+
+            Double newMealTotalCarbs = oldMeal.getTotalCarbs() - carbsToRemove;
+            if (newMealTotalCarbs < 0.0) newMealTotalCarbs = 0.0;
+            oldMeal.setTotalCarbs(newMealTotalCarbs);
+
+            Double newMealTotalProtein = oldMeal.getTotalProtein() - proteinToRemove;
+            if (newMealTotalProtein < 0.0) newMealTotalProtein = 0.0;
+            oldMeal.setTotalProtein(newMealTotalProtein);
+
+            Double newMealTotalFat = oldMeal.getTotalFat() - fatToRemove;
+            if (newMealTotalFat < 0.0) newMealTotalFat = 0.0;
+            oldMeal.setTotalFat(newMealTotalFat);
 
             //update oldMeal
             db.MealModel().update(oldMeal);
@@ -272,11 +272,23 @@ public class FoodItemsViewModel extends AndroidViewModel {
             //get daily user info
             DailyUserInfoModel oldInfo = db.DailyUserInfoModel().getDate(food.getDate());
 
-            //update old info
-            oldInfo.setTotalCalories(oldInfo.getTotalCalories() - caloriesToRemove);
-            oldInfo.setTotalCarbs(oldInfo.getTotalCarbs() - carbsToRemove);
-            oldInfo.setTotalProtein(oldInfo.getTotalProtein() - proteinToRemove);
-            oldInfo.setTotalFat(oldInfo.getTotalFat() - fatToRemove);
+            //update old dailyUserInfo and check if values less than 0, same done with meals above
+
+            Double newDailyInfoTotalCalories = oldInfo.getTotalCalories() - caloriesToRemove;
+            if (newDailyInfoTotalCalories < 0.0) newDailyInfoTotalCalories = 0.0;
+            oldInfo.setTotalCalories(newDailyInfoTotalCalories);
+
+            Double newDailyInfoTotalCarbs = oldInfo.getTotalCarbs() - carbsToRemove;
+            if (newDailyInfoTotalCarbs < 0.0) newDailyInfoTotalCarbs = 0.0;
+            oldInfo.setTotalCarbs(newDailyInfoTotalCarbs);
+
+            Double newDailyInfoTotalProtein = oldInfo.getTotalProtein() - proteinToRemove;
+            if (newDailyInfoTotalProtein < 0.0) newDailyInfoTotalProtein = 0.0;
+            oldInfo.setTotalProtein(newDailyInfoTotalProtein);
+
+            Double newDailyInfoTotalFat = oldInfo.getTotalFat() - fatToRemove;
+            if (newDailyInfoTotalFat < 0.0) newDailyInfoTotalFat = 0.0;
+            oldInfo.setTotalFat(newDailyInfoTotalFat);
 
             //update user info
             db.DailyUserInfoModel().update(oldInfo);
@@ -287,20 +299,5 @@ public class FoodItemsViewModel extends AndroidViewModel {
             return null;
         }
     }
-
-//    private static class GetAllAsyncTask extends AsyncTask<Void, Void, List<FoodItemsModel>> {
-//        private UserNutritionDB db;
-//
-//        GetAllAsyncTask(UserNutritionDB appDatabase) {
-//            db = appDatabase;
-//
-//        }
-//
-//        @Override
-//        protected List<FoodItemsModel> doInBackground(Void... params) {
-//            return db.FoodItemsModel().getAll();
-//        }
-//    }
-
 
 }
