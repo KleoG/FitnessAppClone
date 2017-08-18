@@ -12,3 +12,8 @@ Known bugs
 30/05/17 - app crashes when swapping graphs on graph page
 10/07/17 - App crashes randomly when searching for food
 13/07/17 - SearchActivity onQueryTextChange 0 search result value are skewed
+
+
+
+WorkFlow Guide
+https://github.com/jennafin/SE306-Android/wiki/Git-Workflow-Guide
