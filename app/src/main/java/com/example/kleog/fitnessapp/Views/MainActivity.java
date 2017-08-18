@@ -101,6 +101,7 @@ public class MainActivity extends LifecycleActivity {
             Log.d("LIVE_DATA_OBSERVER", "onCreate: info details: " + info);
             Log.d("LIVE_DATA_OBSERVER", "onCreate: calories: " + calories);
 
+            //TODO add a viewmodel to store all UI info
             new AsyncTask<Void, Void, Void>(){
 
                 @Override
