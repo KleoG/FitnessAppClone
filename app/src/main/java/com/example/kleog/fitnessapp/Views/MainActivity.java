@@ -1,14 +1,17 @@
 package com.example.kleog.fitnessapp.Views;
 
 import android.arch.lifecycle.LifecycleActivity;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.Models.UserNutritionDB;
 import com.example.kleog.fitnessapp.R;
 import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
@@ -17,9 +20,9 @@ import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
-public class MainActivity extends LifecycleActivity {
-    private UserNutritionDB db;
+import java.util.Objects;
 
+public class MainActivity extends LifecycleActivity {
     private GraphView calorieGraph;
 
     private DailyUserInfoViewModel userInfoVM;
@@ -29,14 +32,14 @@ public class MainActivity extends LifecycleActivity {
     // amount of calories shown on graph on main page
     // should retrieve this figure from database to get total calories of person
     private Double calories;
+    //used in animating the graph
+    private Double oldCalories;
+    private Double caloriesDisplayedOngraph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        db = UserNutritionDB.getDatabase(this);
-
 
         calorieGraph = (GraphView) findViewById(R.id.calorieBarPlaceholder);
 
@@ -78,19 +81,70 @@ public class MainActivity extends LifecycleActivity {
         //attached to the view model
         userInfoVM = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
 
+        LiveData<DailyUserInfoModel> dailyUserLiveData = userInfoVM.getCurrentDayUserInfo();
+
+
+
         //when changes to the data are made the UI will be updated here
-        userInfoVM.getCurrentDayUserInfo().observe(this, info -> {
+        dailyUserLiveData.observe(this, info -> {
             Log.d("LIVE_DATA_OBSERVER", "onCreate: observed change in live data");
 
-            calorieGraph.getSeries().clear();
+            //calorieGraph.getSeries().clear();
 
+            if(calories == null) calories = 0.0;
+            oldCalories = calories;
+            caloriesDisplayedOngraph = calories;
+
+            assert info != null;
             calories = info.getTotalCalories();
 
-            series.resetData(new DataPoint[]{new DataPoint(0, calories)});
+            Log.d("LIVE_DATA_OBSERVER", "onCreate: info details: " + info);
+            Log.d("LIVE_DATA_OBSERVER", "onCreate: calories: " + calories);
 
-            calorieGraph.addSeries(series);
+            new AsyncTask<Void, Void, Void>(){
 
-            Log.d("DATABASE", "onCreate: total items in database: " + info);
+                @Override
+                public Void doInBackground(Void... params){
+                    Log.d("LIVE_DATA_OBSERVER", "doInBackground: calories: " + calories + ", old calories: " + oldCalories);
+                    //if graph is increasing
+                    if(calories - oldCalories > 0.0) {
+                        while(!Objects.equals(caloriesDisplayedOngraph, calories)){
+                            series.resetData(new DataPoint[]{new DataPoint(0, ++caloriesDisplayedOngraph)});
+                            Log.d("LIVE_DATA_OBSERVER", "doInBackground: calories displayed: " + caloriesDisplayedOngraph);
+                            try {
+                                Thread.sleep(1);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+
+                    }else{ //graph is decreasing
+                        while(!Objects.equals(caloriesDisplayedOngraph, calories)){
+                            series.resetData(new DataPoint[]{new DataPoint(0, --caloriesDisplayedOngraph)});
+                            Log.d("LIVE_DATA_OBSERVER", "doInBackground: calories displayed: " + caloriesDisplayedOngraph);
+
+                            try {
+                                Thread.sleep(1);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+
+                    }
+                    return null;
+                }
+
+            }.execute();
+
+
+
+            //series.resetData(new DataPoint[]{new DataPoint(0, calories)});
+
+            //calorieGraph.addSeries(series);
+
+            Log.d("LIVE_DATA_OBSERVER", "onCreate: UI graph updated");
 
         });
 

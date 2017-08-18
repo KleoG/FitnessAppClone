@@ -38,7 +38,7 @@ public class DailyUserInfoViewModel extends AndroidViewModel {
     public LiveData<DailyUserInfoModel> getCurrentDayUserInfo() {
 
         if (currentDayUserInfo == null) {
-
+            Log.d(TAG, "getCurrentDayUserInfo: user info live data is null");
             //if new day and no data inserted yet then create and add to database
             if (retrieveCurrentDayUserInfo() == null) {
                 Log.d(TAG, "getCurrentDayUserInfo: creating new entries for new date: " + new Date());
