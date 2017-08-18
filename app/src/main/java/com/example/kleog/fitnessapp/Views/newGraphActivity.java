@@ -32,9 +32,13 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.Series;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class newGraphActivity extends AppCompatActivity {
 
@@ -253,6 +257,15 @@ public class newGraphActivity extends AppCompatActivity {
                         public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                             // TODO: set variable firstDateChosen to the date the the user selects
                             firstDate.setText(selectedday + "/" + selectedmonth + "/" + selectedyear);
+                            DateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+                            Date d = null;
+
+                            try {
+                                d = df.parse(firstDate.getText().toString());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d("date", "" + d);
                         }
                     }, mYear, mMonth, mDay);
                     mDatePicker.setTitle("Select date");
