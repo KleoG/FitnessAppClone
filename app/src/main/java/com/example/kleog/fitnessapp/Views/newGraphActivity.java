@@ -173,10 +173,10 @@ public class newGraphActivity extends AppCompatActivity {
             Date d1 = calendar.getTime();
             calendar.add(Calendar.DATE, 1);
             Date d2 = calendar.getTime();
-            calendar.add(Calendar.DATE, 1);
+            calendar.add(Calendar.DATE, 4);
             Date d3 = calendar.getTime();
-            
-            
+            calendar.add(Calendar.DATE, 4);
+
             // insert test data for dailyuserinfomodels
             // parameters: Date date, Double totalCalories, Double totalProtein, Double totalCarbs, Double totalFat, Double weight
             dailyUserInfoViewModel.insert(new DailyUserInfoModel(d1, 200.0, 300.0, 400.0, 500.0, 20.0));
@@ -185,28 +185,12 @@ public class newGraphActivity extends AppCompatActivity {
 
             List<DailyUserInfoModel> dailyUserInfoModels = dailyUserInfoViewModel.loadBetweenDates(new Date(), new Date());
 
-            //GraphView graph = (GraphView) findViewById(R.id.graph);
-
-            // you can directly pass Date objects to DataPoint-Constructor
-            // this will convert the Date to double via Date#getTime()
-//             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-//                 new DataPoint(d1, 1),
-//                 new DataPoint(d2, 5),
-//                 new DataPoint(d3, 3)
-//             });
-
-//            //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-//            series.appendData(new DataPoint(dailyUserInfoModels.get(0).getDate(), dailyUserInfoModels.get(0).getTotalCalories()), true, 500);
-//            series.appendData(new DataPoint(dailyUserInfoModels.get(1).getDate(), dailyUserInfoModels.get(1).getTotalCalories()), true, 500);
-//            series.appendData(new DataPoint(d3, dailyUserInfoModels.get(2).getTotalCalories()), true, 500);
-
             Log.d("size", "" + dailyUserInfoModels.size());
 
             for(DailyUserInfoModel dailyUserInfoModel : dailyUserInfoModels){
                 Log.d("stuff", "" + dailyUserInfoModel.getTotalCalories());
                 series.appendData(new DataPoint(dailyUserInfoModel.getDate(), dailyUserInfoModel.getTotalCalories()), true, dailyUserInfoModels.size());
             }
-
 
             caloreGraph.addSeries(series);
             
@@ -220,7 +204,19 @@ public class newGraphActivity extends AppCompatActivity {
 
             // set manual x bounds to have nice steps
             // TODO: use this to set what is viewed on the graph between 2 dates that are specified by the user
-            caloreGraph.getViewport().setMinX(d1.getTime());
+            // this piece of code is so if there is less than 3 dates in the database, it will fill the missing dates by itself
+//            if(dailyUserInfoModels.size() < 3){
+//                for(DailyUserInfoModel dailyUserInfoModel : dailyUserInfoModels){
+//                    d1 = calendar.getTime();
+//                    calendar.add(Calendar.DATE, dailyUserInfoModels.size());
+//                }
+//                caloreGraph.getViewport().setMinX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
+//                caloreGraph.getViewport().setMaxX(d1.getTime());
+//            }else {
+//                caloreGraph.getViewport().setMinX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 3).getDate().getTime());
+//                caloreGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
+//            }
+
             caloreGraph.getViewport().setMinX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 3).getDate().getTime());
             caloreGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
             caloreGraph.getViewport().setXAxisBoundsManual(true);
