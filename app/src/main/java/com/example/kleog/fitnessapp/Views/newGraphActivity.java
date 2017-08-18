@@ -155,8 +155,6 @@ public class newGraphActivity extends AppCompatActivity {
 
             dailyUserInfoViewModel = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
 
-            List<DailyUserInfoModel> dailyUserInfoModels = dailyUserInfoViewModel.loadBetweenDates(new Date(), new Date());
-
             // data for the graph
             //DataPoint[] data = new DataPoint[500];
 
@@ -184,8 +182,8 @@ public class newGraphActivity extends AppCompatActivity {
             dailyUserInfoViewModel.insert(new DailyUserInfoModel(d1, 200.0, 300.0, 400.0, 500.0, 20.0));
             dailyUserInfoViewModel.insert(new DailyUserInfoModel(d2, 250.0, 450.0, 700.0, 550.0, 18.0));
             dailyUserInfoViewModel.insert(new DailyUserInfoModel(d3, 350.0, 777.0, 777.0, 777.0, 15.0));
-            dailyUserInfoViewModel.insert(new DailyUserInfoModel(d3, 355.0, 777.0, 777.0, 777.0, 15.0));
 
+            List<DailyUserInfoModel> dailyUserInfoModels = dailyUserInfoViewModel.loadBetweenDates(new Date(), new Date());
 
             //GraphView graph = (GraphView) findViewById(R.id.graph);
 
@@ -197,17 +195,17 @@ public class newGraphActivity extends AppCompatActivity {
 //                 new DataPoint(d3, 3)
 //             });
 
-            // this information is not being returned properly - comes out as zeros
-            for(int i = 0; i < dailyUserInfoModels.size(); i++){
-                Log.d("calories", "" + dailyUserInfoModels.get(i).getTotalCalories());
-                Log.d("date", "" + dailyUserInfoModels.get(i).getDate());
+//            //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
+//            series.appendData(new DataPoint(dailyUserInfoModels.get(0).getDate(), dailyUserInfoModels.get(0).getTotalCalories()), true, 500);
+//            series.appendData(new DataPoint(dailyUserInfoModels.get(1).getDate(), dailyUserInfoModels.get(1).getTotalCalories()), true, 500);
+//            series.appendData(new DataPoint(d3, dailyUserInfoModels.get(2).getTotalCalories()), true, 500);
+
+            Log.d("size", "" + dailyUserInfoModels.size());
+
+            for(DailyUserInfoModel dailyUserInfoModel : dailyUserInfoModels){
+                Log.d("stuff", "" + dailyUserInfoModel.getTotalCalories());
+                series.appendData(new DataPoint(dailyUserInfoModel.getDate(), dailyUserInfoModel.getTotalCalories()), true, dailyUserInfoModels.size());
             }
-
-            //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-            series.appendData(new DataPoint(dailyUserInfoModels.get(0).getDate(), dailyUserInfoModels.get(0).getTotalCalories()), true, 500);
-            series.appendData(new DataPoint(d2, dailyUserInfoModels.get(1).getTotalCalories()), true, 500);
-            series.appendData(new DataPoint(d3, dailyUserInfoModels.get(2).getTotalCalories()), true, 500);
-
 
 
             caloreGraph.addSeries(series);
@@ -223,7 +221,8 @@ public class newGraphActivity extends AppCompatActivity {
             // set manual x bounds to have nice steps
             // TODO: use this to set what is viewed on the graph between 2 dates that are specified by the user
             caloreGraph.getViewport().setMinX(d1.getTime());
-            caloreGraph.getViewport().setMaxX(d3.getTime());
+            caloreGraph.getViewport().setMinX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 3).getDate().getTime());
+            caloreGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
             caloreGraph.getViewport().setXAxisBoundsManual(true);
 
             // as we use dates as labels, the human rounding to nice readable numbers

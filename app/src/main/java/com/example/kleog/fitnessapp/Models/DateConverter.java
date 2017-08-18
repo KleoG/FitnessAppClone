@@ -14,7 +14,7 @@ import java.util.Date;
 public class DateConverter {
 
     @TypeConverter
-    static Date toDate(String strDate) {
+    public static Date toDate(String strDate) {
         try {
             return strDate == null ? null : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate); //takes a string date from SQLite and converts it to Date in format
         } catch (ParseException e) {
@@ -25,7 +25,7 @@ public class DateConverter {
     }
 
     @TypeConverter
-    static String toDateString(Date date) {
+    public static String toDateString(Date date) {
         Log.d("DATE_CONVERTER", "toDateString: " + date + " becomes: " + new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(date));
         return date == null ? null : new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(date);
     }
