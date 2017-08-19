@@ -130,7 +130,7 @@ public class QuantityActivity extends AppCompatActivity {
             mFoodSpinner.setSelection(foodInDB.getServingChosen());
             mFoodAmountText.setText(foodInDB.getServingUnits().toString());
 
-            mTotalCaloriesAmount.setText(foodInDB.getCalories().toString());
+            setTotalCaloriesAmountText(foodInDB.getCalories());
 
             //set the food data
             mFoodTotalCalories = foodInDB.getCalories();
@@ -213,7 +213,7 @@ public class QuantityActivity extends AppCompatActivity {
                             mFoodTotalProtein = mServingAmount * mProteinPerServing;
                             mFoodTotalFat = mServingAmount * mFatPerServing;
 
-                            mTotalCaloriesAmount.setText(mFoodTotalCalories.toString());
+                            setTotalCaloriesAmountText(mFoodTotalCalories);
                         }
 
                     }
@@ -239,6 +239,14 @@ public class QuantityActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
+
+                //if the first character selected is a decimal point (".") then change to ("0.") so avoid crashing the app (since "." cannot be converted into a number)
+                if(s.length() != 0 && s.charAt(0) == '.'){
+                    mFoodAmountText.setText("0.");
+                    s = "0.";
+                    mFoodAmountText.setSelection(2);
+                }
+
                 //if empty or value is not greater than 0 then do nothing
                 if (s.length() == 0 || !(Double.valueOf(s.toString()) > 0)) {
                     mFoodTotalCalories = null;
@@ -254,7 +262,7 @@ public class QuantityActivity extends AppCompatActivity {
                     mFoodTotalProtein = mServingAmount * mProteinPerServing;
                     mFoodTotalFat = mServingAmount * mFatPerServing;
 
-                    mTotalCaloriesAmount.setText(mFoodTotalCalories.toString());
+                    setTotalCaloriesAmountText(mFoodTotalCalories);
 
 
                 }
@@ -265,6 +273,19 @@ public class QuantityActivity extends AppCompatActivity {
         mLoadingIcon.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * use this to set and format the total calories amount text to 2 decimal places
+     * @param amount
+     */
+    private void setTotalCaloriesAmountText(Double amount){
+        mTotalCaloriesAmount.setText(String.format("%.2f", amount ) );
+    }
+
+    /**
+     * converts string to MealType
+     * @param meal_type
+     * @return
+     */
     private MealType converToMEALTYPE(String meal_type) {
         switch (meal_type) {
             case "Breakfast":

@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.R;
 import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
-import com.example.kleog.fitnessapp.ViewModels.FoodItemsViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
@@ -170,6 +169,7 @@ public class newGraphActivity extends AppCompatActivity {
              caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
 //             caloreGraph.addSeries(series);
             
+
             // generate Dates
             //change the Calender.DATE to Calender.MONTH or Calender.YEAR and change the second parameter (determioning a point in time)
             // e.g. Calender.DATE, 1 = tomorrow and Calender.MONTH, -1 = one month ago
