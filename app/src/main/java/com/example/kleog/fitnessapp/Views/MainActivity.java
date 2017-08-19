@@ -15,6 +15,7 @@ import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.Models.UserNutritionDB;
 import com.example.kleog.fitnessapp.R;
 import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
+import com.example.kleog.fitnessapp.ViewModels.MainActivityGraphViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.BarGraphSeries;
@@ -26,6 +27,7 @@ public class MainActivity extends LifecycleActivity {
     private GraphView calorieGraph;
 
     private DailyUserInfoViewModel userInfoVM;
+    private MainActivityGraphViewModel graphVM;
 
     //TODO make it so the day is saved as a variable here (and used everywhere else in the app my extension) so if the app is used past midnight it will not reset the day
 
@@ -80,20 +82,16 @@ public class MainActivity extends LifecycleActivity {
 
         //attached to the view model
         userInfoVM = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
+        graphVM = ViewModelProviders.of(this).get(MainActivityGraphViewModel.class);
+
 
         LiveData<DailyUserInfoModel> dailyUserLiveData = userInfoVM.getCurrentDayUserInfo();
-
+        MainActivityGraphViewModel.CaloriesDisplayedLiveData graphLiveData = graphVM.getCaloriesDisplayed();
 
 
         //when changes to the data are made the UI will be updated here
         dailyUserLiveData.observe(this, info -> {
             Log.d("LIVE_DATA_OBSERVER", "onCreate: observed change in live data");
-
-            //calorieGraph.getSeries().clear();
-
-            if(calories == null) calories = 0.0;
-            oldCalories = calories;
-            caloriesDisplayedOngraph = calories;
 
             assert info != null;
             calories = info.getTotalCalories();
@@ -102,51 +100,15 @@ public class MainActivity extends LifecycleActivity {
             Log.d("LIVE_DATA_OBSERVER", "onCreate: calories: " + calories);
 
             //TODO add a viewmodel to store all UI info
-            new AsyncTask<Void, Void, Void>(){
+            graphVM.changeInCalories(calories);
 
-                @Override
-                public Void doInBackground(Void... params){
-                    Log.d("LIVE_DATA_OBSERVER", "doInBackground: calories: " + calories + ", old calories: " + oldCalories);
-                    //if graph is increasing
-                    if(calories - oldCalories > 0.0) {
-                        while(!Objects.equals(caloriesDisplayedOngraph, calories)){
-                            series.resetData(new DataPoint[]{new DataPoint(0, ++caloriesDisplayedOngraph)});
-                            Log.d("LIVE_DATA_OBSERVER", "doInBackground: calories displayed: " + caloriesDisplayedOngraph);
-                            try {
-                                Thread.sleep(1);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-
-                    }else{ //graph is decreasing
-                        while(!Objects.equals(caloriesDisplayedOngraph, calories)){
-                            series.resetData(new DataPoint[]{new DataPoint(0, --caloriesDisplayedOngraph)});
-                            Log.d("LIVE_DATA_OBSERVER", "doInBackground: calories displayed: " + caloriesDisplayedOngraph);
-
-                            try {
-                                Thread.sleep(1);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-
-                    }
-                    return null;
-                }
-
-            }.execute();
-
-
-
-            //series.resetData(new DataPoint[]{new DataPoint(0, calories)});
-
-            //calorieGraph.addSeries(series);
 
             Log.d("LIVE_DATA_OBSERVER", "onCreate: UI graph updated");
 
+        });
+
+        graphLiveData.observe(this, caloriesToDisplay -> {
+            series.resetData(new DataPoint[]{new DataPoint(0, caloriesToDisplay)});
         });
 
     }
