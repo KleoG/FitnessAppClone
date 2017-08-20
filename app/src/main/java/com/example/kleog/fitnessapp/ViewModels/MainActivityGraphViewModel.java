@@ -62,9 +62,12 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
             } catch (Exception e) {
             }
 
+            //value must be rounded to avoind ifinite loop
+            initialCalories = ((Long) Math.round(initialCalories)).doubleValue();
+
             caloriesDisplayed = CaloriesDisplayedLiveData.get(initialCalories);
             Log.d(TAG, "MainActivityGraphViewModel: calories displayed value has been changed");
-            caloriesDisplayed.changeValue(initialCalories);
+            caloriesDisplayed.changePostValue(initialCalories);
         }
         return caloriesDisplayed;
     }
@@ -110,7 +113,13 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
         protected Void doInBackground(Double... params) {
 
             //params[0] = newCalories
+            //round the number to a whole number to prevent infinite loops
+            params[0] = ((Long) Math.round(params[0])).doubleValue();
+
             int rateOfChange;
+
+            //this needs to be here for when onCreate is called for the main activity
+            series.resetData(new DataPoint[]{new DataPoint(0, caloriesDisplayed.getValue())});
 
             Log.d(TAG, "doInBackground: calories: " + params[0] + ", old calories: " + caloriesDisplayed.getValue());
             //if graph is increasing
@@ -126,6 +135,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
                     caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() + rateOfChange);
 
                     series.resetData(new DataPoint[]{new DataPoint(0, caloriesDisplayed.getValue())});
+                    Log.d(TAG, "doInBackground: data displayed on graph should be: " + series.getValues(0,0).next().getY());
 
 
                     try {
@@ -148,6 +158,8 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
                     caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() - rateOfChange);
 
                     series.resetData(new DataPoint[]{new DataPoint(0, caloriesDisplayed.getValue())});
+
+                    Log.d(TAG, "doInBackground: data displayed on graph should be: " + series.getValues(0,0).next().getY());
 
                     try {
                         Thread.sleep(1);

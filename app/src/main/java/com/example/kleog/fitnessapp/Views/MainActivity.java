@@ -74,7 +74,7 @@ public class MainActivity extends LifecycleActivity {
         // remove vertical labels and lines
 
 
-        series.appendData(new DataPoint(0, 0), true, 2000);
+        //series.appendData(new DataPoint(0, 0), true, 2000);
         //series.appendData(new DataPoint(1, 300), true, 2000);
 
 
