@@ -9,6 +9,8 @@ import android.support.annotation.MainThread;
 import android.util.Log;
 
 import com.example.kleog.fitnessapp.Models.UserNutritionDB;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.Date;
 import java.util.Objects;
@@ -68,10 +70,10 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void changeInCalories(Double newCalories) {
+    public void changeInCalories(Double newCalories, BarGraphSeries<DataPoint> series) {
         if (updatingCaloriesDisplayed == null) {
 
-            updatingCaloriesDisplayed = new GraphAnimatorAsyncTask(caloriesDisplayed);
+            updatingCaloriesDisplayed = new GraphAnimatorAsyncTask(caloriesDisplayed, series);
 
             updatingCaloriesDisplayed.execute(newCalories);
 
@@ -81,13 +83,13 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
                 Log.d(TAG, "changeInCalories: Async Task was running and now got cancelled");
                 updatingCaloriesDisplayed.cancel(true);
 
-                updatingCaloriesDisplayed = new GraphAnimatorAsyncTask(caloriesDisplayed);
+                updatingCaloriesDisplayed = new GraphAnimatorAsyncTask(caloriesDisplayed, series);
 
                 updatingCaloriesDisplayed.execute(newCalories);
 
             } else if (updatingCaloriesDisplayed.getStatus() == AsyncTask.Status.FINISHED) {
                 Log.d(TAG, "changeInCalories: Async Task was finished, now retarting with a new async task");
-                updatingCaloriesDisplayed = new GraphAnimatorAsyncTask(caloriesDisplayed);
+                updatingCaloriesDisplayed = new GraphAnimatorAsyncTask(caloriesDisplayed, series);
 
                 updatingCaloriesDisplayed.execute(newCalories);
             }
@@ -97,9 +99,11 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
     private static class GraphAnimatorAsyncTask extends AsyncTask<Double, Void, Void> {
 
         private CaloriesDisplayedLiveData caloriesDisplayed;
+        private BarGraphSeries<DataPoint> series;
 
-        public GraphAnimatorAsyncTask(CaloriesDisplayedLiveData liveData) {
+        public GraphAnimatorAsyncTask(CaloriesDisplayedLiveData liveData, BarGraphSeries<DataPoint> series) {
             caloriesDisplayed = liveData;
+            this.series = series;
         }
 
         @Override
@@ -119,9 +123,10 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
 
                     rateOfChange = rateOfChangeBasedOnDifference(difference);
 
-
-
                     caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() + rateOfChange);
+
+                    series.resetData(new DataPoint[]{new DataPoint(0, caloriesDisplayed.getValue())});
+
 
                     try {
                         Thread.sleep(1);
@@ -141,6 +146,9 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
                     rateOfChange = rateOfChangeBasedOnDifference(difference);
 
                     caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() - rateOfChange);
+
+                    series.resetData(new DataPoint[]{new DataPoint(0, caloriesDisplayed.getValue())});
+
                     try {
                         Thread.sleep(1);
                     } catch (InterruptedException e) {

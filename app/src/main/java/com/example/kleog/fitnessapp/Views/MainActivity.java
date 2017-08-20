@@ -99,15 +99,11 @@ public class MainActivity extends LifecycleActivity {
             Log.d("LIVE_DATA_OBSERVER", "onCreate: info details: " + info);
             Log.d("LIVE_DATA_OBSERVER", "onCreate: calories: " + calories);
 
-            graphVM.changeInCalories(calories);
+            graphVM.changeInCalories(calories, series);
 
 
             Log.d("LIVE_DATA_OBSERVER", "onCreate: UI graph updated");
 
-        });
-
-        graphLiveData.observe(this, caloriesToDisplay -> {
-            series.resetData(new DataPoint[]{new DataPoint(0, caloriesToDisplay)});
         });
 
     }
