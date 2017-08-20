@@ -99,7 +99,6 @@ public class MainActivity extends LifecycleActivity {
             Log.d("LIVE_DATA_OBSERVER", "onCreate: info details: " + info);
             Log.d("LIVE_DATA_OBSERVER", "onCreate: calories: " + calories);
 
-            //TODO add a viewmodel to store all UI info
             graphVM.changeInCalories(calories);
 
 
@@ -121,6 +120,11 @@ public class MainActivity extends LifecycleActivity {
     public void goToGraphsPage(View view) {
         Intent intent = new Intent(this, newGraphActivity.class);
         startActivity(intent);  // changes page to the intent (graph page)
+    }
+
+    @Override
+    public void onBackPressed(){
+
     }
 
     /**

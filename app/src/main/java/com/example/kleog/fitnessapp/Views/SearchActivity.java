@@ -28,6 +28,8 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
+    private final String TAG = "SEARCH ACTIVITY";
+
     Toast mToast;
 
     ArrayList<CompactFood> arrayFood;
@@ -77,7 +79,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
 
-                Intent intent = new Intent(SearchActivity.this, QuantityActivity.class);
+                Intent intent = new Intent(getApplicationContext(), QuantityActivity.class);
 
                 CompactFood obj = (CompactFood) lv.getAdapter().getItem(position);  //Gets whole object in the position
 
@@ -132,6 +134,11 @@ public class SearchActivity extends AppCompatActivity {
 
 
         });
+    }
+
+    public void onDestroy(){
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: search activity has been destroyed");
     }
 
 

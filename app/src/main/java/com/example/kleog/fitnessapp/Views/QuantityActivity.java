@@ -184,7 +184,10 @@ public class QuantityActivity extends AppCompatActivity {
                     }
                     Intent i = new Intent(getApplicationContext(), MealActivity.class);
                     i.putExtra("MEAL_TYPE", mMealType);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
+                    //QuantityActivity.this.finish();
+
                 }
             }
         });
@@ -272,6 +275,12 @@ public class QuantityActivity extends AppCompatActivity {
 
         mLoadingIcon.setVisibility(View.INVISIBLE);
     }
+
+    public void onDestroy(){
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: quantity activity of: " + mFoodName + " has been destroyed");
+    }
+
 
     /**
      * use this to set and format the total calories amount text to 2 decimal places

@@ -34,6 +34,8 @@ import java.util.Locale;
 
 public class MealActivity extends LifecycleActivity {
 
+    private final String TAG = "MEAL ACTIVITY";
+
     private String mMealType;
     private MealType mMealTypeEnum;
 
@@ -62,6 +64,8 @@ public class MealActivity extends LifecycleActivity {
         mMealTypeEnum = converToMEALTYPE(mMealType);
 
         setTitle(mMealType);
+
+        Log.d(TAG, "onCreate: meal activity of type " + mMealType);
 
         //initialise View Models
         mMealVM = ViewModelProviders.of(this).get(MealModelViewModel.class);
@@ -138,9 +142,16 @@ public class MealActivity extends LifecycleActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        this.finish();
+
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
+        this.finish();
+    }
+
+    public void onDestroy() {
+
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: meal activity: " + mMealType + " has been destroyed");
     }
 
     private MealType converToMEALTYPE(String meal_type) {
