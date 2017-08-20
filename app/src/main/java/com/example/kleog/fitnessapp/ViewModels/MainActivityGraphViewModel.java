@@ -117,10 +117,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
                     //the difference in target calories vs the calories currently on screen
                     double difference = params[0] - caloriesDisplayed.getValue();
 
-                    //determines how fast the graph should change based on distance
-                    if(difference > 100) rateOfChange = 7;
-                    else if(difference > 50) rateOfChange = 4;
-                    else rateOfChange = 1;
+                    rateOfChange = rateOfChangeBasedOnDifference(difference);
 
 
 
@@ -141,10 +138,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
                     //the difference in target calories vs the calories currently on screen
                     double difference = caloriesDisplayed.getValue() - params[0] ;
 
-                    //determines how fast the graph should change based on distance
-                    if(difference > 100) rateOfChange = 7;
-                    else if(difference > 50) rateOfChange = 4;
-                    else rateOfChange = 1;
+                    rateOfChange = rateOfChangeBasedOnDifference(difference);
 
                     caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() - rateOfChange);
                     try {
@@ -158,7 +152,18 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
             }
             return null;
         }
+
+        private int rateOfChangeBasedOnDifference(Double difference){
+            //rate determines how fast the graph will change speed (lower number = higher rate of change)
+
+            //DO NOT MAKE IT A VALUE OF 1
+            int rate = 20;
+
+            return 1 + (int)(Math.floor(difference / rate));
+        }
     }
+
+
 
 
     /**
