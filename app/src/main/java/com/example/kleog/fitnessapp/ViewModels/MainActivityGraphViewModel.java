@@ -106,13 +106,25 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
         protected Void doInBackground(Double... params) {
 
             //params[0] = newCalories
+            int rateOfChange;
 
             Log.d(TAG, "doInBackground: calories: " + params[0] + ", old calories: " + caloriesDisplayed.getValue());
             //if graph is increasing
             if (params[0] - caloriesDisplayed.getValue() > 0.0) {
                 while (!Objects.equals(caloriesDisplayed.getValue(), params[0])) {
                     //Log.d(TAG, "doInBackground: calories displayed: " + caloriesDisplayed.getValue());
-                    caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() + 1);
+
+                    //the difference in target calories vs the calories currently on screen
+                    double difference = params[0] - caloriesDisplayed.getValue();
+
+                    //determines how fast the graph should change based on distance
+                    if(difference > 100) rateOfChange = 7;
+                    else if(difference > 50) rateOfChange = 4;
+                    else rateOfChange = 1;
+
+
+
+                    caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() + rateOfChange);
 
                     try {
                         Thread.sleep(1);
@@ -125,7 +137,16 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
             } else { //graph is decreasing
                 while (!Objects.equals(caloriesDisplayed.getValue(), params[0])) {
                     //Log.d(TAG, "doInBackground: calories displayed: " + caloriesDisplayed.getValue());
-                    caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() - 1);
+
+                    //the difference in target calories vs the calories currently on screen
+                    double difference = caloriesDisplayed.getValue() - params[0] ;
+
+                    //determines how fast the graph should change based on distance
+                    if(difference > 100) rateOfChange = 7;
+                    else if(difference > 50) rateOfChange = 4;
+                    else rateOfChange = 1;
+
+                    caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() - rateOfChange);
                     try {
                         Thread.sleep(1);
                     } catch (InterruptedException e) {
