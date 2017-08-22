@@ -16,6 +16,7 @@ import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
 import com.example.kleog.fitnessapp.ViewModels.MainActivityGraphViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
@@ -34,6 +35,8 @@ public class MainActivity extends LifecycleActivity {
     private Double oldCalories;
     private Double caloriesDisplayedOngraph;
 
+    private int targetCalories = 2000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +46,25 @@ public class MainActivity extends LifecycleActivity {
 
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>();
 
-        /**
-         * commented code below can change the colour of the graph
-         */
-//        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
-//            @Override
-//            public int get(DataPoint data) {
-//                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
-//            }
-//        });
+        //sets the colour of the graph
+        series.setValueDependentColor(data -> {
+
+            //value double 0.0 - 1.0 (0.0 = red, 1.0 = green, 0.5 = yellow)
+            float value = 0.0f;
+
+            //equation = -8(x - 1)^2 + 1
+            //x = data.getY() / targetCalories
+            //equation will make the graph start to turn green at 64% of the target goal
+            float x = (float) data.getY() / targetCalories;
+            float equationResult = -8 * (float) Math.pow(x - 1, 2) + 1;
+
+            //if the result is less than 0 then keep value as 0
+            if (equationResult > 0.0) {
+                value = equationResult;
+            }
+
+            return Color.HSVToColor(new float[]{value * 120f, 1f, 1f});
+        });
 
         calorieGraph.setTitle("calories eaten");
         //draws value of bar directly ontop of the bar
