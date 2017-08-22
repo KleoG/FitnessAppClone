@@ -150,7 +150,6 @@ public class QuantityActivity extends AppCompatActivity {
             foodInDatabase = false;
         }
 
-
         //fat secret API stuff
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -182,8 +181,12 @@ public class QuantityActivity extends AppCompatActivity {
                     } else { //otherwise insert it into db
                         mfoodItemsVM.insertFood(foodToAdd);
                     }
+
                     Intent i = new Intent(getApplicationContext(), MealActivity.class);
                     i.putExtra("MEAL_TYPE", mMealType);
+
+                    //deletes all activities (search and quantity) above the meal activity to prevent user from going to wrong activity by accident
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }
             }
@@ -241,7 +244,7 @@ public class QuantityActivity extends AppCompatActivity {
                                       int before, int count) {
 
                 //if the first character selected is a decimal point (".") then change to ("0.") so avoid crashing the app (since "." cannot be converted into a number)
-                if(s.length() != 0 && s.charAt(0) == '.'){
+                if (s.length() != 0 && s.charAt(0) == '.') {
                     mFoodAmountText.setText("0.");
                     s = "0.";
                     mFoodAmountText.setSelection(2);
@@ -273,16 +276,24 @@ public class QuantityActivity extends AppCompatActivity {
         mLoadingIcon.setVisibility(View.INVISIBLE);
     }
 
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: quantity activity of: " + mFoodName + " has been destroyed");
+    }
+
+
     /**
      * use this to set and format the total calories amount text to 2 decimal places
+     *
      * @param amount
      */
-    private void setTotalCaloriesAmountText(Double amount){
-        mTotalCaloriesAmount.setText(String.format("%.2f", amount ) );
+    private void setTotalCaloriesAmountText(Double amount) {
+        mTotalCaloriesAmount.setText(String.format("%.2f", amount));
     }
 
     /**
      * converts string to MealType
+     *
      * @param meal_type
      * @return
      */

@@ -1,6 +1,7 @@
 package com.example.kleog.fitnessapp.Views;
 
 import android.arch.lifecycle.LifecycleActivity;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,34 +10,34 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.kleog.fitnessapp.Models.UserNutritionDB;
+import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.R;
 import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
+import com.example.kleog.fitnessapp.ViewModels.MainActivityGraphViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
 public class MainActivity extends LifecycleActivity {
-    private UserNutritionDB db;
-
     private GraphView calorieGraph;
 
     private DailyUserInfoViewModel userInfoVM;
+    private MainActivityGraphViewModel graphVM;
 
     //TODO make it so the day is saved as a variable here (and used everywhere else in the app my extension) so if the app is used past midnight it will not reset the day
 
     // amount of calories shown on graph on main page
     // should retrieve this figure from database to get total calories of person
     private Double calories;
+    //used in animating the graph
+    private Double oldCalories;
+    private Double caloriesDisplayedOngraph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        db = UserNutritionDB.getDatabase(this);
-
 
         calorieGraph = (GraphView) findViewById(R.id.calorieBarPlaceholder);
 
@@ -58,39 +59,42 @@ public class MainActivity extends LifecycleActivity {
         series.setValuesOnTopColor(Color.BLUE);
         series.setSpacing(0);
 
-        calorieGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE); // background grids get removed
+        // background grids get removed
+        calorieGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
 
         calorieGraph.getViewport().setYAxisBoundsManual(true);
         calorieGraph.getViewport().setMaxYAxisSize(2000);
         calorieGraph.getViewport().setMaxY(2000);
 
+        // remove vertical labels and lines
         calorieGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);  // removes x axis and line
         calorieGraph.getGridLabelRenderer().setVerticalLabelsVisible(false);    // removes y axis and line
-        // remove vertical labels and lines
-
-
-        series.appendData(new DataPoint(0, 0), true, 2000);
-        //series.appendData(new DataPoint(1, 300), true, 2000);
 
 
         calorieGraph.addSeries(series);
 
         //attached to the view model
         userInfoVM = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
+        graphVM = ViewModelProviders.of(this).get(MainActivityGraphViewModel.class);
+
+
+        LiveData<DailyUserInfoModel> dailyUserLiveData = userInfoVM.getCurrentDayUserInfo();
 
         //when changes to the data are made the UI will be updated here
-        userInfoVM.getCurrentDayUserInfo().observe(this, info -> {
+        dailyUserLiveData.observe(this, info -> {
             Log.d("LIVE_DATA_OBSERVER", "onCreate: observed change in live data");
 
-            calorieGraph.getSeries().clear();
-
+            assert info != null;
             calories = info.getTotalCalories();
 
-            series.resetData(new DataPoint[]{new DataPoint(0, calories)});
+            Log.d("LIVE_DATA_OBSERVER", "onCreate: info details: " + info);
+            Log.d("LIVE_DATA_OBSERVER", "onCreate: calories: " + calories);
 
-            calorieGraph.addSeries(series);
+            //update graph
+            graphVM.changeInCalories(calories, series);
 
-            Log.d("DATABASE", "onCreate: total items in database: " + info);
+
+            Log.d("LIVE_DATA_OBSERVER", "onCreate: UI graph updated");
 
         });
 
@@ -104,6 +108,11 @@ public class MainActivity extends LifecycleActivity {
     public void goToGraphsPage(View view) {
         Intent intent = new Intent(this, newGraphActivity.class);
         startActivity(intent);  // changes page to the intent (graph page)
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     /**
