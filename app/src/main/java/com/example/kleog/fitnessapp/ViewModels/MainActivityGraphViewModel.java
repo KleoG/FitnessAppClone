@@ -1,6 +1,5 @@
 package com.example.kleog.fitnessapp.ViewModels;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
@@ -8,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.annotation.MainThread;
 import android.util.Log;
 
+import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
 import com.example.kleog.fitnessapp.Models.UserNutritionDB;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
@@ -29,7 +29,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
 
     private AsyncTask<Double, Void, Void> updatingCaloriesDisplayed;
 
-    @SuppressLint("StaticFieldLeak")
+
     public MainActivityGraphViewModel(Application application) {
         super(application);
 
@@ -38,6 +38,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
 
         //sets the calories to be displayed as what is already in the database
 
+        getCaloriesDisplayed();
 
     }
 
@@ -46,44 +47,53 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
         if (caloriesDisplayed == null) {
 
             Double initialCalories = null;
+
             try {
-                initialCalories = new AsyncTask<Void, Void, Double>() {
-                    @Override
-                    protected Double doInBackground(Void... params) {
-
-                        try {
-                            return appDatabase.DailyUserInfoModel().getDate(new Date()).getTotalCalories();
-                        } catch (Exception e) {
-                            return null;
-                        }
-
-                    }
-                }.execute().get();
+                initialCalories = new RetrieveCurrentDayAsyncTask(appDatabase).execute().get().getTotalCalories();
             } catch (Exception e) {
+                Log.d(TAG, "getCaloriesDisplayed: error retrieving initial calories");
             }
 
-            //value must be rounded to avoind ifinite loop
+            //value must be rounded to avoid infinite loop
             initialCalories = ((Long) Math.round(initialCalories)).doubleValue();
 
             caloriesDisplayed = CaloriesDisplayedLiveData.get(initialCalories);
-            Log.d(TAG, "MainActivityGraphViewModel: calories displayed value has been changed");
             caloriesDisplayed.changePostValue(initialCalories);
+
         }
         return caloriesDisplayed;
     }
 
-    @SuppressLint("StaticFieldLeak")
-    public void changeInCalories(Double newCalories, BarGraphSeries<DataPoint> series) {
-        if (updatingCaloriesDisplayed == null) {
+    private static class RetrieveCurrentDayAsyncTask extends AsyncTask<Void, Void, DailyUserInfoModel> {
+        private UserNutritionDB db;
 
+        RetrieveCurrentDayAsyncTask(UserNutritionDB appDatabase) {
+            db = appDatabase;
+
+        }
+
+        @Override
+        protected DailyUserInfoModel doInBackground(Void... params) {
+            return db.DailyUserInfoModel().getDate(new Date());
+
+        }
+    }
+
+    public void changeInCalories(Double newCalories, BarGraphSeries<DataPoint> series) {
+        //if no async task created then create one
+        if (updatingCaloriesDisplayed == null) {
+            Log.d(TAG, "changeInCalories: creating async task to update graph");
             updatingCaloriesDisplayed = new GraphAnimatorAsyncTask(caloriesDisplayed, series);
 
             updatingCaloriesDisplayed.execute(newCalories);
 
-        } else {
+        } else {// if an async task was already created check if it is running or finished
+
             //if a async task is currently updating the UI
             if (updatingCaloriesDisplayed.getStatus() == AsyncTask.Status.RUNNING) {
                 Log.d(TAG, "changeInCalories: Async Task was running and now got cancelled");
+
+                //cancel the current task and create a new one
                 updatingCaloriesDisplayed.cancel(true);
 
                 updatingCaloriesDisplayed = new GraphAnimatorAsyncTask(caloriesDisplayed, series);
@@ -91,7 +101,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
                 updatingCaloriesDisplayed.execute(newCalories);
 
             } else if (updatingCaloriesDisplayed.getStatus() == AsyncTask.Status.FINISHED) {
-                Log.d(TAG, "changeInCalories: Async Task was finished, now retarting with a new async task");
+                Log.d(TAG, "changeInCalories: Async Task was finished, now restarting with a new async task");
                 updatingCaloriesDisplayed = new GraphAnimatorAsyncTask(caloriesDisplayed, series);
 
                 updatingCaloriesDisplayed.execute(newCalories);
@@ -99,12 +109,15 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * An async task which updates the mainActivity graph in the background
+     */
     private static class GraphAnimatorAsyncTask extends AsyncTask<Double, Void, Void> {
 
         private CaloriesDisplayedLiveData caloriesDisplayed;
         private BarGraphSeries<DataPoint> series;
 
-        public GraphAnimatorAsyncTask(CaloriesDisplayedLiveData liveData, BarGraphSeries<DataPoint> series) {
+        GraphAnimatorAsyncTask(CaloriesDisplayedLiveData liveData, BarGraphSeries<DataPoint> series) {
             caloriesDisplayed = liveData;
             this.series = series;
         }
@@ -118,10 +131,10 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
 
             int rateOfChange;
 
-            //this needs to be here for when onCreate is called for the main activity
+            //this needs to be here for when onCreate is called for the main activity to initially set the graph
             series.resetData(new DataPoint[]{new DataPoint(0, caloriesDisplayed.getValue())});
 
-            Log.d(TAG, "doInBackground: calories: " + params[0] + ", old calories: " + caloriesDisplayed.getValue());
+            Log.d(TAG, "doInBackground: new calories: " + params[0] + ", old calories: " + caloriesDisplayed.getValue());
             //if graph is increasing
             if (params[0] - caloriesDisplayed.getValue() > 0.0) {
                 while (!Objects.equals(caloriesDisplayed.getValue(), params[0])) {
@@ -135,7 +148,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
                     caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() + rateOfChange);
 
                     series.resetData(new DataPoint[]{new DataPoint(0, caloriesDisplayed.getValue())});
-                    Log.d(TAG, "doInBackground: data displayed on graph should be: " + series.getValues(0,0).next().getY());
+                    //Log.d(TAG, "doInBackground: data displayed on graph should be: " + series.getValues(0,0).next().getY());
 
 
                     try {
@@ -151,7 +164,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
                     //Log.d(TAG, "doInBackground: calories displayed: " + caloriesDisplayed.getValue());
 
                     //the difference in target calories vs the calories currently on screen
-                    double difference = caloriesDisplayed.getValue() - params[0] ;
+                    double difference = caloriesDisplayed.getValue() - params[0];
 
                     rateOfChange = rateOfChangeBasedOnDifference(difference);
 
@@ -159,7 +172,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
 
                     series.resetData(new DataPoint[]{new DataPoint(0, caloriesDisplayed.getValue())});
 
-                    Log.d(TAG, "doInBackground: data displayed on graph should be: " + series.getValues(0,0).next().getY());
+                    //Log.d(TAG, "doInBackground: data displayed on graph should be: " + series.getValues(0,0).next().getY());
 
                     try {
                         Thread.sleep(1);
@@ -173,21 +186,23 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
             return null;
         }
 
-        private int rateOfChangeBasedOnDifference(Double difference){
+        /**
+         * @param difference the difference between what value is currently shown on the graph and the target value
+         * @return the value that the graph should change by each tick
+         */
+        private int rateOfChangeBasedOnDifference(Double difference) {
             //rate determines how fast the graph will change speed (lower number = higher rate of change)
 
             //DO NOT MAKE IT A VALUE OF 1
             int rate = 20;
 
-            return 1 + (int)(Math.floor(difference / rate));
+            return 1 + (int) (Math.floor(difference / rate));
         }
     }
 
 
-
-
     /**
-     * live data for the value to be displayed on the graph
+     * live data which holds the value of the data displayed on the graph
      */
     public static class CaloriesDisplayedLiveData extends LiveData<Double> {
         private static CaloriesDisplayedLiveData sInstance;
@@ -211,7 +226,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
             setValue(value);
         }
 
-        public void changePostValue(Double value) {
+        void changePostValue(Double value) {
             caloriesDisplayed = value;
             postValue(value);
         }

@@ -5,14 +5,12 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.kleog.fitnessapp.Models.DailyUserInfoModel;
-import com.example.kleog.fitnessapp.Models.UserNutritionDB;
 import com.example.kleog.fitnessapp.R;
 import com.example.kleog.fitnessapp.ViewModels.DailyUserInfoViewModel;
 import com.example.kleog.fitnessapp.ViewModels.MainActivityGraphViewModel;
@@ -20,8 +18,6 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-
-import java.util.Objects;
 
 public class MainActivity extends LifecycleActivity {
     private GraphView calorieGraph;
@@ -63,19 +59,16 @@ public class MainActivity extends LifecycleActivity {
         series.setValuesOnTopColor(Color.BLUE);
         series.setSpacing(0);
 
-        calorieGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE); // background grids get removed
+        // background grids get removed
+        calorieGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
 
         calorieGraph.getViewport().setYAxisBoundsManual(true);
         calorieGraph.getViewport().setMaxYAxisSize(2000);
         calorieGraph.getViewport().setMaxY(2000);
 
+        // remove vertical labels and lines
         calorieGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);  // removes x axis and line
         calorieGraph.getGridLabelRenderer().setVerticalLabelsVisible(false);    // removes y axis and line
-        // remove vertical labels and lines
-
-
-        //series.appendData(new DataPoint(0, 0), true, 2000);
-        //series.appendData(new DataPoint(1, 300), true, 2000);
 
 
         calorieGraph.addSeries(series);
@@ -86,8 +79,6 @@ public class MainActivity extends LifecycleActivity {
 
 
         LiveData<DailyUserInfoModel> dailyUserLiveData = userInfoVM.getCurrentDayUserInfo();
-        MainActivityGraphViewModel.CaloriesDisplayedLiveData graphLiveData = graphVM.getCaloriesDisplayed();
-
 
         //when changes to the data are made the UI will be updated here
         dailyUserLiveData.observe(this, info -> {
@@ -99,6 +90,7 @@ public class MainActivity extends LifecycleActivity {
             Log.d("LIVE_DATA_OBSERVER", "onCreate: info details: " + info);
             Log.d("LIVE_DATA_OBSERVER", "onCreate: calories: " + calories);
 
+            //update graph
             graphVM.changeInCalories(calories, series);
 
 
@@ -119,7 +111,7 @@ public class MainActivity extends LifecycleActivity {
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
 
     }
 
