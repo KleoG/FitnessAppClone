@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -196,6 +197,8 @@ public class newGraphActivity extends AppCompatActivity {
                 series.appendData(new DataPoint(dailyUserInfoModel.getDate(), dailyUserInfoModel.getTotalCalories()), true, dailyUserInfoModels.size());
             }
 
+            firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 3).getDate();
+
             caloreGraph.addSeries(series);
             
             // sets the titles of the axis on the graph
@@ -221,9 +224,13 @@ public class newGraphActivity extends AppCompatActivity {
 //                caloreGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
 //            }
 
-            caloreGraph.getViewport().setMinX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 3).getDate().getTime());
-            caloreGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
             caloreGraph.getViewport().setXAxisBoundsManual(true);
+            caloreGraph.getViewport().setMinX(firstDateChosen.getTime());
+            caloreGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
+
+            // enable scaling and scrolling
+            caloreGraph.getViewport().setScalable(true);
+            caloreGraph.getViewport().setScalableY(true);
 
             // as we use dates as labels, the human rounding to nice readable numbers
             // is not necessary
@@ -255,17 +262,16 @@ public class newGraphActivity extends AppCompatActivity {
 
                     DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                         public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                            // TODO: set variable firstDateChosen to the date the the user selects
-                            firstDate.setText(selectedday + "/" + selectedmonth + "/" + selectedyear);
-                            DateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-                            Date d = null;
+                            int day = datepicker.getDayOfMonth();
+                            int month = datepicker.getMonth();
+                            int year =  datepicker.getYear();
+                            // must plus one to the month just because months start from 0 (January = 0)
+                            firstDate.setText(day + "/" + (month + 1) + "/" + year);
+                            mcurrentDate.set(year, month, day);
 
-                            try {
-                                d = df.parse(firstDate.getText().toString());
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            Log.d("date", "" + d);
+                            firstDateChosen = mcurrentDate.getTime();
+                            // setXLimits();
+                           // Log.d("firstDateChosen", "" + firstDateChosen);
                         }
                     }, mYear, mMonth, mDay);
                     mDatePicker.setTitle("Select date");
@@ -308,12 +314,18 @@ public class newGraphActivity extends AppCompatActivity {
             series.setOnDataPointTapListener(new OnDataPointTapListener() {
                 @Override
                 public void onTap(Series series, DataPointInterface dataPoint) {
-                    Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Data Point clicked: ", Toast.LENGTH_SHORT).show();
                 }
             });
 
 
             return rootView;
+        }
+
+        public void setXLimits(){
+            caloreGraph.getViewport().setXAxisBoundsManual(true);
+            caloreGraph.getViewport().setMinX(firstDateChosen.getTime());
+            //caloreGraph.getViewport().setOnXAxisBoundsChangedListener();
         }
     }
 
