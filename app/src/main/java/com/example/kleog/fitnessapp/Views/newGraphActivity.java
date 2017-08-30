@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -33,14 +32,9 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.Series;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class newGraphActivity extends AppCompatActivity {
 
@@ -170,7 +164,7 @@ public class newGraphActivity extends AppCompatActivity {
 //                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
 //                 series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
 //             }
-//             //series.resetData(data);
+//             //series.moveViewport(data);
              caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
 //             caloreGraph.addSeries(series);
             
@@ -316,7 +310,7 @@ public class newGraphActivity extends AppCompatActivity {
 
                             // this calls to change the viewport
                             /* TODO must create checks before calling this to determine whether both first date and second date have been seleted by user */
-                            resetData(firstDateChosen, secondDateChosen);
+                            moveViewport(firstDateChosen, secondDateChosen);
                         }
                     }, mYear, mMonth, mDay);
                     mDatePicker.setTitle("Select date");
@@ -343,16 +337,16 @@ public class newGraphActivity extends AppCompatActivity {
         }
 
 
-
-        public void resetData(Date firstDateChosen, Date secondDateChosen){
-            //series.getValues(firstDateChosen.getTime(), secondDateChosen.getTime());
-
-
-
+        /**
+         * uses the starting and ending date the user picks using datepicker to determine
+         * what data should be shown on screen - minX = firstDateChosen, maxX = secondDateChosen
+         * @param firstDateChosen the starting date selected by user on date picker
+         * @param secondDateChosen the ending date selected by user on date picker
+         */
+        public void moveViewport(Date firstDateChosen, Date secondDateChosen){
             caloreGraph.getViewport().setXAxisBoundsManual(true);
             caloreGraph.getViewport().setMinX(firstDateChosen.getTime());
             caloreGraph.getViewport().setMaxX(secondDateChosen.getTime());
-            //caloreGraph.getViewport().setOnXAxisBoundsChangedListener();
 
             caloreGraph.onDataChanged(false, false);
         }
@@ -409,7 +403,7 @@ public class newGraphActivity extends AppCompatActivity {
 //                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
 //                 series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
 //             }
-//             //series.resetData(data);
+//             //series.moveViewport(data);
             weightGraph = (GraphView) rootView.findViewById(R.id.weightGraphView);
 //             caloreGraph.addSeries(series);
 
@@ -586,7 +580,7 @@ public class newGraphActivity extends AppCompatActivity {
 // //                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
 // //                 series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
 // //             }
-// //             //series.resetData(data);
+// //             //series.moveViewport(data);
 //              weightGraph = (GraphView) rootView.findViewById(R.id.weightGraphView);
 // //             caloreGraph.addSeries(series);
             
