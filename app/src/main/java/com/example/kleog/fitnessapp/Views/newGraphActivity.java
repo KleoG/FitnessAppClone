@@ -148,7 +148,9 @@ public class newGraphActivity extends AppCompatActivity {
         private Date secondDateChosen;
 
         public CalorieGraphFragment() {
-
+            series.setDrawDataPoints(true);
+            series.setDataPointsRadius(10);
+            series.setThickness(8);
         }
 
 
@@ -302,16 +304,32 @@ public class newGraphActivity extends AppCompatActivity {
 
                     DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                         public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                            int day = datepicker.getDayOfMonth();
+                            int month = datepicker.getMonth();
+                            int year =  datepicker.getYear();
                             //TODO set variable secondDateChosen to the date the the user selects
                             secondDate.setText(selectedday + "/" + selectedmonth + "/" + selectedyear);
+
+                            mcurrentDate.set(year, month, day);
+
                             secondDateChosen = mcurrentDate.getTime();
+
+                            // this calls to change the viewport
+                            /* TODO must create checks before calling this to determine whether both first date and second date have been seleted by user */
+                            resetData(firstDateChosen, secondDateChosen);
                         }
                     }, mYear, mMonth, mDay);
                     mDatePicker.setTitle("Select date");
                     mDatePicker.show();
+
                 }
             });
-            
+
+
+
+
+
+
             // this allows data points to be tapped. Information is shown about whichever one they tap.
             series.setOnDataPointTapListener(new OnDataPointTapListener() {
                 @Override
@@ -326,19 +344,17 @@ public class newGraphActivity extends AppCompatActivity {
 
 
 
-        public void resetData(ArrayList<DailyUserInfoModel> dailyUserInfoModels, Date firstDateChosen, Date secondDateChosen){
+        public void resetData(Date firstDateChosen, Date secondDateChosen){
+            //series.getValues(firstDateChosen.getTime(), secondDateChosen.getTime());
 
-            //series.resetData(newData);
-
-            for(DailyUserInfoModel dailyUserInfoModel : dailyUserInfoModels){
-                Log.d("stuff", "" + dailyUserInfoModel.getTotalCalories());
-                series.appendData(new DataPoint(dailyUserInfoModel.getDate(), dailyUserInfoModel.getTotalCalories()), true, dailyUserInfoModels.size());
-            }
 
 
             caloreGraph.getViewport().setXAxisBoundsManual(true);
             caloreGraph.getViewport().setMinX(firstDateChosen.getTime());
+            caloreGraph.getViewport().setMaxX(secondDateChosen.getTime());
             //caloreGraph.getViewport().setOnXAxisBoundsChangedListener();
+
+            caloreGraph.onDataChanged(false, false);
         }
     }
 
@@ -450,7 +466,6 @@ public class newGraphActivity extends AppCompatActivity {
 //                caloreGraph.getViewport().setMinX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 3).getDate().getTime());
 //                caloreGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
 //            }
-
             weightGraph.getViewport().setXAxisBoundsManual(true);
             weightGraph.getViewport().setMinX(firstDateChosen.getTime());
             weightGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
