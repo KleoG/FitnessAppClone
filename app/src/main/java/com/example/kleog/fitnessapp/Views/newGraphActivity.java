@@ -195,7 +195,9 @@ public class newGraphActivity extends AppCompatActivity {
                 series.appendData(new DataPoint(dailyUserInfoModel.getDate(), dailyUserInfoModel.getTotalCalories()), true, dailyUserInfoModels.size());
             }
 
+            // sets date chosen so they're not null
             firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 3).getDate();
+            secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
 
             caloreGraph.addSeries(series);
             
@@ -224,7 +226,7 @@ public class newGraphActivity extends AppCompatActivity {
 
             caloreGraph.getViewport().setXAxisBoundsManual(true);
             caloreGraph.getViewport().setMinX(firstDateChosen.getTime());
-            caloreGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
+            caloreGraph.getViewport().setMaxX(secondDateChosen.getTime());
 
             // enable scaling and scrolling
             caloreGraph.getViewport().setScalable(true);
@@ -268,8 +270,9 @@ public class newGraphActivity extends AppCompatActivity {
                             mcurrentDate.set(year, month, day);
 
                             firstDateChosen = mcurrentDate.getTime();
-                            //setXLimits();
-                            //Log.d("firstDateChosen", "" + firstDateChosen);
+
+                            moveViewport();
+
                         }
                     }, mYear, mMonth, mDay);
                     mDatePicker.setTitle("Select date");
@@ -308,9 +311,7 @@ public class newGraphActivity extends AppCompatActivity {
 
                             secondDateChosen = mcurrentDate.getTime();
 
-                            // this calls to change the viewport
-                            /* TODO must create checks before calling this to determine whether both first date and second date have been seleted by user */
-                            moveViewport(firstDateChosen, secondDateChosen);
+                            moveViewport();
                         }
                     }, mYear, mMonth, mDay);
                     mDatePicker.setTitle("Select date");
@@ -340,10 +341,8 @@ public class newGraphActivity extends AppCompatActivity {
         /**
          * uses the starting and ending date the user picks using datepicker to determine
          * what data should be shown on screen - minX = firstDateChosen, maxX = secondDateChosen
-         * @param firstDateChosen the starting date selected by user on date picker
-         * @param secondDateChosen the ending date selected by user on date picker
          */
-        public void moveViewport(Date firstDateChosen, Date secondDateChosen){
+        public void moveViewport(){
             caloreGraph.getViewport().setXAxisBoundsManual(true);
             caloreGraph.getViewport().setMinX(firstDateChosen.getTime());
             caloreGraph.getViewport().setMaxX(secondDateChosen.getTime());
@@ -434,7 +433,9 @@ public class newGraphActivity extends AppCompatActivity {
                 series.appendData(new DataPoint(dailyUserInfoModel.getDate(), dailyUserInfoModel.getWeight()), true, dailyUserInfoModels.size());
             }
 
+            // sets date chosen so they're not null
             firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 3).getDate();
+            secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
 
             weightGraph.addSeries(series);
 
@@ -462,7 +463,7 @@ public class newGraphActivity extends AppCompatActivity {
 //            }
             weightGraph.getViewport().setXAxisBoundsManual(true);
             weightGraph.getViewport().setMinX(firstDateChosen.getTime());
-            weightGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
+            weightGraph.getViewport().setMaxX(secondDateChosen.getTime());
 
             // enable scaling and scrolling
             weightGraph.getViewport().setScalable(true);
@@ -474,69 +475,86 @@ public class newGraphActivity extends AppCompatActivity {
             // end of data test
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            //dates selected at bottom of screen
+            firstDate = (EditText) rootView.findViewById(R.id.weightGraphFirstDate);
+            secondDate = (EditText) rootView.findViewById(R.id.weightGraphSecondDate);
+
+            //allows the view to be clicked but not edited by the user
+            firstDate.setFocusable(false);
+            firstDate.setClickable(true);
+
             /**
              * on click listenser for the first date box will popup a date picker for the user to select from
              */
 
-//            firstDate.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    //To show current date in the datepicker
-//                    Calendar mcurrentDate = Calendar.getInstance();
-//                    int mYear = mcurrentDate.get(Calendar.YEAR);
-//                    int mMonth = mcurrentDate.get(Calendar.MONTH);
-//                    int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-//
-//                    DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-//                        public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-//                            int day = datepicker.getDayOfMonth();
-//                            int month = datepicker.getMonth();
-//                            int year =  datepicker.getYear();
-//                            // must plus one to the month just because months start from 0 (January = 0)
-//                            firstDate.setText(day + "/" + (month + 1) + "/" + year);
-//                            mcurrentDate.set(year, month, day);
-//
-//                            firstDateChosen = mcurrentDate.getTime();
-//                            //setXLimits();
-//                            //Log.d("firstDateChosen", "" + firstDateChosen);
-//                        }
-//                    }, mYear, mMonth, mDay);
-//                    mDatePicker.setTitle("Select date");
-//                    mDatePicker.show();
-//                }
-//            });
-//
-//
-//            //allows the view to be clicked but not edited by the user
-//            secondDate.setFocusable(false);
-//            secondDate.setClickable(true);
-//
-//            /**
-//             * on click listenser for the first date box will popup a date picker for the user to select from
-//             */
-//
-//            secondDate.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    //To show current date in the datepicker
-//                    Calendar mcurrentDate = Calendar.getInstance();
-//                    int mYear = mcurrentDate.get(Calendar.YEAR);
-//                    int mMonth = mcurrentDate.get(Calendar.MONTH);
-//                    int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-//
-//                    DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-//                        public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-//                            //TODO set variable secondDateChosen to the date the the user selects
-//                            secondDate.setText(selectedday + "/" + selectedmonth + "/" + selectedyear);
-//                            secondDateChosen = mcurrentDate.getTime();
-//                        }
-//                    }, mYear, mMonth, mDay);
-//                    mDatePicker.setTitle("Select date");
-//                    mDatePicker.show();
-//                }
-//            });
+            firstDate.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    //To show current date in the datepicker
+                    Calendar mcurrentDate = Calendar.getInstance();
+                    int mYear = mcurrentDate.get(Calendar.YEAR);
+                    int mMonth = mcurrentDate.get(Calendar.MONTH);
+                    int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                        public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                            int day = datepicker.getDayOfMonth();
+                            int month = datepicker.getMonth();
+                            int year =  datepicker.getYear();
+                            // must plus one to the month just because months start from 0 (January = 0)
+                            firstDate.setText(day + "/" + (month + 1) + "/" + year);
+                            mcurrentDate.set(year, month, day);
+
+                            firstDateChosen = mcurrentDate.getTime();
+                            //setXLimits();
+                            //Log.d("firstDateChosen", "" + firstDateChosen);
+                            moveViewport();
+                        }
+                    }, mYear, mMonth, mDay);
+                    mDatePicker.setTitle("Select date");
+                    mDatePicker.show();
+                }
+            });
+
+
+            //allows the view to be clicked but not edited by the user
+            secondDate.setFocusable(false);
+            secondDate.setClickable(true);
+
+            /**
+             * on click listenser for the first date box will popup a date picker for the user to select from
+             */
+
+            secondDate.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    //To show current date in the datepicker
+                    Calendar mcurrentDate = Calendar.getInstance();
+                    int mYear = mcurrentDate.get(Calendar.YEAR);
+                    int mMonth = mcurrentDate.get(Calendar.MONTH);
+                    int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                        public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                            int day = datepicker.getDayOfMonth();
+                            int month = datepicker.getMonth();
+                            int year =  datepicker.getYear();
+                            //TODO set variable secondDateChosen to the date the the user selects
+                            secondDate.setText(selectedday + "/" + selectedmonth + "/" + selectedyear);
+
+                            mcurrentDate.set(year, month, day);
+
+                            secondDateChosen = mcurrentDate.getTime();
+
+                            moveViewport();
+                        }
+                    }, mYear, mMonth, mDay);
+                    mDatePicker.setTitle("Select date");
+                    mDatePicker.show();
+                }
+            });
 
             // this allows data points to be tapped. Information is shown about whichever one they tap.
             series.setOnDataPointTapListener(new OnDataPointTapListener() {
@@ -545,8 +563,22 @@ public class newGraphActivity extends AppCompatActivity {
                     Toast.makeText(getActivity(), "Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
                 }
             });
+
             return rootView;
         }
+
+        /**
+         * uses the starting and ending date the user picks using datepicker to determine
+         * what data should be shown on screen - minX = firstDateChosen, maxX = secondDateChosen
+         */
+        public void moveViewport(){
+            weightGraph.getViewport().setXAxisBoundsManual(true);
+            weightGraph.getViewport().setMinX(firstDateChosen.getTime());
+            weightGraph.getViewport().setMaxX(secondDateChosen.getTime());
+
+            weightGraph.onDataChanged(false, false);
+        }
+
     }
     
 //     /**
