@@ -132,7 +132,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
             int rateOfChange;
 
             //this needs to be here for when onCreate is called for the main activity to initially set the graph
-            series.resetData(new DataPoint[]{new DataPoint(0, caloriesDisplayed.getValue())});
+            updateGraph();
 
             Log.d(TAG, "doInBackground: new calories: " + params[0] + ", old calories: " + caloriesDisplayed.getValue());
             //if graph is increasing
@@ -147,9 +147,9 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
 
                     caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() + rateOfChange);
 
-                    series.resetData(new DataPoint[]{new DataPoint(0, caloriesDisplayed.getValue())});
-                    //Log.d(TAG, "doInBackground: data displayed on graph should be: " + series.getValues(0,0).next().getY());
+                    updateGraph();
 
+                    //Log.d(TAG, "doInBackground: data displayed on graph should be: " + series.getValues(0,0).next().getY());
 
                     try {
                         Thread.sleep(1);
@@ -170,7 +170,7 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
 
                     caloriesDisplayed.changePostValue(caloriesDisplayed.getValue() - rateOfChange);
 
-                    series.resetData(new DataPoint[]{new DataPoint(0, caloriesDisplayed.getValue())});
+                    updateGraph();
 
                     //Log.d(TAG, "doInBackground: data displayed on graph should be: " + series.getValues(0,0).next().getY());
 
@@ -197,6 +197,12 @@ public class MainActivityGraphViewModel extends AndroidViewModel {
             int rate = 20;
 
             return 1 + (int) (Math.floor(difference / rate));
+        }
+
+        private void updateGraph() {
+            DataPoint dataToUpdate = new DataPoint(0, caloriesDisplayed.getValue());
+
+            series.resetData(new DataPoint[]{dataToUpdate});
         }
     }
 
