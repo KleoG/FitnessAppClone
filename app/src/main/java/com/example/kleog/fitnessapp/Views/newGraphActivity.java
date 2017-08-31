@@ -236,21 +236,6 @@ public class newGraphActivity extends AppCompatActivity {
             calorieGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
             calorieGraph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
-            // set manual x bounds to have nice steps
-            // TODO: use this to set what is viewed on the graph between 2 dates that are specified by the user
-            // this piece of code is so if there is less than 3 dates in the database, it will fill the missing dates by itself
-//            if(dailyUserInfoModels.size() < 3){
-//                for(DailyUserInfoModel dailyUserInfoModel : dailyUserInfoModels){
-//                    d1 = calendar.getTime();
-//                    calendar.add(Calendar.DATE, dailyUserInfoModels.size());
-//                }
-//                caloreGraph.getViewport().setMinX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
-//                caloreGraph.getViewport().setMaxX(d1.getTime());
-//            }else {
-//                caloreGraph.getViewport().setMinX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 3).getDate().getTime());
-//                caloreGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
-//            }
-
             calorieGraph.getViewport().setXAxisBoundsManual(true);
             calorieGraph.getViewport().setMinX(firstDateChosen.getTime());
             calorieGraph.getViewport().setMaxX(secondDateChosen.getTime());
@@ -268,10 +253,13 @@ public class newGraphActivity extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     Log.d("move view port", "" + parent.getItemAtPosition(position).toString());
+                    // TODO: create psfi for the days (2 = day, 8 = week, 32 = month, 365 = year)
                     switch (position) {
                         case 0:
-                            firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 2).getDate();
-                            secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
+                            if(!dateOutOfRange(2)) {
+                                firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 2).getDate();
+                                secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
+                            }
                             break;
                         case 1:
                             firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 8).getDate();
@@ -318,9 +306,11 @@ public class newGraphActivity extends AppCompatActivity {
          * will check to see if the date is outof range, not allowing them to select a certain date
          * from spinner
          */
-        public boolean dateOutOfRange(){
-
-            return true;
+        public boolean dateOutOfRange(int daysBack){
+            if(dailyUserInfoModels.size() < daysBack)
+                return true;
+            else
+                return false;
         }
 
 
