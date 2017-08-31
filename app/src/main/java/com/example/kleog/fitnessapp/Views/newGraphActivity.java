@@ -115,14 +115,16 @@ public class newGraphActivity extends AppCompatActivity {
     /**
      * fragment for the calorie graph page
      */
-    public static class CalorieGraphFragment extends Fragment {
+    public static class CalorieGraphFragment extends Fragment implements OnItemSelectedListener {
 
         // view model
         private DailyUserInfoViewModel dailyUserInfoViewModel;
 
-        private GraphView caloreGraph;
+        private GraphView calorieGraph;
 
         private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
+        
+        
 
 
         private EditText firstDate;
@@ -156,18 +158,21 @@ public class newGraphActivity extends AppCompatActivity {
             textView.setText("calorie graph goes here");
 
             dailyUserInfoViewModel = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
-
-            // data for the graph
-            //DataPoint[] data = new DataPoint[500];
-
-//             for (int i = 0; i < 3; i++) {
-//                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-//                 series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
-//             }
-//             //series.moveViewport(data);
-             caloreGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
-//             caloreGraph.addSeries(series);
             
+            // create spinner
+            Spinner spinner = (Spinner) findViewById(R.id.spinner);
+            // Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.graphTimeArray, android.R.layout.simple_spinner_item);
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
+            
+            
+            
+            
+             calorieGraph = (GraphView) rootView.findViewById(R.id.calorieGraphView);
 
             // generate Dates
             //change the Calender.DATE to Calender.MONTH or Calender.YEAR and change the second parameter (determioning a point in time)
@@ -199,15 +204,15 @@ public class newGraphActivity extends AppCompatActivity {
             firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 3).getDate();
             secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
 
-            caloreGraph.addSeries(series);
+            calorieGraph.addSeries(series);
             
             // sets the titles of the axis on the graph
-            caloreGraph.getGridLabelRenderer().setVerticalAxisTitle("Calories");
-            caloreGraph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
+            calorieGraph.getGridLabelRenderer().setVerticalAxisTitle("Calories");
+            calorieGraph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
                 
             // set date label formatter
-            caloreGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
-            caloreGraph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+            calorieGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+            calorieGraph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
             // set manual x bounds to have nice steps
             // TODO: use this to set what is viewed on the graph between 2 dates that are specified by the user
@@ -224,17 +229,17 @@ public class newGraphActivity extends AppCompatActivity {
 //                caloreGraph.getViewport().setMaxX(dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate().getTime());
 //            }
 
-            caloreGraph.getViewport().setXAxisBoundsManual(true);
-            caloreGraph.getViewport().setMinX(firstDateChosen.getTime());
-            caloreGraph.getViewport().setMaxX(secondDateChosen.getTime());
+            calorieGraph.getViewport().setXAxisBoundsManual(true);
+            calorieGraph.getViewport().setMinX(firstDateChosen.getTime());
+            calorieGraph.getViewport().setMaxX(secondDateChosen.getTime());
 
             // enable scaling and scrolling
-            caloreGraph.getViewport().setScalable(true);
-            caloreGraph.getViewport().setScalableY(true);
+            calorieGraph.getViewport().setScalable(true);
+            calorieGraph.getViewport().setScalableY(true);
 
             // as we use dates as labels, the human rounding to nice readable numbers
             // is not necessary
-            caloreGraph.getGridLabelRenderer().setHumanRounding(false);
+            calorieGraph.getGridLabelRenderer().setHumanRounding(false);
             // end of data test
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -343,11 +348,49 @@ public class newGraphActivity extends AppCompatActivity {
          * what data should be shown on screen - minX = firstDateChosen, maxX = secondDateChosen
          */
         public void moveViewport(){
-            caloreGraph.getViewport().setXAxisBoundsManual(true);
-            caloreGraph.getViewport().setMinX(firstDateChosen.getTime());
-            caloreGraph.getViewport().setMaxX(secondDateChosen.getTime());
+            calorieGraph.getViewport().setXAxisBoundsManual(true);
+            calorieGraph.getViewport().setMinX(firstDateChosen.getTime());
+            calorieGraph.getViewport().setMaxX(secondDateChosen.getTime());
 
-            caloreGraph.onDataChanged(false, false);
+            calorieGraph.onDataChanged(false, false);
+        }
+        
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            // An item was selected. You can retrieve the selected item using
+            // parent.getItemAtPosition(position)
+
+            switch (position) {
+                case 0:
+                    firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 2).getDate();
+                    secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
+                    break;
+                case 1:
+                    firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 8).getDate();
+                    secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
+                    break;
+                case 2:
+                    firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 32).getDate();
+                    secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
+                    break;
+                case 3:
+                    firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 365).getDate();
+                    secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
+                    break;
+                default:
+                    break;
+            }
+            
+            // after changing the values, update the viewport
+            moveViewport();
+
+//        // On selecting a spinner item
+//        String item = parent.getItemAtPosition(position).toString();
+        }
+        
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
         }
     }
 
