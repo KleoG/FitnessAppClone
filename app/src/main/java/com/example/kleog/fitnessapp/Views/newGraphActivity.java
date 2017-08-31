@@ -314,6 +314,15 @@ public class newGraphActivity extends AppCompatActivity {
             return rootView;
         }
 
+        /**
+         * will check to see if the date is outof range, not allowing them to select a certain date
+         * from spinner
+         */
+        public boolean dateOutOfRange(){
+
+            return true;
+        }
+
 
         /**
          * uses the starting and ending date the user picks using datepicker to determine
