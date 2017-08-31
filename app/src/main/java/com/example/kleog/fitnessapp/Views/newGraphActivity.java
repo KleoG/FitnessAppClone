@@ -2,6 +2,7 @@ package com.example.kleog.fitnessapp.Views;
 
 import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,10 +14,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -115,7 +119,7 @@ public class newGraphActivity extends AppCompatActivity {
     /**
      * fragment for the calorie graph page
      */
-    public static class CalorieGraphFragment extends Fragment implements OnItemSelectedListener {
+    public static class CalorieGraphFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
         // view model
         private DailyUserInfoViewModel dailyUserInfoViewModel;
@@ -143,6 +147,8 @@ public class newGraphActivity extends AppCompatActivity {
         //the date chosen stored in Date format
         private Date secondDateChosen;
 
+        private List<DailyUserInfoModel> dailyUserInfoModels;
+
         public CalorieGraphFragment() {
             series.setDrawDataPoints(true);
             series.setDataPointsRadius(10);
@@ -160,9 +166,9 @@ public class newGraphActivity extends AppCompatActivity {
             dailyUserInfoViewModel = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
             
             // create spinner
-            Spinner spinner = (Spinner) findViewById(R.id.spinner);
+            Spinner spinner = (Spinner) rootView.findViewById(R.id.calorieGraphSpinner);
             // Create an ArrayAdapter using the string array and a default spinner layout
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                     R.array.graphTimeArray, android.R.layout.simple_spinner_item);
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -184,18 +190,34 @@ public class newGraphActivity extends AppCompatActivity {
             calendar.add(Calendar.DATE, 4);
             Date d3 = calendar.getTime();
             calendar.add(Calendar.DATE, 4);
+            Date d4 = calendar.getTime();
+            calendar.add(Calendar.DATE, 4);
+            Date d5 = calendar.getTime();
+            calendar.add(Calendar.DATE, 4);
+            Date d6 = calendar.getTime();
+            calendar.add(Calendar.DATE, 4);
+            Date d7 = calendar.getTime();
+            calendar.add(Calendar.DATE, 4);
+            Date d8 = calendar.getTime();
+            calendar.add(Calendar.DATE, 4);
 
             // insert test data for dailyuserinfomodels
             // parameters: Date date, Double totalCalories, Double totalProtein, Double totalCarbs, Double totalFat, Double weight
             dailyUserInfoViewModel.insert(new DailyUserInfoModel(d1, 200.0, 300.0, 400.0, 500.0, 20.0));
             dailyUserInfoViewModel.insert(new DailyUserInfoModel(d2, 250.0, 450.0, 700.0, 550.0, 18.0));
             dailyUserInfoViewModel.insert(new DailyUserInfoModel(d3, 350.0, 777.0, 777.0, 777.0, 15.0));
+            dailyUserInfoViewModel.insert(new DailyUserInfoModel(d4, 450.0, 777.0, 777.0, 777.0, 15.0));
+            dailyUserInfoViewModel.insert(new DailyUserInfoModel(d5, 350.0, 777.0, 777.0, 777.0, 15.0));
+            dailyUserInfoViewModel.insert(new DailyUserInfoModel(d6, 777.0, 777.0, 777.0, 777.0, 15.0));
+            dailyUserInfoViewModel.insert(new DailyUserInfoModel(d7, 520.0, 777.0, 777.0, 777.0, 15.0));
+            dailyUserInfoViewModel.insert(new DailyUserInfoModel(d8, 350.0, 777.0, 777.0, 777.0, 15.0));
 
-            List<DailyUserInfoModel> dailyUserInfoModels = dailyUserInfoViewModel.loadBetweenDates(new Date(), new Date());
+            dailyUserInfoModels = dailyUserInfoViewModel.loadBetweenDates(new Date(), new Date());
 
             Log.d("size", "" + dailyUserInfoModels.size());
 
             for(DailyUserInfoModel dailyUserInfoModel : dailyUserInfoModels){
+                Log.d("date", "" + dailyUserInfoModel.getDate());
                 Log.d("stuff", "" + dailyUserInfoModel.getTotalCalories());
                 series.appendData(new DataPoint(dailyUserInfoModel.getDate(), dailyUserInfoModel.getTotalCalories()), true, dailyUserInfoModels.size());
             }
@@ -242,6 +264,42 @@ public class newGraphActivity extends AppCompatActivity {
             calorieGraph.getGridLabelRenderer().setHumanRounding(false);
             // end of data test
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d("move view port", "" + parent.getItemAtPosition(position).toString());
+                    switch (position) {
+                        case 0:
+                            firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 2).getDate();
+                            secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
+                            break;
+                        case 1:
+                            firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 8).getDate();
+                            secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
+                            break;
+                        case 2:
+                            firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 32).getDate();
+                            secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
+                            break;
+                        case 3:
+                            firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 365).getDate();
+                            secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // after changing the values, update the viewport
+                    moveViewport();
+
+//        // On selecting a spinner item
+//        String item = parent.getItemAtPosition(position).toString();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
 
 
             // this allows data points to be tapped. Information is shown about whichever one they tap.
@@ -268,38 +326,14 @@ public class newGraphActivity extends AppCompatActivity {
 
             calorieGraph.onDataChanged(false, false);
         }
-        
+
+
+
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             // An item was selected. You can retrieve the selected item using
             // parent.getItemAtPosition(position)
 
-            switch (position) {
-                case 0:
-                    firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 2).getDate();
-                    secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
-                    break;
-                case 1:
-                    firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 8).getDate();
-                    secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
-                    break;
-                case 2:
-                    firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 32).getDate();
-                    secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
-                    break;
-                case 3:
-                    firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 365).getDate();
-                    secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
-                    break;
-                default:
-                    break;
-            }
-            
-            // after changing the values, update the viewport
-            moveViewport();
-
-//        // On selecting a spinner item
-//        String item = parent.getItemAtPosition(position).toString();
         }
         
         @Override
