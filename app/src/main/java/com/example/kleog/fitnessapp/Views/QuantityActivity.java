@@ -186,7 +186,7 @@ public class QuantityActivity extends AppCompatActivity {
                     i.putExtra("MEAL_TYPE", mMealType);
 
                     //deletes all activities (search and quantity) above the meal activity to prevent user from going to wrong activity by accident
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }
             }

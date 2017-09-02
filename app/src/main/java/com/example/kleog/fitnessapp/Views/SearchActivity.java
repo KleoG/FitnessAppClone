@@ -3,6 +3,7 @@ package com.example.kleog.fitnessapp.Views;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,18 +50,24 @@ public class SearchActivity extends AppCompatActivity {
 
         findViewById(R.id.loadingPanel).setVisibility(View.GONE); //hide the loading icon
 
+        Log.d(TAG, "onCreate: starting intent Search Activity");
+
         Thread.setDefaultUncaughtExceptionHandler((thread, ex) -> {
             Log.e(TAG, ex.getMessage() + " caused by specific query's that the api cannot handle");
 
-//            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(i);
-
-
+            //gets the intent that created this activity
             Intent intent = getIntent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            //clears stack ontop of the current activity that already exists
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
             this.finish();
+
             startActivity(intent);
+
+            //kill the current process allowing the app to restart itself up to the current activity
+            Process.killProcess(Process.myPid());
+            System.exit(0);
             
         });
 
