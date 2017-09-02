@@ -21,21 +21,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/weightGraphFirstDate"
+        <Spinner
+            android:id="@+id/weightGraphSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="first date"
-            android:inputType="date" />
-
-        <EditText
-            android:id="@+id/weightGraphSecondDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="second date"
-            android:inputType="date" />
+            android:layout_weight="1" />
 
     </LinearLayout>
 
