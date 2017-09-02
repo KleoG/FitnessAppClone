@@ -28,21 +28,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/calorieGraphFirstDate"
+        <Spinner
+            android:id="@+id/calorieGraphSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="first date"
-            android:inputType="date" />
-
-        <EditText
-            android:id="@+id/calorieGraphSecondDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="second date"
-            android:inputType="date" />
+            android:layout_weight="1" />
 
     </LinearLayout>
 
