@@ -49,6 +49,22 @@ public class SearchActivity extends AppCompatActivity {
 
         findViewById(R.id.loadingPanel).setVisibility(View.GONE); //hide the loading icon
 
+        Thread.setDefaultUncaughtExceptionHandler((thread, ex) -> {
+            Log.e(TAG, ex.getMessage() + " caused by specific query's that the api cannot handle");
+
+//            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(i);
+
+
+            Intent intent = getIntent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.finish();
+            startActivity(intent);
+            
+        });
+
+
         //fat secret API stuff
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
