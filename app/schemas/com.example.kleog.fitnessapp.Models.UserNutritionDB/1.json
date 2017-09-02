@@ -1,0 +1,199 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "d2caa11a8ca4d0a8967d9f0b4949d5c5",
+    "entities": [
+      {
+        "tableName": "Daily_User_Info",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` TEXT, `total_Calories` REAL, `total_Protein` REAL, `total_Carbs` REAL, `total_Fat` REAL, `weight` REAL, PRIMARY KEY(`date`))",
+        "fields": [
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "totalCalories",
+            "columnName": "total_Calories",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "totalProtein",
+            "columnName": "total_Protein",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "totalCarbs",
+            "columnName": "total_Carbs",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "totalFat",
+            "columnName": "total_Fat",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "weight",
+            "columnName": "weight",
+            "affinity": "REAL"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "date"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "meal",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` TEXT, `meal_type` TEXT, `total_calories` REAL, `total_protein` REAL, `total_carbs` REAL, `total_fat` REAL, PRIMARY KEY(`date`, `meal_type`), FOREIGN KEY(`date`) REFERENCES `Daily_User_Info`(`date`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "mealType",
+            "columnName": "meal_type",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "totalCalories",
+            "columnName": "total_calories",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "totalProtein",
+            "columnName": "total_protein",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "totalCarbs",
+            "columnName": "total_carbs",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "totalFat",
+            "columnName": "total_fat",
+            "affinity": "REAL"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "date",
+            "meal_type"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "Daily_User_Info",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "date"
+            ],
+            "referencedColumns": [
+              "date"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "food_items",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` TEXT, `eaten_during_meal` TEXT, `food_ID` INTEGER, `food_name` TEXT, `calories` REAL, `protein` REAL, `carbs` REAL, `fat` REAL, `API_serving_chosen` INTEGER, `Serving_units_chosen` REAL, `food_description` TEXT, PRIMARY KEY(`date`, `eaten_during_meal`, `food_ID`), FOREIGN KEY(`date`, `eaten_during_meal`) REFERENCES `meal`(`date`, `meal_type`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "eatenDuringMeal",
+            "columnName": "eaten_during_meal",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "foodID",
+            "columnName": "food_ID",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "foodName",
+            "columnName": "food_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "calories",
+            "columnName": "calories",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "protein",
+            "columnName": "protein",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "carbs",
+            "columnName": "carbs",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "fat",
+            "columnName": "fat",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "servingChosen",
+            "columnName": "API_serving_chosen",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "servingUnits",
+            "columnName": "Serving_units_chosen",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "foodDescription",
+            "columnName": "food_description",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "date",
+            "eaten_during_meal",
+            "food_ID"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "meal",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "date",
+              "eaten_during_meal"
+            ],
+            "referencedColumns": [
+              "date",
+              "meal_type"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d2caa11a8ca4d0a8967d9f0b4949d5c5\")"
+    ]
+  }
+}
