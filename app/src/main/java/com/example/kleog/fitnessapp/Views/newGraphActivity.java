@@ -132,9 +132,6 @@ public class newGraphActivity extends AppCompatActivity {
         private GraphView calorieGraph;
 
         private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
-        
-        
-
 
         private EditText firstDate;
         //stores selected dates for the first date
@@ -156,8 +153,8 @@ public class newGraphActivity extends AppCompatActivity {
 
         public CalorieGraphFragment() {
             series.setDrawDataPoints(true);
-            series.setDataPointsRadius(10);
-            series.setThickness(8);
+            series.setDataPointsRadius(15);
+            series.setThickness(10);
         }
 
 
@@ -166,7 +163,7 @@ public class newGraphActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_calorie_graph, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.calorieGraphTextView);
-            textView.setText("calorie graph goes here");
+            textView.setText("Calorie Graph");
 
             dailyUserInfoViewModel = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
             
@@ -394,7 +391,6 @@ public class newGraphActivity extends AppCompatActivity {
 
         public WeightGraphFragment() {
 
-
         }
 
         @Override
@@ -402,7 +398,7 @@ public class newGraphActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_weight_graph, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.weightgraphTextView);
-            textView.setText("weight graph goes here");
+            textView.setText("Weight Graph");
 
             dailyUserInfoViewModel = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
 
@@ -437,7 +433,7 @@ public class newGraphActivity extends AppCompatActivity {
             weightGraph.addSeries(series);
 
             // sets the titles of the axis on the graph
-            weightGraph.getGridLabelRenderer().setVerticalAxisTitle("Calories");
+            weightGraph.getGridLabelRenderer().setVerticalAxisTitle("Weight");
             weightGraph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
 
             // set date label formatter
@@ -548,98 +544,192 @@ public class newGraphActivity extends AppCompatActivity {
         }
 
     }
+
+
+
     
-//     /**
-//      * fragment for the weight graph page
-//      */
-//     public static class CarbsGraphFragment extends Fragment {
-//         private GraphView carbsGraph;
+     /**
+      * fragment for the weight graph page
+      */
+     public static class ProteinGraphFragment extends Fragment {
 
-//         private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
+         private DailyUserInfoViewModel dailyUserInfoViewModel;
 
-//         public CarbsGraphFragment() {
+         private GraphView proteinGraph;
 
+         private LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
 
-//         }
+         private EditText firstDate;
+         //stores selected dates for the first date
+         private int firstDateYear;
+         private int firstDateMonth;
+         private int firstDateDay;
+         //the date chosen stored in Date format
+         private Date firstDateChosen;
 
-//         @Override
-//         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                                  Bundle savedInstanceState) {
-//             View rootView = inflater.inflate(R.layout.fragment_weight_graph, container, false);
-//             TextView textView = (TextView) rootView.findViewById(R.id.weightgraphTextView);
-//             textView.setText("weight graph goes here");
+         private EditText secondDate;
+         //stores selected dates for the first date
+         private int secondDateYear;
+         private int secondDateMonth;
+         private int secondDateDay;
+         //the date chosen stored in Date format
+         private Date secondDateChosen;
+
+         List<DailyUserInfoModel> dailyUserInfoModels;
+
+         public ProteinGraphFragment() {
+             series.setDrawDataPoints(true);
+             series.setDataPointsRadius(15);
+             series.setThickness(10);
+         }
+
+         @Override
+         public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                  Bundle savedInstanceState) {
+             View rootView = inflater.inflate(R.layout.fragment_protein_graph, container, false);
+             TextView textView = (TextView) rootView.findViewById(R.id.proteingraphTextView);
+             textView.setText("Protein Graph");
             
-//             dailyUserInfoViewModel = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
+             dailyUserInfoViewModel = ViewModelProviders.of(this).get(DailyUserInfoViewModel.class);
 
-//             List<DailyUserInfoModel> dailyUserInfoModels = dailyUserInfoViewModel.loadBetweenDates(new Date(), new Date());
+             // create spinner
+             Spinner spinner = (Spinner) rootView.findViewById(R.id.proteinGraphSpinner);
+             // Create an ArrayAdapter using the string array and a default spinner layout
+             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                     R.array.graphTimeArray, android.R.layout.simple_spinner_item);
+             // Specify the layout to use when the list of choices appears
+             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+             // Apply the adapter to the spinner
+             spinner.setAdapter(adapter);
 
-//             // data for the graph
-//             //DataPoint[] data = new DataPoint[500];
+             dailyUserInfoModels = dailyUserInfoViewModel.loadBetweenDates(new Date(), new Date());
 
-// //             for (int i = 0; i < 3; i++) {
-// //                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-// //                 series.appendData(new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories()), true, 500);
-// //             }
-// //             //series.moveViewport(data);
-//              weightGraph = (GraphView) rootView.findViewById(R.id.weightGraphView);
-// //             caloreGraph.addSeries(series);
-            
-//             // generate Dates
-//             //change the Calender.DATE to Calender.MONTH or Calender.YEAR and change the second parameter (determioning a point in time)
-//             // e.g. Calender.DATE, 1 = tomorrow and Calender.MONTH, -1 = one month ago
-//             Calendar calendar = Calendar.getInstance();
-//             Date d1 = calendar.getTime();
-//             calendar.add(Calendar.DATE, 1);
-//             Date d2 = calendar.getTime();
-//             calendar.add(Calendar.DATE, 1);
-//             Date d3 = calendar.getTime();
-            
-            
-//             // insert test data for dailyuserinfomodels
-//             // parameters: Date date, Double totalCalories, Double totalProtein, Double totalCarbs, Double totalFat, Double weight
-//             dailyUserInfoModels.insert(new DailyUserInfoModel(d1, 200, 300, 400, 500, 20));
-//             dailyUserInfoModels.insert(new DailyUserInfoModel(d2, 250, 450, 700, 550, 18));
-//             dailyUserInfoModels.insert(new DailyUserInfoModel(d3, 350, 777, 777, 777, 17));
-           
 
-//             //GraphView graph = (GraphView) findViewById(R.id.graph);
+             proteinGraph = (GraphView) rootView.findViewById(R.id.proteinGraphView);
 
-//             // you can directly pass Date objects to DataPoint-Constructor
-//             // this will convert the Date to double via Date#getTime()
-// //             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-// //                 new DataPoint(d1, 1),
-// //                 new DataPoint(d2, 5),
-// //                 new DataPoint(d3, 3)
-// //             });
-//             for (int i = 0; i < 3; i++) {
-//                 //data[i] = new DataPoint(new Date(), dailyUserInfoModels.get(i).getTotalCalories());
-//                 series.appendData(new DataPoint(d1, dailyUserInfoModels.get(i).getWeight()), true, 500);
-//                 series.appendData(new DataPoint(d2, dailyUserInfoModels.get(i).getWeight()), true, 500);
-//                 series.appendData(new DataPoint(d3, dailyUserInfoModels.get(i).getWeight()), true, 500);
-//             }
+             series.resetData(generateData());
 
-//             carbsGraph.addSeries(series);
+             // sets date chosen so they're not null
+             firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 3).getDate();
+             secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
 
-//             // set date label formatter
-//             carbsGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
-//             carbsGraph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+             proteinGraph.addSeries(series);
 
-//             // set manual x bounds to have nice steps
-//             carbsGraph.getViewport().setMinX(d1.getTime());
-//             carbsGraph.getViewport().setMaxX(d3.getTime());
-//             carbsGraph.getViewport().setXAxisBoundsManual(true);
+             // sets the titles of the axis on the graph
+             proteinGraph.getGridLabelRenderer().setVerticalAxisTitle("Protein");
+             proteinGraph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
 
-//             // as we use dates as labels, the human rounding to nice readable numbers
-//             // is not necessary
-//             carbsGraph.getGridLabelRenderer().setHumanRounding(false);
-//             // end of data test
-//             ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+             // set date label formatter
+             proteinGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+             proteinGraph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
-//             //not yet created
-//             //weightGraph = (GraphView) rootView.findViewById(R.id.weightGraphView);
-//             return rootView;
-//         }
-//     }
+             proteinGraph.getViewport().setXAxisBoundsManual(true);
+             proteinGraph.getViewport().setMinX(firstDateChosen.getTime());
+             proteinGraph.getViewport().setMaxX(secondDateChosen.getTime());
+
+             // enable scaling and scrolling
+             proteinGraph.getViewport().setScalable(true);
+             proteinGraph.getViewport().setScalableY(true);
+
+             // as we use dates as labels, the human rounding to nice readable numbers
+             // is not necessary
+             proteinGraph.getGridLabelRenderer().setHumanRounding(false);
+             // end of data test
+             ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                 @Override
+                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                     Log.d("move view port", "" + parent.getItemAtPosition(position).toString());
+                     switch (position) {
+                         case 0:
+                             changeDate(DAY);
+                             break;
+                         case 1:
+                             changeDate(WEEK);
+                             break;
+                         case 2:
+                             changeDate(MONTH);
+                             break;
+                         case 3:
+                             changeDate(YEAR);
+                             break;
+                         default:
+                             break;
+                     }
+
+                     // after changing the values, update the viewport
+                     moveViewport();
+
+            //        // On selecting a spinner item
+            //        String item = parent.getItemAtPosition(position).toString();
+                 }
+
+                 @Override
+                 public void onNothingSelected(AdapterView<?> adapterView) {
+                 }
+             });
+
+
+
+             // this allows data points to be tapped. Information is shown about whichever one they tap.
+             series.setOnDataPointTapListener(new OnDataPointTapListener() {
+                 @Override
+                 public void onTap(Series series, DataPointInterface dataPoint) {
+                     Toast.makeText(getActivity(), "Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+                 }
+             });
+
+
+             //not yet created
+             //weightGraph = (GraphView) rootView.findViewById(R.id.weightGraphView);
+             return rootView;
+         }
+
+
+         // resets and generates updated data
+         public DataPoint[] generateData(){
+             DataPoint[] values = new DataPoint[dailyUserInfoModels.size()];
+             for(int i = 0; i < values.length; i++){
+                 DataPoint v = new DataPoint(dailyUserInfoModels.get(i).getDate(), dailyUserInfoModels.get(i).getTotalProtein());
+                 values[i] = v;
+             }
+             return values;
+         }
+
+
+         /**
+          * will check to see if the date is outof range, not allowing them to select a certain date
+          * from spinner
+          */
+         public boolean dateOutOfRange(int timeFrame){
+             if(dailyUserInfoModels.size() < timeFrame) {
+                 return true;
+             }
+             else
+                 return false;
+         }
+
+         public void changeDate(int timeFrame){
+             if(!dateOutOfRange(timeFrame)) {
+                 firstDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - timeFrame).getDate();
+                 secondDateChosen = dailyUserInfoModels.get(dailyUserInfoModels.size() - 1).getDate();
+             }
+         }
+
+         /**
+          * uses the starting and ending date the user picks using datepicker to determine
+          * what data should be shown on screen - minX = firstDateChosen, maxX = secondDateChosen
+          */
+         public void moveViewport(){
+             proteinGraph.getViewport().setXAxisBoundsManual(true);
+             proteinGraph.getViewport().setMinX(firstDateChosen.getTime());
+             proteinGraph.getViewport().setMaxX(secondDateChosen.getTime());
+
+             proteinGraph.onDataChanged(false, false);
+         }
+
+
+     }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -662,7 +752,7 @@ public class newGraphActivity extends AppCompatActivity {
                     fragment = new WeightGraphFragment();
                     break;
                 case 2:
-                    fragment = new CalorieGraphFragment();
+                    fragment = new ProteinGraphFragment();
                     break;
             }
             return fragment;
