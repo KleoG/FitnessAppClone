@@ -35,6 +35,4 @@ public abstract class UserNutritionDB extends RoomDatabase {
     public abstract FoodItemsModelDAO FoodItemsModel();
 
     //TODO database migration class
-    //TODO when updating and deleting check if values are less then 0 and if so then make them 0
-
 }
