@@ -53,22 +53,17 @@ public class SearchActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: starting intent Search Activity");
 
         Thread.setDefaultUncaughtExceptionHandler((thread, ex) -> {
-            Log.e(TAG, ex.getMessage() + " caused by specific query's that the api cannot handle");
+            Log.e(TAG, ex.getMessage() + " caused by specific queries that the api cannot handle");
 
-            //gets the intent that created this activity
-            Intent intent = getIntent();
+            //go back to meal page
+            super.onBackPressed();
 
-            //clears stack ontop of the current activity that already exists
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
+            //destroy this activity
             this.finish();
 
-            startActivity(intent);
-
-            //kill the current process allowing the app to restart itself up to the current activity
+            //kill the current process allowing the app to restart itself on the meal activity
             Process.killProcess(Process.myPid());
-            System.exit(0);
-            
+
         });
 
 

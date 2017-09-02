@@ -137,12 +137,6 @@ public class MainActivity extends LifecycleActivity {
         Intent intent = new Intent(this, ExerciseActivity.class);
         startActivity(intent);  // changes page to the intent (graph page)
 
-        //temporary for testing
-//        Random r = new Random();
-//        Double randomCalories = r.nextInt(2000 - 100) + 100.0;
-//        DailyUserInfoModel test = new DailyUserInfoModel(new Date(), randomCalories, 0.0, 0.0, 0.0, 0.0);
-//        userInfoVM.updateCurrentDayUserInfo(test);
-
     }
 
     /**
